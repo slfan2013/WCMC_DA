@@ -1,0 +1,3 @@
+library(WCMC.Stat.ANOVA)
+library(opencpu)
+opencpu$browse("/library/WCMC.Stat.ANOVA/wwww")

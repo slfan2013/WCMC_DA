@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "# Some useful keyboard shortcuts for package authoring:\n#\n#   Build and Reload Package:  'Ctrl + Shift + B'\n#   Check Package:             'Ctrl + Shift + E'\n#   Test Package:              'Ctrl + Shift + T'\nmainApp = function(input,type,weight){\n  library(pacman)\n  pacman::p_load(data.table)\n  input <- gsub(\"\\r\",\"\",input)\n  cfile <- strsplit(input,\"\\n\")[[1]]\n  df1 <- as.data.frame(do.call(rbind,lapply(cfile,function(x){strsplit(x,\"\\t\")[[1]]})),stringsAsFactors = F)\n  colnames(df1) = as.matrix(df1[1,])[1,]\n  df1 = df1[-1,]\n  data = sapply(df1[,-1], as.numeric)\n\n  if(type==\"sum\"){\n    sums = colSums(data,na.rm = T)\n    result = t(t(data)/sums*mean(sums,na.rm = T))\n  }else if(type==\"median\"){\n    medians = apply(data,2,median,na.rm = T)\n    result = t(t(data)/medians*mean(medians,na.rm = T))\n  }else if(type=='mean'){\n    means = colMeans(data,na.rm = T)\n    result = t(t(data)/means*mean(means,na.rm = T))\n  }else if(type==\"custom sample weight\"){\n    weight <- gsub(\"\\r\",\"\",weight)\n    cfile <- strsplit(weight,\"\\n\")[[1]]\n    df2 <- as.data.frame(do.call(rbind,lapply(cfile,function(x){strsplit(x,\"\\t\")[[1]]})),stringsAsFactors = F)\n    colnames(df2) = as.matrix(df2[1,])[1,]\n    df2 = df2[-1,]\n    weight = as.numeric(df2[1,]);\n    weight = weight[!is.na(weight)]\n    result = t(t(data)*weight)\n  }\n\n  result = cbind(data.frame(df1[,1]),result)\n  rownames(result) = 1:nrow(result)\n  colnames(result) = colnames(df1)\n  fwrite(data.table(result),\"SampleSpecific-normalization.csv\")\n  fwrite(data.table(result),\"SampleSpecific-normalization.txt\",sep = \"\\t\")\n  return(result)\n}\n",
+    "created" : 1487190923155.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1673810059",
+    "id" : "F5A943A6",
+    "lastKnownWriteTime" : 1487207150,
+    "last_content_update" : 1487207150878,
+    "path" : "~/GitHub/WCMC_DA/WCMC.Normalization.SampleSpecific/R/mainApp.R",
+    "project_path" : "R/mainApp.R",
+    "properties" : {
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "# Some useful keyboard shortcuts for package authoring:\n#\n#   Build and Reload Package:  'Ctrl + Shift + B'\n#   Check Package:             'Ctrl + Shift + E'\n#   Test Package:              'Ctrl + Shift + T'\nmainApp = function(input){\n  library(pacman)\n  pacman::p_load(data.table)\n  input <- gsub(\"\\r\",\"\",input)\n  cfile <- strsplit(input,\"\\n\")[[1]]\n  df1 <- as.data.frame(do.call(rbind,lapply(cfile,function(x){strsplit(x,\"\\t\")[[1]]})),stringsAsFactors = F)\n  colnames(df1) = as.matrix(df1[1,])[1,]\n  df1 = df1[-1,]\n  data = sapply(df1[,-c(1,2)], as.numeric)\n  sums = apply(data[df1[,2]=='known',],2,  sum, na.rm=T)\n  mean_sums = mean(sums)\n  result = t(t(data)/(sums/mean_sums))\n  result = cbind(df1[,c(1,2)],result)\n  rownames(result) = 1:nrow(result)\n  fwrite(result,\"mTIC-normalization.csv\")\n  fwrite(data.table(result),\"mTIC-normalization.txt\",sep = \"\\t\")\n  return(result)\n}\n",
+    "created" : 1487207290384.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3042647595",
+    "id" : "24F7D34B",
+    "lastKnownWriteTime" : 1487207308,
+    "last_content_update" : 1487207308549,
+    "path" : "~/GitHub/WCMC_DA/WCMC.Normalization.mTIC/R/mainApp.R",
+    "project_path" : null,
+    "properties" : {
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

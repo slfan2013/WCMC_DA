@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "var myApp = angular.module('myApp', ['ngRoute', 'ui.bootstrap']);\n\nmyApp.controller('ctr',function($scope){\n  $scope.type = 'sum'\n})\n\n\n$(function(){\n$( \"#codeToggle\" ).click(function() {\n  $( \"#code\" ).toggle( \"fast\");\n});\n\n\t$(\"#compute\").click(function(){\n    $('#output').empty();\n    $(\"#output\").html(\"<p>No output yet.</p>\")\n    $(\"#outputpanelheader\").addClass(\"collapsed\")\n\t\t$(\"#output\").removeClass(\"in\");\n\t\tvar notready = true;\n\n    var loadSpinner = showSpinner(txt='Computing..');\n    var txtinput = $(\"#rawinput\").val().trim();\n    var req = ocpu.call(\"mainApp\",{input:txtinput}, function(session) {//calls R function:\n\t\t\tconsole.log(session);\n\t\t\tview_address = session.loc + \"files/PQN-normalization.txt\"\n\t\t\tdownload_address = session.loc + \"files/PQN-normalization.csv\"\n\t\t})\n\t\t.done(function(){\n        $(\"#outputpanelheader\").removeClass(\"collapsed\")\n        $(\"#output\").addClass( \"in\" );\n        $(\"#output\").html( \"<b style='color:#3C763D;'>Success!</b><br /><div class='well well-sm'><p>Data were normalized to the of each sample.</p></div><p style='color:grey';'>You can either view your normalized result <a href='\"+view_address+\"' target='_blank'>here</a>, or download your result by clicking the Download button.</p><a type='button' href='\"+download_address+\"' class='btn btn-primary' target='_blank'  download='mTIC-normalization.csv'>Download</a>\" );\n\t\t})\n\t\t.fail(function() {\n\t\t  $('#output').empty();\n      $(\"#output\").html(\"<p>No output yet.</p>\")\n      $(\"#outputpanelheader\").addClass(\"collapsed\")\n\t\t  $(\"#output\").removeClass(\"in\");\n\t\t  alert(\"Error: \" + req.responseText)})\n\t\t.always(function(){hideSpinner(loadSpinner);});//ocpu.call\n\t})\n\n})\n",
+    "created" : 1487309484303.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3497697748",
+    "id" : "A147A9FB",
+    "lastKnownWriteTime" : 1487309544,
+    "last_content_update" : 1487309544090,
+    "path" : "~/GitHub/WCMC_DA/WCMC.Normalization.PQN/inst/www/WCMC.Normalization.PQN.js",
+    "project_path" : "inst/www/WCMC.Normalization.PQN.js",
+    "properties" : {
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "js"
+}

@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>WCMC - Data Analysis</title>
+    <!-- Bootstrap Core CSS -->
+    <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+   <link href="sb-admin-2.css" rel="stylesheet">
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+	<link href="font-awesome.css" rel="stylesheet" type="text/css"> 
+	<link href="http://getbootstrap.com/assets/css/docs.min.css" rel="stylesheet" />  
+</head>
+<body>
+    <div id="wrapper" >
+        <!-- Navigation -->
+        <nav class="navbar navbar-default  " role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+				<a class="navbar-brand" href=""> NIH West Coast Metabolomics Center - Data Analysis Tools </a> 
+            </div>
+            <!-- /.navbar-header -->           
+
+			
+        </nav>
+        <div class="container-fluid" >
+		    <div class="row" >			
+			         <!-- /.panel -->
+
+				<div class="panel panel-success "   >
+                    <div class="panel-heading">
+                             <label >Data Analysis Advisor (Please click on a study sample.)</label> 
+                    </div>					
+					<div class="panel-body">
+					<div class="bs-glyphicons"> <ul class="bs-glyphicons-list "> 
+						<li> <span class="fa"style="font-size:600%"> 🔬 </span>  <span class="glyphicon-class">Micro Organisms</span>   </li>
+						<li> <span class="fa fa-flask" style="font-size:600%"></span> <span class="glyphicon-class">Algae</span>   </li>				
+						<li> <span class="fa" style="font-size:600%"> 🌿 </span> <span class="glyphicon-class">Plants</span>   </li>
+						<li> <span class="fa " style="font-size:600%"> 💦</span> <span class="glyphicon-class">Cell Lines</span>   </li>
+						<li> <span class="fa" style="font-size:600%">	🐾</span> <span class="glyphicon-class">Model Animals</span>   </li>
+						<li> <span class="fa" style="font-size:600%"> 👫</span> <span class="glyphicon-class">Humans Tissues</span>   </li>
+						<li> <span class="fa" style="font-size:600%"> 💉</span> <span class="glyphicon-class">Humans Blood</span>   </li>
+						<li> <span class="fa" style="font-size:600%"> 🚽</span> <span class="glyphicon-class">Humans Urine/Feces</span>   </li>
+						
+						</ul></div>
+					</div>	
+					
+					<div class="panel-footer">
+					<p> We are constantly developing data analysis schemas for a variety of scientific situations. These schemas can help investigators to initiate the analysis of their metabolomics datasets. </p>
+					
+					</div>
+                        <!-- /.panel-heading -->                    
+				</div>					 
+				
+				<div class="panel panel-success"   >
+                    <div class="panel-heading">
+                             <label >Data Inspector</label> 
+                    </div>					
+					<div class="panel-body">
+					<div class="bs-glyphicons"> 
+						<ul class="bs-glyphicons-list"> 
+							<li><span class="fa fa-table" style="font-size:600%"></span> <span class="glyphicon-class">Tabulizer</span>   </li>
+							<li><span class="glyphicon glyphicon-list" style="font-size:600%"></span> <span class="glyphicon-class">Descriptive Statistics</span>   </li>
+							<li><span class="fa" style="font-size:600%">⚠</span> <span class="glyphicon-class">Outlier Detection</span></li>
+							<li><span class="fa" style="font-size:600%">▣</span> <span class="glyphicon-class">Principal Component Analysis</span>   </li>				
+							<li><span class="fa" style="font-size:600%">⛔</span> <span class="glyphicon-class">Missing Value </span>   </li>					
+							<li><span class="fa" style="font-size:600%">📶</span> <span class="glyphicon-class">Histogram </span>   </li>					
+							<li><span class="fa " style="font-size:600%">🌈</span> <span class="glyphicon-class">Heatmaps </span>   </li>					
+							<li><span class="fa" style="font-size:600%">⚞</span> <span class="glyphicon-class">Aggregation </span>   </li>					
+						</ul>
+					</div>
+					</div>	
+					<div class="panel-footer">
+					
+					</div>
+                        <!-- /.panel-heading -->                    
+				</div>
+				
+				<div class="panel panel-danger"   >
+                    <div class="panel-heading">
+                             <label >Data Filtering and Preparation</label> 
+                    </div>					
+					<div class="panel-body">
+					<div class="bs-glyphicons"> <ul class="bs-glyphicons-list"> 
+							<li> <span class="fa fa-filter" style="font-size:600%"></span> <span class="glyphicon-class">Filtering</span>   </li>
+							
+							<li> <span class="fa " style="font-size:600%"> 🔗</span> <span class="glyphicon-class">Merging</span>   </li> 							
+							<li> <span class="fa " style="font-size:600%"> ✂</span> <span class="glyphicon-class">Spliting</span>   </li> 							
+							<li> <span class="fa " style="font-size:600%"> ⚒ </span> <span class="glyphicon-class">Reshaping</span>   </li> 							
+							<li> <span class="fa" style="font-size:600%"> 🔃</span> <span class="glyphicon-class">Transposing</span>   </li> 							
+							<li> <span class="glyphicon glyphicon-sort" style="font-size:600%"></span> <span class="glyphicon-class">Sorting</span>   </li><li> <span class="fa" style="font-size:600%"> ↔ </span> <span class="glyphicon-class">Scaling</span>   </li>
+							<li> <span class="fa" style="font-size:600%"> ⭆ </span> <span class="glyphicon-class">Transformation</span>   </li> 							
+						</ul>
+						</div>
+					</div>	
+			
+					<div class="panel-footer">
+					
+					</div>
+                        <!-- /.panel-heading -->                    
+				</div>
+				
+				
+				<div class="panel panel-danger"   >
+                    <div class="panel-heading">
+                             <label >Data Normalization</label> 
+                    </div>					
+					<div class="panel-body">
+					<div class="bs-glyphicons"> <ul class="bs-glyphicons-list"> 
+						<li> <span class="fa" style="font-size:500%">μ</span> <span class="glyphicon-class">Mean</span>   </li>
+						<li> <span class="fa" style="font-size:600%">x͂ </span> <span class="glyphicon-class">Median</span>   </li>
+						<li> <span class="fa" style="font-size:600%">Q</span> <span class="glyphicon-class">Quantile</span>   </li>
+						<li> <span class="fa" style="font-size:600%">σ</span> <span class="glyphicon-class">Z</span>   </li>
+						<li> <span class="fa" style="font-size:500%">⅀</span> <span class="glyphicon-class">Sum</span>   </li>
+						<li> <span class="fa" style="font-size:400%">log</span> <span class="glyphicon-class">Log2</span>   </li>
+						<li> <span class="fa" style="font-size:600%">≋</span> <span class="glyphicon-class">LOESS</span>   </li>
+						<li> <span class="fa" style="font-size:600%">🌊</span> <span class="glyphicon-class">SERRF</span>   </li>
+					
+					
+					
+					</ul></div>
+					</div>	
+					
+					<div class="panel-footer">
+					
+					</div>
+                        <!-- /.panel-heading -->                    
+				</div>
+				
+				<div class="panel panel-success"   >
+                    <div class="panel-heading">
+                             <label >Univariates Statistics</label> 
+                    </div>					
+					<div class="panel-body">
+					<div class="bs-glyphicons"> <ul class="bs-glyphicons-list"> 
+					
+					<li> <span class="fa " style="font-size:300%"> ST</span> <span class="glyphicon-class">Student TTest</span>   </li>
+					<li> <span class="fa " style="font-size:300%"> PST</span> <span class="glyphicon-class">paired T-Test </span>   </li>
+					<li> <span class="fa" style="font-size:300%">AOV </span> <span class="glyphicon-class">one-way ANOVA</span>   </li>
+					<li> <span class="fa " style="font-size:300%">RepAOV</span> <span class="glyphicon-class">one-way repeated measures ANOVA</span>   </li>
+					<li> <span class="fa " style="font-size:300%">FAOV</span> <span class="glyphicon-class">factorial ANOVA</span>   </li>
+					<li> <span class="fa " style="font-size:300%">χ2</span> <span class="glyphicon-class">Chi- square test</span>   </li>
+					<li> <span class="fa " style="font-size:300%">FET</span> <span class="glyphicon-class">Fisher's exact test</span>   </li>
+					<li> <span class="fa " style="font-size:300%">KW</span> <span class="glyphicon-class">Kruskal Wallis</span>   </li>
+					<li> <span class="fa " style="font-size:300%">WMW</span> <span class="glyphicon-class">Wilcoxon-Mann Whitney test</span>   </li>
+					<li> <span class="fa " style="font-size:300%">WSR</span> <span class="glyphicon-class">Wilcoxon signed ranks test </span>   </li>
+					<li> <span class="fa" style="font-size:300%"> LM </span> <span class="glyphicon-class">Linear Regression</span>   </li>					
+					<li> <span class="fa " style="font-size:300%">Logit</span> <span class="glyphicon-class">Logistic Regression</span>   </li>
+					<li> <span class="fa " style="font-size:300%">CLogit</span> <span class="glyphicon-class">Conditional Logistic Regression</span>   </li>
+					<li> <span class="fa " style="font-size:300%">Cox</span> <span class="glyphicon-class">Cox Survival Regression</span>   </li>
+					<li> <span class="fa " style="font-size:300%">MEM</span> <span class="glyphicon-class">Mixed Effect Models</span>   </li>
+					<li> <span class="fa " style="font-size:300%">Power</span> <span class="glyphicon-class">Power Analysis</span>   </li>
+
+					</ul></div>
+					</div>	
+					
+					<div class="panel-footer">
+					
+					</div>
+                        <!-- /.panel-heading -->                    
+				</div>
+				
+				
+				<div class="panel panel-danger"   >
+                    <div class="panel-heading">
+                             <label >Multi-variate Statistics</label> 
+                    </div>					
+					<div class="panel-body">
+					<div class="bs-glyphicons"> <ul class="bs-glyphicons-list"> 					
+						<li> <span class="fa" style="font-size:600%">∟</span> <span class="glyphicon-class">Principal Component Analysis</span>   </li>	<li> <span class="fa" style="font-size:600%">	📱</span> <span class="glyphicon-class">HCL</span>   </li>					
+						<li> <span class="fa" style="font-size:600%">∟</span> <span class="glyphicon-class">PLS-DA</span>   </li>					
+						<li> <span class="fa" style="font-size:600%">∟</span> <span class="glyphicon-class">OPLS-DA</span>   </li>
+						<li> <span class="fa" style="font-size:600%">∮</span> <span class="glyphicon-class">Multiple linear/logistic regression</span>   </li>					
+						
+					</ul></div>
+					</div>	
+					
+					<div class="panel-footer">
+					
+					</div>
+                        <!-- /.panel-heading -->                    
+				</div>
+				
+				
+				
+				
+				
+				
+				
+			<div class="panel panel-danger"   >
+                    <div class="panel-heading">
+                             <label >Graphics</label> 
+                    </div>					
+					<div class="panel-body">
+					<div class="bs-glyphicons"> <ul class="bs-glyphicons-list"> 
+					<li> <span class="fa" style="font-size:600%">📊</span> <span class="glyphicon-class">Bar Chart</span>   </li>	
+					<li> <span class="fa fa-line-chart" style="font-size:600%"></span> <span class="glyphicon-class">Line Chart</span>   </li>	
+					<li> <span class="fa fa-sliders" style="font-size:600%"></span> <span class="glyphicon-class">Box and whisker plots</span>   </li>	
+					<li> <span class="fa" style="font-size:600%">🍩</span> <span class="glyphicon-class">Donut plots</span>   </li>	
+					<li> <span class="fa" style="font-size:600%">⬓</span> <span class="glyphicon-class">Stacked Bar Chart</span>   </li>	
+					<li> <span class="fa" style="font-size:600%"> ⚭</span> <span class="glyphicon-class">Venn Diagrams</span>   </li>	
+					<li> <span class="fa" style="font-size:600%">⋰</span> <span class="glyphicon-class">Scatter plots</span>   </li>	
+					<li> <span class="fa" style="font-size:600%">💮</span> <span class="glyphicon-class">Radar</span>   </li>	
+					<li> <span class="fa fa-area-chart" style="font-size:600%"></span> <span class="glyphicon-class">Area Chart</span>   </li>	
+					<li> <span class="fa fa-pie-chart" style="font-size:600%"></span> <span class="glyphicon-class">Pie Chart</span>   </li>	
+					<li> <span class="fa" style="font-size:600%">🎄</span> <span class="glyphicon-class">Forest Plot</span>   </li>	
+					<li> <span class="fa" style="font-size:600%">🌋</span> <span class="glyphicon-class">Volcano Plot</span>   </li>	
+					<li> <span class="fa" style="font-size:600%">🌆</span> <span class="glyphicon-class">Manhatton Plot</span>   </li>	
+					<li> <span class="fa" style="font-size:600%">◎</span> <span class="glyphicon-class">Circos Plot</span>   </li>	
+					<li> <span class="fa" style="font-size:600%">◰</span> <span class="glyphicon-class">Tree maps</span>   </li>	
+					<li> <span class="fa" style="font-size:600%">☁</span> <span class="glyphicon-class">WordCloud</span>   </li>	
+					<li> <span class="fa" style="font-size:600%">📎</span> <span class="glyphicon-class">Combine Graphs</span>   </li>	
+					</ul></div>
+					</div>	
+					<div class="panel-footer">
+					
+					</div>
+                        <!-- /.panel-heading -->                    
+				</div>
+				
+				
+				
+				<div class="panel panel-danger"   >
+                    <div class="panel-heading">
+                             <label >Clustering Visualization</label> 
+                    </div>					
+					<div class="panel-body">
+					<div class="bs-glyphicons"> <ul class="bs-glyphicons-list"> 
+					
+					<li> <span class="fa" style="font-size:600%">⋲</span> <span class="glyphicon-class">Phylogenetic Tree</span>   </li>	
+					<li> <span class="fa" style="font-size:600%">▩</span> <span class="glyphicon-class">HeatMap</span>   </li>	
+					<li> <span class="fa" style="font-size:600%">⊛</span> <span class="glyphicon-class">Correlation networks</span>   </li>	
+					<li> <span class="fa" style="font-size:600%">⊛</span> <span class="glyphicon-class">Partial correlation</span>   </li>	
+					
+					</ul></div>
+					</div>	
+					
+					<div class="panel-footer">
+					
+					</div>
+                        <!-- /.panel-heading -->                    
+				</div>
+				
+				
+
+				
+				
+				
+				
+				
+				<div class="panel panel-danger"   >
+                    <div class="panel-heading">
+                             <label >Metabolic Network Mapping</label> 
+                    </div>					
+					<div class="panel-body">
+					<div class="bs-glyphicons"> <ul class="bs-glyphicons-list">
+
+					<li> <span class="fa" style="font-size:600%">≅</span> <span class="glyphicon-class">Identifiers Mapping</span>   </li>	
+					<li> <span class="fa" style="font-size:600%">⌬</span> <span class="glyphicon-class">Chemical Similarity</span>   </li>	
+					<li> <span class="fa" style="font-size:600%">M</span> <span class="glyphicon-class">MetaMapp</span>   </li>	
+					<li> <span class="fa" style="font-size:600%">MM</span> <span class="glyphicon-class">MetMines</span>   </li>	
+					<li> <span class="fa fa-bar-chart" style="font-size:600%"></span> <span class="glyphicon-class">Mass Spectral Similarity</span>   </li>	
+					<li> <span class="fa" style="font-size:600%">🌐</span> <span class="glyphicon-class">Integrated Networks</span>   </li>	
+
+					
+					</ul></div>
+					</div>	
+					
+					<div class="panel-footer">
+					
+					</div>
+                        <!-- /.panel-heading -->                    
+				</div>
+				
+				
+				<div class="panel panel-danger"   >
+                    <div class="panel-heading">
+                             <label >Enrichment Analysis</label> 
+                    </div>					
+					<div class="panel-body">
+					<div class="bs-glyphicons"> <ul class="bs-glyphicons-list">
+
+					<li> <span class="fa" style="font-size:600%">⬣</span> <span class="glyphicon-class">ChemRICH</span>   </li>	
+					<li> <span class="fa" style="font-size:600%">⋓</span> <span class="glyphicon-class">SubRICH</span>   </li>	
+					<li> <span class="fa" style="font-size:600%">𝕸</span> <span class="glyphicon-class">MetModule</span>   </li>	
+					<li> <span class="fa" style="font-size:600%">	👨‍⚕️</span> <span class="glyphicon-class">Disease Sets</span>   </li>	
+					<li> <span class="fa" style="font-size:600%">	😷</span> <span class="glyphicon-class">Symptoms Sets</span>   </li>	
+					<li> <span class="fa" style="font-size:600%">⭃</span> <span class="glyphicon-class">Text mined Pathway Sets</span>   </li>	
+					<li> <span class="fa" style="font-size:400%">NCBI</span> <span class="glyphicon-class">NCBI BioSystems Pathway Sets</span>   </li>	
+
+					
+					</ul></div>
+					</div>	
+					
+					<div class="panel-footer">
+					
+					</div>
+                        <!-- /.panel-heading -->                    
+				</div>
+				
+				<div class="panel panel-danger"   >
+                    <div class="panel-heading">
+                             <label >Pathway Visualization</label> 
+                    </div>					
+					<div class="panel-body">
+					<div class="bs-glyphicons"> <ul class="bs-glyphicons-list"> 
+					<li> <span class="fa" style="font-size:600%">	🌍</span> <span class="glyphicon-class">Global Pathway</span>   </li> 
+					<li> <span class="fa" style="font-size:600%">🌌</span> <span class="glyphicon-class">Individual Pathway</span>   </li> 
+					<li> <span class="fa" style="font-size:600%">	🎡</span> <span class="glyphicon-class">Central Metabolism</span>   </li> 
+					<li> <span class="fa" style="font-size:600%">	⚒</span> <span class="glyphicon-class">Custom Pathway</span>   </li> 
+					<li> <span class="fa" style="font-size:600%">	🍢</span> <span class="glyphicon-class">Integrated Pathways</span>   </li> 
+					
+					</ul></div>
+					</div>	
+					
+					<div class="panel-footer">
+					
+					</div>
+                        <!-- /.panel-heading -->                    
+				</div>
+				
+				
+				<div class="panel panel-danger"   >
+                    <div class="panel-heading">
+                             <label >Databases</label> 
+                    </div>					
+					<div class="panel-body">
+					<div class="bs-glyphicons"> <ul class="bs-glyphicons-list">
+
+					<li> <span class="fa" style="font-size:600%">💉</span> <span class="glyphicon-class">Blood Exposome</span>   </li>	
+					<li> <span class="fa" style="font-size:600%">	🍛</span> <span class="glyphicon-class">Diet related compounds</span>   </li>	
+					<li> <span class="fa" style="font-size:600%"> ☢</span> <span class="glyphicon-class">Environmental Exposures</span>   </li>	
+					<li> <span class="fa" style="font-size:600%">	👤</span> <span class="glyphicon-class">Human Biochemistry</span>   </li>	
+					<li> <span class="fa fa-filter" style="font-size:600%"></span> <span class="glyphicon-class">Compound classes</span>   </li>	
+					<li> <span class="fa" style="font-size:600%">🐷</span> <span class="glyphicon-class">Species Specific</span>   </li>	
+					<li> <span class="fa" style="font-size:600%">⚕</span> <span class="glyphicon-class">Disease Specific</span>   </li>	
+
+					
+					</ul></div>
+					</div>	
+					
+					<div class="panel-footer">
+					
+					</div>
+                        <!-- /.panel-heading -->                    
+				</div>
+				
+				
+				<div class="panel panel-danger"   >
+                    <div class="panel-heading">
+                             <label >Text Mining</label> 
+                    </div>					
+					<div class="panel-body">
+					<div class="bs-glyphicons"> <ul class="bs-glyphicons-list"> 
+					<li> <span class="fa" style="font-size:600%">📖</span>  <span class="glyphicon-class">Find Papers</span>   </li>	
+					<li> <span class="fa fa-list" style="font-size:600%"> </span> <span class="glyphicon-class">ChemRIFs</span>   </li>	
+					<li> <span class="fa fa-quora" style="font-size:600%"></span> <span class="glyphicon-class">PubQuery</span>   </li>	
+					<li> <span class="fa" style="font-size:600%">♻</span> <span class="glyphicon-class">Find associated terms</span>   </li>	
+					<li> <span class="fa" style="font-size:600%">�</span> <span class="glyphicon-class">Literature clustering</span>   </li>	
+					<li> <span class="fa" style="font-size:300%">MeSH</span> <span class="glyphicon-class">MeSH explorer</span>   </li>	
+					<li> <span class="fa" style="font-size:300%">MSkye</span> <span class="glyphicon-class">MetSkye</span>   </li>	
+					<li> <span class="fa" style="font-size:600%">CC</span> <span class="glyphicon-class">ChemConcepts</span>   </li>	
+					</ul></div>
+					</div>	
+					<div class="panel-footer">
+					</div>
+                        <!-- /.panel-heading -->                    
+				</div>
+				
+				<div class="panel panel-danger"   >
+                    <div class="panel-heading">
+                             <label >Machine Learning </label> 
+                    </div>					
+					<div class="panel-body">
+					<div class="bs-glyphicons"> <ul class="bs-glyphicons-list"> 					
+						<li> <span class="fa " style="font-size:300%">RF</span> <span class="glyphicon-class">Random Forest</span>   </li>					
+						<li> <span class="fa " style="font-size:300%">SVM</span> <span class="glyphicon-class">Support vector machine</span>   </li>					
+						<li> <span class="fa " style="font-size:300%">CT</span> <span class="glyphicon-class">Classification trees</span>   </li>					
+						<li> <span class="fa " style="font-size:300%">GBM</span> <span class="glyphicon-class">LightGBM</span>   </li>					
+						<li> <span class="fa " style="font-size:300%">Boost</span> <span class="glyphicon-class">xgBoost</span>   </li>					
+						<li> <span class="fa " style="font-size:300%">NN</span> <span class="glyphicon-class">Neural Networks</span>   </li>					
+						<li> <span class="fa " style="font-size:300%">ROC</span> <span class="glyphicon-class">ROC Curves</span>   </li>					
+					</ul></div>
+					</div>	
+					
+					<div class="panel-footer">
+					
+					</div>
+                        <!-- /.panel-heading -->                    
+				</div>
+				
+				
+				
+				
+									
+				<div class="panel panel-danger">
+					<div class="panel-heading"> <label> Contact & Citations </label>						
+					
+					</div>
+					<div class="panel-body">
+					  	<label> By : Dinesh Barupal, Sili Fan & Oliver Fiehn </label><br>
+					</div>
+					 <div class="panel-footer">
+					 
+					 </div>
+				</div>
+										  
+					 
+			</div>
+        </div>
+	</div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+		<script src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.2.0.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-resource.min.js"></script>
+
+	<script type="text/javascript">
+	function onlyUnique(value, index, self) { 
+		return self.indexOf(value) === index;
+	}	
+	
+	
+	</script>
+	
+
+
+
+</body></html>

@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "$(function(){\n$( \"#codeToggle\" ).click(function() {\n  $( \"#code\" ).toggle( \"fast\");\n});\n\n\t$(\"#compute\").click(function(){\n    $('#output').empty();\n    $(\"#output\").html(\"<p>No output yet.</p>\")\n    $(\"#outputpanelheader\").addClass(\"collapsed\")\n\t\t$(\"#output\").removeClass(\"in\");\n\t\tvar notready = true;\n\n    var loadSpinner = showSpinner(txt='Computing..');\n    var txtinput = $(\"#rawinput\").val().trim();\n    var req = ocpu.call(\"mainApp\",{input:txtinput}, function(session) {//calls R function:\n\t\t\tconsole.log(session);\n\t\t\tview_address = session.loc + \"files/mTIC-normalization.txt\"\n\t\t\tdownload_address = session.loc + \"files/mTIC-normalization.csv\"\n\t\t})\n\t\t.done(function(){\n$(\"#outputpanelheader\").removeClass(\"collapsed\")\n$(\"#output\").addClass( \"in\" );\n$(\"#output\").html( \"<b style='color:#3C763D;'>Success!</b><br /><div class='well well-sm'><p>Data were normalized sample by sample to the average of the sum intensity of all annotated metabolites (using the following Eq.)</p><div class='f'>metabolite<sub>ij,normalized</sub> =&nbsp; metabolite<sub>ij, raw</sub>/mTIC<sub>j</sub>* mTIC average<span>, where <em>i</em> indicates sample while <em>j</em> indicates compound.</span></div> </div><p style='color:grey';'>You can either view your normalized result <a href='\"+view_address+\"' target='_blank'>here</a>, or download your result by clicking the Download button.</p><a type='button' href='\"+download_address+\"' class='btn btn-primary' target='_blank'  download='mTIC-normalization.csv'>Download</a>\" );\n\t\t})\n\t\t.fail(function() {\n\t\t  $('#output').empty();\n      $(\"#output\").html(\"<p>No output yet.</p>\")\n      $(\"#outputpanelheader\").addClass(\"collapsed\")\n\t\t  $(\"#output\").removeClass(\"in\");\n\t\t  alert(\"Error: \" + req.responseText)})\n\t\t.always(function(){hideSpinner(loadSpinner);});//ocpu.call\n\t})\n\n})\n",
+    "created" : 1487207328488.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "310953475",
+    "id" : "CED2D772",
+    "lastKnownWriteTime" : 1487207345,
+    "last_content_update" : 1487207345712,
+    "path" : "~/GitHub/WCMC_DA/WCMC.Normalization.mTIC/inst/www/WCMC.Normalization.mTIC.js",
+    "project_path" : null,
+    "properties" : {
+    },
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "js"
+}
