@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Normalization.Contrast </title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+	<script src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.2.0.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-resource.min.js"></script>
+  <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="spin.js"></script>
+  <script type="text/javascript" src="spinner.js"></script>
+  <script type="text/javascript" src="opencpu-0.5.js"></script>
+  <script type="text/javascript" src="WCMC.Normalization.Contrast.js"></script>
+
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <link href="sb-admin-2.min.css" rel="stylesheet">
+  <link href="font-awesome.css" rel="stylesheet">
+  <link href="WCMC.Normalization.Contrast.css" rel="stylesheet">
+</head>
+
+<body ng-controller="ctr">
+
+  <div >
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Contrast: Probabilistic Quotient Normalization.</a>
+        </div>
+    </nav>
+
+
+    <div>
+      <div class="container-fluid">
+        <!-- Page Heading -->
+        <div class="row">
+          <div class="col-lg-12">
+          </div>
+        </div>
+        <!-- /.row -->
+        <!-- Main content -->
+
+		<div class="row"> <!-- Data File Input -->
+          <div class="col-lg-12">
+            <div class="panel panel-info">
+              <div class="panel-heading">
+                <h3 class="panel-title"><a data-toggle="collapse" data-target="#input" href="#">Input</a></h3>
+              </div>
+              <div id="input" class="panel-body collapse in">
+                <form role="form">
+                  <div class="form-group">
+                    <textarea class="form-control" id="rawinput" name="txtinput" rows="5" placeholder = "paste your input here."></textarea>
+                    <span for="rawinput"><a href="sample.txt" target="_blank"> Example Data File </a></span><a href="instruction.png" target="_blank" data-toggle="tooltip" data-placement="bottom" data-html="true" title="format explaination"><i class="fa fa-question-circle"></i></a>&nbsp;<a href="template.xlsx" target="_blank" data-toggle="tooltip" data-placement="bottom" data-html="true" title="download format"><i class="fa fa-download"></i></a>
+                    <p></p>
+              </div>
+                  <!-- /.row -->
+                </form>
+                <button id="compute" type="button" class="btn btn-primary">Run</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+		<div class="row"> <!-- Output -->
+          <div class="col-lg-12">
+            <div class="panel panel-success">
+              <div class="panel-heading" >
+                <h3 class="panel-title"><a data-toggle="collapse" data-target="#output" href="#" class="collapsed" id="outputpanelheader">Output</a></h3>
+              </div>
+              <div id="output" class="panel-body collapse">
+                No output yet.
+              </div>
+            </div>
+          </div>
+        </div>
+
+		<div class="row"> <!-- Instructions -->
+          <div class="col-lg-12">
+            <div class="panel panel-warning">
+              <div class="panel-heading" >
+                <h3 class="panel-title"><a data-toggle="collapse" data-target="#instrtuction" href="#" class="collapsed">Instruction</a></h3>
+              </div>
+              <div id="instrtuction" class="panel-body collapse">
+                <p>Contrast Normalization is originated from the integration of MA-plots and logged Bland-Altman plots, which assumes the presence of non-linear biases. The use of a log function in this method may impede the processing of zeros and negative numbers, which requires the conversion of non-positive numbers to an extremely small value. The contrast method has been employed to reveal the role of polychlorinated biphenyls in non-alcoholic fatty liver disease by metabolomics analysis.</p>
+<button type="button" class="btn btn-primary btn-circle" id="codeToggle"><b>R</b></button>
+<div class="well well-sm" id='code' style="display:none;">
+<pre><code>mainApp = function(input){
+  library(pacman)
+  pacman::p_load(data.table,affy)
+  input = gsub("\r","",input)
+  cfile = strsplit(input,"\n")[[1]]
+  df1 = as.data.frame(do.call(rbind,lapply(cfile,function(x){strsplit(x,"\t")[[1]]})),stringsAsFactors = F)
+  colnames(df1) = as.matrix(df1[1,])[1,]
+  df1 = df1[-1,]
+  data = sapply(df1[,-1], as.numeric)
+  threshold = 1e-11
+  data[data !> 0] = threshold
+  maffy.data = maffy.normalize(data, subset = 1:nrow(data), span = 0.75,
+                                verbose = TRUE,
+                                family = "gaussian", log.it = FALSE)
+  subtract = function(x) {
+    t(t(x) - apply(x, 2, quantile, 0.1))
+  }
+  result = subtract(maffy.data)
+
+
+  result = cbind(data.frame(df1[,1]),result)
+  rownames(result) = 1:nrow(result)
+  colnames(result) = colnames(df1)
+  fwrite(data.table(result),"Contrast-normalization.csv")
+  fwrite(data.table(result),"Contrast-normalization.txt",sep = "\t")
+  return(result)
+}</code></pre>
+                    </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+		<div class="row"> <!-- Citations -->
+          <div class="col-lg-12">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title"><a data-toggle="collapse" data-target="#citations" href="#">Citations</a></h3>
+            </div>
+              <div id="citations" class="panel-body collapse in">
+                <p>Åstrand M. Contrast normalization of oligonucleotide arrays. Journal of Computational Biology. 2003 Feb 1;10(1):95-102. <a href='https://www.ncbi.nlm.nih.gov/pubmed/12676053/'>12676053</a></p>
+                <p>Kohl SM, Klein MS, Hochrein J, Oefner PJ, Spang R, Gronwald W. State-of-the art data normalization methods improve NMR-based metabolomic analysis. Metabolomics. 2012 Jun 1;8(1):146-60. <a href='http://link.springer.com/article/10.1007/s11306-011-0350-z'>s11306-011-0350-z</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      <!-- notify box -->
+        <div id="spinner" class="modal fade" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+          <div class="modal-dialog"><div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4>Computing ...</h4>
+              <span id="notifyTxt"></span>
+            </div>
+            <div class="modal-body"><div style="height:200px">
+              <span id="loading_spinner" style="position: absolute;display: block;top: 50%;left: 50%;"></span>
+            </div></div>
+          </div></div>
+        </div>
+        <!-- /.notify box -->
+
+
+
+      </div>
+      <!-- /.container-fluid -->
+    </div>
+    <!-- /#page-wrapper -->
+  </div>
+  <!-- /#wrapper -->
+
+
+</body>
+
+
+
+
+
+</html>

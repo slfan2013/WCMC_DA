@@ -31,7 +31,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">PQN: normalize samples by sample weights.</a>
+            <a class="navbar-brand" href="#">PQN: Probabilistic Quotient Normalization.</a>
         </div>
     </nav>
 
@@ -88,46 +88,30 @@
                 <h3 class="panel-title"><a data-toggle="collapse" data-target="#instrtuction" href="#" class="collapsed">Instruction</a></h3>
               </div>
               <div id="instrtuction" class="panel-body collapse">
-                <p>Normalisation of data to minimise the impact of technical variation on comparative sample analysis is often carried out. Usually we assume that the sum (or median, mean) of the intensity across all the compound of each sample should stay consistant. Thus the sum (or median, mean) value can be an approximate quantitative index of how much the machine influence each sample. Sample specific normalization normalize each sample to its index (i.e. sum, median or mean). The equation follows the same pattern,</p>
-                <img src="PQN equation.PNG"><span>, where <em>i</em> indicates samples and &omega; is the weight of each sample, which is calculated by (using sum as an example),</span>
-                <img src="sum.PNG">
-                <p>Also, user could define their own &omega; (e.g. volumn) using the <code>custom weight</code> option. User have to justify the logic of the weight. An example of &quot;custom weight&quot; sample specific normalization is <a href="http://www.sciencedirect.com/science/article/pii/S157002320900021X" target="_blank">here</a>.</p>
+                <p>Probabilistic Quotient Normalization (Dieterle et al. <a href='https://www.ncbi.nlm.nih.gov/pubmed/16808434/'>2006</a>) assumes that biologically interesting concentration changes influence only parts of the NMR spectrum, while dilution effects will affect all metabolite signals. In case of urine spectra, dilution effects are caused, for example, by variations in fluid intake. Probabilistic Quotient Normalization (PQN) starts, with an integral normalization of each spectrum, followed by the calculation of a reference spectrum such as a median spectrum. Next, for each variable of interest the quotient of a given test spectrum and reference spectrum is calculated and the median of all quotients is estimated. Finally, all variables of the test spectrum are divided by the median quotient.</p>
 <button type="button" class="btn btn-primary btn-circle" id="codeToggle"><b>R</b></button>
 <div class="well well-sm" id='code' style="display:none;">
-<pre><code>mainApp = function(input,type,weight){
+<pre><code>mainApp = function(input){
   library(pacman)
   pacman::p_load(data.table)
-  input 0 gsub("\r","",input)
+  input = gsub("\r","",input)
   cfile = strsplit(input,"\n")[[1]]
   df1 = as.data.frame(do.call(rbind,lapply(cfile,function(x){strsplit(x,"\t")[[1]]})),stringsAsFactors = F)
   colnames(df1) = as.matrix(df1[1,])[1,]
   df1 = df1[-1,]
   data = sapply(df1[,-1], as.numeric)
 
-  if(type=="sum"){
-    sums = colSums(data,na.rm = T)
-    result = t(t(data)/sums*mean(sums,na.rm = T))
-  }else if(type=="median"){
-    medians = apply(data,2,median,na.rm = T)
-    result = t(t(data)/medians*mean(medians,na.rm = T))
-  }else if(type=='mean'){
-    means = colMeans(data,na.rm = T)
-    result = t(t(data)/means*mean(means,na.rm = T))
-  }else if(type=="custom sample weight"){
-    weight = gsub("\r","",weight)
-    cfile = strsplit(weight,"\n")[[1]]
-    df2 = as.data.frame(do.call(rbind,lapply(cfile,function(x){strsplit(x,"\t")[[1]]})),stringsAsFactors = F)
-    colnames(df2) = as.matrix(df2[1,])[1,]
-    df2 = df2[-1,]
-    weight = as.numeric(df2[1,]);
-    weight = weight[!is.na(weight)]
-    result = t(t(data)*weight)
-  }
+  reference = apply(data, 1, median)
+  quotient = data / reference
+  quotient.median = apply(quotient, 2, median)
+  result = t(t(data) / quotient.median)
+
 
   result = cbind(data.frame(df1[,1]),result)
   rownames(result) = 1:nrow(result)
   colnames(result) = colnames(df1)
   fwrite(data.table(result),"PQN-normalization.csv")
+  fwrite(data.table(result),"PQN-normalization.txt",sep = "\t")
   return(result)
 }</code></pre>
                     </div>
@@ -146,9 +130,7 @@
                 <h3 class="panel-title"><a data-toggle="collapse" data-target="#citations" href="#">Citations</a></h3>
             </div>
               <div id="citations" class="panel-body collapse in">
-                <p>Cairns DA, Thompson D, Perkins DN, Stanley AJ, Selby PJ, Banks RE. Proteomic profiling using mass spectrometry–does normalising by total ion current potentially mask some biological differences?. Proteomics. 2008 Jan 1;8(1):21-7. <a href="https://www.ncbi.nlm.nih.gov/pubmed/18095358" target="_blank">18095358</a></p>
-                <p>Wang W, Zhou H, Lin H, Roy S, Shaler TA, Hill LR, Norton S, Kumar P, Anderle M, Becker CH. Quantification of proteins and metabolites by mass spectrometry without isotopic labeling or spiked standards. Analytical chemistry. 2003 Sep 15;75(18):4818-26.<a href="https://www.ncbi.nlm.nih.gov/pubmed/14674459" target="_blank">14674459</a></p>
-                <p>Warrack BM, Hnatyshyn S, Ott KH, Reily MD, Sanders M, Zhang H, Drexler DM. Normalization strategies for metabonomic analysis of urine samples. Journal of Chromatography B. 2009 Feb 15;877(5):547-52. <a href="http://www.sciencedirect.com/science/article/pii/S157002320900021X" target="_blank">S157002320900021X</a></p>
+                <p>Dieterle F, Ross A, Schlotterbeck G, Senn H. Probabilistic quotient normalization as robust method to account for dilution of complex biological mixtures. Application in 1H NMR metabonomics. Analytical chemistry. 2006 Jul 1;78(13):4281-90. <a href='https://www.ncbi.nlm.nih.gov/pubmed/16808434/'>16808434</a></p>
               </div>
             </div>
           </div>

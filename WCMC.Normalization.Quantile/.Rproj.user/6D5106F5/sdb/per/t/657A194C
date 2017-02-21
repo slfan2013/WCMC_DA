@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "# Some useful keyboard shortcuts for package authoring:\n#\n#   Build and Reload Package:  'Ctrl + Shift + B'\n#   Check Package:             'Ctrl + Shift + E'\n#   Test Package:              'Ctrl + Shift + T'\nmainApp = function(input){\n  library(pacman)\n  pacman::p_load(data.table,affy)\n  input = gsub(\"\\r\",\"\",input)\n  cfile = strsplit(input,\"\\n\")[[1]]\n  df1 = as.data.frame(do.call(rbind,lapply(cfile,function(x){strsplit(x,\"\\t\")[[1]]})),stringsAsFactors = F)\n  colnames(df1) = as.matrix(df1[1,])[1,]\n  df1 = df1[-1,]\n  data = sapply(df1[,-1], as.numeric)\n\n  normalize.quantile <- get(\"normalize.quantiles\", en = asNamespace(\"affy\"))\n  result <- normalize.quantile(data)\n\n  result = cbind(data.frame(df1[,1]),result)\n  rownames(result) = 1:nrow(result)\n  colnames(result) = colnames(df1)\n  fwrite(data.table(result),\"Quantile-normalization.csv\")\n  fwrite(data.table(result),\"Quantile-normalization.txt\",sep = \"\\t\")\n  return(result)\n}\n",
+    "created" : 1487317155782.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3096050364",
+    "id" : "657A194C",
+    "lastKnownWriteTime" : 1487317235,
+    "last_content_update" : 1487317235491,
+    "path" : "~/GitHub/WCMC_DA/WCMC.Normalization.Quantile/R/mainApp.R",
+    "project_path" : "R/mainApp.R",
+    "properties" : {
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

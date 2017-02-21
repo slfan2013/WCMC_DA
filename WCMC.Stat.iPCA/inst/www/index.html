@@ -1,161 +1,204 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="myApp">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="">
   <meta name="author" content="">
-  <link href="bootstrap.css" rel="stylesheet">
-  <link href="sb-admin.css" rel="stylesheet">
-  <link href="mETABOX.css" rel="stylesheet">
-  <script type="text/javascript" src="jquery-2.2.3.min.js"></script>
-  <script type="text/javascript" src="opencpu-0.5.js"></script>
-  <script type="text/javascript" src="mETABOX.js"></script>
-  <script type="text/javascript" src="bootstrap.js"></script>
+
+  <title>Stat.iPCA </title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+	<script src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.2.0.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-resource.min.js"></script>
+  <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="spin.js"></script>
-  <script>
-  </script>
-  <title>ChemRICH </title>
-  <script>
+  <script type="text/javascript" src="spinner.js"></script>
+  <script type="text/javascript" src="opencpu-0.5.js"></script>
+  <!--<script src="https://code.highcharts.com/highcharts.js"></script>-->
+  <script src="http://code.highcharts.com/stock/highstock.js"></script>
+  <script src="http://code.highcharts.com/stock/modules/exporting.js"></script>
+  <!--<script src="https://code.highcharts.com/modules/exporting.js"></script>-->
+  <script src="http://www.numericjs.com/lib/numeric-1.2.6.min.js"></script>
+  <script type="text/javascript" src="palette.js"></script>
+  <script type="text/javascript" src="WCMC.Stat.iPCA.js"></script>
 
-  var sessionid_m = "";  
-  
-  $(function(){
 
-	$("#computeMetaMapp").click(function(){
-		$('#net85').empty();
-		$('#clust85').empty();
-		$('#pre85').empty();
-		$("#downloadPPT_Btn").empty();
-		$("#downloadCPD_Btn").empty();
-	
-		var loadSpinner = showSpinner(txt='** Calculating ChemRICH enrichment, it can take up to 2 minutes, please be patient .....');
-		var txtinput = $("#rawinput").val().trim();
-		var req = ocpu.call("createPCA",{stat_file:txtinput}, function(session) {//calls R function:
-			console.log(session);
-			$("#downloadPPT_Btn").removeAttr('disabled');
-			$("#downloadCPD_Btn").removeAttr('disabled');
-			sessionid_m = session.loc;
-			//$('#net85').prepend('<img src="'+session.loc+'files/pubsim_0.85.png'+'" class="img-thumbnail" alt="Responsive image">')
-			$('#clust85').prepend('<img src="'+session.loc+'files/chemclust_0.85.png'+'" class="img-thumbnail" alt="Responsive image">')
-			
-			var ppturl = session.loc + 'files/wcmc_pca.pptx'
-			$("#downloadPPT_Btn").append('<a href="'+ppturl+'">Download Powerpoint Slide</a>')
-			
-			var cpdurl = session.loc + 'files/cpd_enrichment_results_0.85.tsv'
-			$("#downloadCPD_Btn").append('<a href="'+cpdurl+'">Download Compound Results</a>')
-			
-			
-			$.ajax({
-				type: "GET",
-				url: session.loc + 'files/enrichment_results_0.85.tsv',
-				success: function(response) {
-					$("#pre85").html('<pre>'+response+'</pre>');
-				}
-			});
-			
-			hideSpinner(loadSpinner);				
-		}).fail(function() {alert("Error: " + req.responseText)});//ocpu.call
-	})
-	
-	
-	})
-  </script>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <link href="sb-admin-2.min.css" rel="stylesheet">
+  <link href="font-awesome.css" rel="stylesheet">
+  <link href="WCMC.Stat.iPCA.css" rel="stylesheet">
 </head>
 
-<body>
+<body ng-controller="ctr">
 
   <div >
     <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-	<a class="navbar-brand" >ChemRICH : Set Enrichment of Metabolomics/Lipidomics datasets using Chemical Similarity Networks</a>
-	</nav>
-      
+    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">iPCA: interactive Principal Componponent Analysis.</a>
+        </div>
+    </nav>
 
-    <div >
+
+    <div>
       <div class="container-fluid">
         <!-- Page Heading -->
         <div class="row">
           <div class="col-lg-12">
-
-
           </div>
         </div>
         <!-- /.row -->
         <!-- Main content -->
-
-		<div class="row"> <!-- Generate Node Attribute files -->
+		<div class="row"> <!-- Data File Input -->
           <div class="col-lg-12">
             <div class="panel panel-info">
               <div class="panel-heading">
-                <h3 class="panel-title"><a data-toggle="collapse" data-target="#args" href="#">Generate chemical similarity network enrichment analysis.</a></h3>
+                <h3 class="panel-title"><a data-toggle="collapse" data-target="#input" href="#">Input</a></h3>
               </div>
-              <div id="args" class="panel-body collapse in">
+              <div id="input" class="panel-body collapse in">
                 <form role="form">
                   <div class="form-group">
-                    <label for="rawinput">Paste Statistical Results.  ( <a href="sample_stat_data.txt" target="_blank"> Example Data File </a> )   </label>
-                    <textarea class="form-control" id="rawinput" name="txtinput" rows="5"></textarea>
-                    <p class="help-block"> The input file should have four columms. Col1 = Lipid Name, Col2 = SMILES, Col3=FoldChange or effect, Col4 = pvalue.  Please use the example file as a templete. It is recommended to use median to calcualte the fold-changes, as median are not sensitive to outliers. For getting KEGG or PubChem IDs for metabolites names, use <a href="https://pubchem.ncbi.nlm.nih.gov/idexchange/idexchange.cgi" target="_blank"> PubChem Identifier Exchanger </a> tool.  For statistical analysis,  use <a href="http://metabox.fiehnlab.ucdavis.edu/ocpu/library/metabox/www/" target="_blank"> MetaBox </a> software. </p>
-                  </div>
+                    <textarea class="form-control" id="rawinput" name="txtinput" rows="5" placeholder = "paste your input here."></textarea>
+                    <span for="rawinput"><a href="sample.txt" target="_blank"> Example Data File </a></span><a href="instruction.png" target="_blank" data-toggle="tooltip" data-placement="bottom" data-html="true" title="format explaination"><i class="fa fa-question-circle"></i></a>&nbsp;<a href="instruction2.png" target="_blank" data-toggle="tooltip" data-placement="bottom" data-html="true" title="more instruction"><i class="fa fa-exclamation-circle"></i></a>&nbsp;<a href="template.xlsx" target="_blank" data-toggle="tooltip" data-placement="bottom" data-html="true" title="download format"><i class="fa fa-download"></i></a>
+                    <p></p>
+              </div>
                   <!-- /.row -->
-                  <button id="computeMetaMapp" type="button" class="btn btn-primary">Run</button>
-				  <button id="downloadPPT_Btn" type="button" class="btn btn-default" disabled><i class="fa fa-download"></i> Editable PPTx </button>
-				  <button id="downloadCPD_Btn" type="button" class="btn btn-default" disabled><i class="fa fa-download"></i> XLSx </button>
+                  <label class="checkbox-inline">
+                    <input type="checkbox" id="center" checked>Center data
+                  </label>
+                  <label class="checkbox-inline">
+                    <input type="checkbox" id='scale' checked>Scale data
+                  </label>
                 </form>
+                <button id="compute" type="button" class="btn btn-primary" ng-model='compute' ng-click='run()'>Run</button>
               </div>
             </div>
           </div>
         </div>
 
 
-	
-		<div class="row"> <!-- Generate Node Attribute files -->
+		<div class="row"> <!-- Output -->
           <div class="col-lg-12">
             <div class="panel panel-success">
-              <div class="panel-heading">
-                <h3 class="panel-title"><a data-toggle="collapse" data-target="#args" href="#">Clustered Visualization of the Nodes.</a></h3>
+              <div class="panel-heading" >
+                <h3 class="panel-title"><a data-toggle="collapse" data-target="#output" href="#" class="collapsed" id="outputpanelheader">Output</a></h3>
               </div>
-              <div id="clust85" class="panel-body collapse in">
-					
-              </div>
-            </div>
-          </div>
-        </div>
-		
-		<div class="row"> <!-- Generate Node Attribute files -->
-          <div class="col-lg-12">
-            <div class="panel panel-success">
-              <div class="panel-heading">
-                <h3 class="panel-title"><a data-toggle="collapse" data-target="#args" href="#">Clusters of Lipids with Enrichment results</a></h3>
-              </div>
-              <div id="pre85" class="panel-body collapse in">
-					
-              </div>
-            </div>
-          </div>
-        </div>
-		
-
-
-
-		<div class="row">
-          <div class="col-lg-12">
-            <div class="panel panel-primary">
-              <div class="panel-heading">
-                <h3 class="panel-title"><a data-toggle="collapse" data-target="#args" href="#">Instructions and citations</a></h3>
-            </div>
-              <div id="args" class="panel-body collapse in">
-				<p>Files downloaded from here need to be imported into Cytoscape for visualization. For more details - <a href="#">Visit this page</a> </p>
-                <form role="form">
-                  <div class="form-group">
-					<p>Barupal, Dinesh K., Pradeep K. Haldiya, Gert Wohlgemuth, Tobias Kind, Shanker L. Kothari, Kent E. Pinkerton, and Oliver Fiehn. "MetaMapp: mapping and visualizing metabolomic data by integrating information from biochemical pathways and chemical and mass spectral similarity." BMC bioinformatics 13, no. 1 (2012): 99.</p>
-					<p>Hartman, A. L., Lough, D. M., Barupal, D. K., Fiehn, O., Fishbein, T., Zasloff, M., & Eisen, J. A. (2009). Human gut microbiome adopts an alternative state following small bowel transplantation. Proceedings of the National Academy of Sciences, 106(40), 17187-17192.</p>
+              <div id="output" class="panel-body collapse">
+                <div class="row">
+                <div class="col-lg-3">
+                  <form>
+                    <div class="form-group">
+                      <label for="dataType">Nature Of Data:</label>
+                      <label class="radio-inline">
+                        <input type="radio" ng-model="plotType" name="plotType" value='score'>score plot
+                      </label>
+                      <label class="radio-inline">
+                        <input type="radio" ng-model="plotType" name="plotType" value='loading'>loadings plot
+                      </label>
+                    </div>
+                  </form>
+                </div>
+                <div class="col-lg-6">
+                  <div id="score" style="margin: 0 auto; height:{{height}}px;width:{{width}}px" ng-show="plotType=='score'"></div>
+                 <!--<div id="loading" style="margin: 0 auto; height:{{height}}px;width:{{width}}px" ng-show="plotType=='loading'"></div>-->
+                </div>
+                <div class="col-lg-3">
+                  <form>
+                      <div class="form-group">
+                        <label for="color">Color:</label>
+                        <select class="form-control input-large" id="color" ng-model='color'>
+                          <option ng-repeat="p_name in p_names" value = '{{p_name}}'>{{p_name}}</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label for="shape">Shapes:</label>
+                        <select class="form-control input-large" id="shape" disabled>
+                          <option ng-repeat="p_name in p_names" value = '{{p_name}}'>{{p_name}}</option>
+                        </select>
+                      </div>
+                        <div class="form-group">
+                          <label for="xaxis">X-axis:</label>
+                          <select class="form-control input-large col-xs-6" id="xaxis" ng-model="xaxis">
+                            <option ng-repeat="xaxisOption in xaxisOptions" value = '{{xaxisOption}}'>PC{{xaxisOption}}</option>
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label for="yaxis">Y-axis:</label>
+                          <select class="form-control input-large col-xs-6" id="yaxis" ng-model="yaxis">
+                            <option ng-repeat="yaxisOption in yaxisOptions" value = '{{yaxisOption}}'>PC{{yaxisOption}}</option>
+                          </select>
+                        </div><br/>
+                        <div class="form-group">
+                          <div class="checkbox">
+                            <label><input type="checkbox" value="3d" disabled>3D</label>
+                          </div>
+                        </div>
+                    <button type="submit" class="btn btn-primary" ng-click='dataRelatedUpdate()'>Update</button>
+                  </form>
+                </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-10 col-md-offset-1">
+                        <div id="container" style="height: 400px; min-width: 600px"></div>aaa
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-                  <!-- /.row -->
+		<div class="row"> <!-- Instructions -->
+          <div class="col-lg-12">
+            <div class="panel panel-warning">
+              <div class="panel-heading" >
+                <h3 class="panel-title"><a data-toggle="collapse" data-target="#instrtuction" href="#" class="collapsed">Instruction</a></h3>
+              </div>
+              <div id="instrtuction" class="panel-body collapse">
+                <p>iPCA Normalization aims at achieving the same distribution of metabolic feature intensities across all samples, and the quantile-quantile plot in this method is used to visualize the distribution similarity. iPCA normalization has been used to probe differential molecular profiling between pancreatic adenocarcinoma and chronic pancreatitis, and currently adopted to improve NMR-based metabolomics analysis.</p>
+<button type="button" class="btn btn-primary btn-circle" id="codeToggle"><b>R</b></button>
+<div class="well well-sm" id='code' style="display:none;">
+<pre><code>mainApp = function(input){
+  library(pacman)
+  pacman::p_load(data.table,affy)
+  input = gsub("\r","",input)
+  cfile = strsplit(input,"\n")[[1]]
+  df1 = as.data.frame(do.call(rbind,lapply(cfile,function(x){strsplit(x,"\t")[[1]]})),stringsAsFactors = F)
+  colnames(df1) = as.matrix(df1[1,])[1,]
+  df1 = df1[-1,]
+  data = sapply(df1[,-1], as.numeric)
 
-                </form>
+  normalize.quantile=get("normalize.quantiles", en = asNamespace("affy"))
+  result = normalize.quantile(data)
+
+  result = cbind(data.frame(df1[,1]),result)
+  rownames(result) = 1:nrow(result)
+  colnames(result) = colnames(df1)
+  fwrite(data.table(result),"iPCA-normalization.csv")
+  fwrite(data.table(result),"iPCA-normalization.txt",sep = "\t")
+  return(result)
+}</code></pre>
+                    </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+		<div class="row"> <!-- Citations -->
+          <div class="col-lg-12">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title"><a data-toggle="collapse" data-target="#citations" href="#">Citations</a></h3>
+            </div>
+              <div id="citations" class="panel-body collapse in">
+                <p>Bolstad BM, Irizarry RA, Åstrand M, Speed TP. A comparison of normalization methods for high density oligonucleotide array data based on variance and bias. Bioinformatics. 2003 Jan 22;19(2):185-93. <a href="https://academic.oup.com/bioinformatics/article/19/2/185/372664">372664</a></p>
+                <p>Kohl SM, Klein MS, Hochrein J, Oefner PJ, Spang R, Gronwald W. State-of-the art data normalization methods improve NMR-based metabolomic analysis. Metabolomics. 2012 Jun 1;8(1):146-60. <a href='http://link.springer.com/article/10.1007/s11306-011-0350-z'>s11306-011-0350-z</a></p>
+                <p>Li B, Tang J, Yang Q, Cui X, Li S, Chen S, Cao Q, Xue W, Chen N, Zhu F. Performance Evaluation and Online Realization of Data-driven Normalization Methods Used in LC/MS based Untargeted Metabolomics Analysis. Scientific Reports. 2016;6. <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5153651/">PMC5153651</a></p>
               </div>
             </div>
           </div>
@@ -163,7 +206,7 @@
 
 
       <!-- notify box -->
-        <div id="notifyBox" class="modal fade" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div id="spinner" class="modal fade" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
           <div class="modal-dialog"><div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -185,5 +228,12 @@
     <!-- /#page-wrapper -->
   </div>
   <!-- /#wrapper -->
+
+
 </body>
+
+
+
+
+
 </html>

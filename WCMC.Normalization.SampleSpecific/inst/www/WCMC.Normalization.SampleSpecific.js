@@ -30,7 +30,7 @@ console.log(weightinput)
 		.done(function(){
         $("#outputpanelheader").removeClass("collapsed")
         $("#output").addClass( "in" );
-        $("#output").html( "<b style='color:#3C763D;'>Success!</b><br /><div class='well well-sm'><p>Data were normalized to the "+type+" of each sample.</p></div><p style='color:grey';'>You can either view your normalized result <a href='"+view_address+"' target='_blank'>here</a>, or download your result by clicking the Download button.</p><a type='button' href='"+download_address+"' class='btn btn-primary' target='_blank'  download='mTIC-normalization.csv'>Download</a>" );
+        $("#output").html( "<b style='color:#3C763D;'>Success!</b><br /><div class='well well-sm'><p>Data were normalized to the "+type+" of each sample.</p></div><p style='color:grey';'>You can either view your normalized result <a href='"+view_address+"' target='_blank'>here</a>, or download your result by clicking the Download button.</p><a type='button' href='"+download_address+"' class='btn btn-primary' target='_blank'  download='"+type+"-normalization.csv'>Download</a>" );
 		})
 		.fail(function() {
 		  $('#output').empty();
