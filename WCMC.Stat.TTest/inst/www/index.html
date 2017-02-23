@@ -1,161 +1,230 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="myApp">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="">
   <meta name="author" content="">
-  <link href="bootstrap.css" rel="stylesheet">
-  <link href="sb-admin.css" rel="stylesheet">
-  <link href="mETABOX.css" rel="stylesheet">
-  <script type="text/javascript" src="jquery-2.2.3.min.js"></script>
-  <script type="text/javascript" src="opencpu-0.5.js"></script>
-  <script type="text/javascript" src="mETABOX.js"></script>
-  <script type="text/javascript" src="bootstrap.js"></script>
+
+  <title>Stat.tTest </title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+	<script src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.2.0.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-resource.min.js"></script>
+  <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="spin.js"></script>
-  <script>
-  </script>
-  <title>ChemRICH </title>
-  <script>
+  <script type="text/javascript" src="spinner.js"></script>
+  <script type="text/javascript" src="opencpu-0.5.js"></script>
+  <script type="text/javascript" src="WCMC.Stat.tTest.js"></script>
 
-  var sessionid_m = "";  
-  
-  $(function(){
-
-	$("#computeMetaMapp").click(function(){
-		$('#net85').empty();
-		$('#clust85').empty();
-		$('#pre85').empty();
-		$("#downloadPPT_Btn").empty();
-		$("#downloadCPD_Btn").empty();
-	
-		var loadSpinner = showSpinner(txt='** Calculating ChemRICH enrichment, it can take up to 2 minutes, please be patient .....');
-		var txtinput = $("#rawinput").val().trim();
-		var req = ocpu.call("createPCA",{stat_file:txtinput}, function(session) {//calls R function:
-			console.log(session);
-			$("#downloadPPT_Btn").removeAttr('disabled');
-			$("#downloadCPD_Btn").removeAttr('disabled');
-			sessionid_m = session.loc;
-			//$('#net85').prepend('<img src="'+session.loc+'files/pubsim_0.85.png'+'" class="img-thumbnail" alt="Responsive image">')
-			$('#clust85').prepend('<img src="'+session.loc+'files/chemclust_0.85.png'+'" class="img-thumbnail" alt="Responsive image">')
-			
-			var ppturl = session.loc + 'files/wcmc_pca.pptx'
-			$("#downloadPPT_Btn").append('<a href="'+ppturl+'">Download Powerpoint Slide</a>')
-			
-			var cpdurl = session.loc + 'files/cpd_enrichment_results_0.85.tsv'
-			$("#downloadCPD_Btn").append('<a href="'+cpdurl+'">Download Compound Results</a>')
-			
-			
-			$.ajax({
-				type: "GET",
-				url: session.loc + 'files/enrichment_results_0.85.tsv',
-				success: function(response) {
-					$("#pre85").html('<pre>'+response+'</pre>');
-				}
-			});
-			
-			hideSpinner(loadSpinner);				
-		}).fail(function() {alert("Error: " + req.responseText)});//ocpu.call
-	})
-	
-	
-	})
-  </script>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <link href="sb-admin-2.min.css" rel="stylesheet">
+  <link href="font-awesome.css" rel="stylesheet">
+  <link href="WCMC.Stat.tTest.css" rel="stylesheet">
 </head>
 
-<body>
+<body ng-controller="ctr">
 
   <div >
     <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-	<a class="navbar-brand" >ChemRICH : Set Enrichment of Metabolomics/Lipidomics datasets using Chemical Similarity Networks</a>
-	</nav>
-      
+    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">tTest: student t test.</a>
+        </div>
+    </nav>
 
-    <div >
+
+    <div>
       <div class="container-fluid">
         <!-- Page Heading -->
         <div class="row">
           <div class="col-lg-12">
-
-
           </div>
         </div>
         <!-- /.row -->
         <!-- Main content -->
 
-		<div class="row"> <!-- Generate Node Attribute files -->
+		<div class="row"> <!-- Data File Input -->
           <div class="col-lg-12">
             <div class="panel panel-info">
               <div class="panel-heading">
-                <h3 class="panel-title"><a data-toggle="collapse" data-target="#args" href="#">Generate chemical similarity network enrichment analysis.</a></h3>
+                <h3 class="panel-title"><a data-toggle="collapse" data-target="#input" href="#">Input</a></h3>
               </div>
-              <div id="args" class="panel-body collapse in">
+              <div id="input" class="panel-body collapse in">
                 <form role="form">
                   <div class="form-group">
-                    <label for="rawinput">Paste Statistical Results.  ( <a href="sample_stat_data.txt" target="_blank"> Example Data File </a> )   </label>
-                    <textarea class="form-control" id="rawinput" name="txtinput" rows="5"></textarea>
-                    <p class="help-block"> The input file should have four columms. Col1 = Lipid Name, Col2 = SMILES, Col3=FoldChange or effect, Col4 = pvalue.  Please use the example file as a templete. It is recommended to use median to calcualte the fold-changes, as median are not sensitive to outliers. For getting KEGG or PubChem IDs for metabolites names, use <a href="https://pubchem.ncbi.nlm.nih.gov/idexchange/idexchange.cgi" target="_blank"> PubChem Identifier Exchanger </a> tool.  For statistical analysis,  use <a href="http://metabox.fiehnlab.ucdavis.edu/ocpu/library/metabox/www/" target="_blank"> MetaBox </a> software. </p>
-                  </div>
+                    <textarea class="form-control" id="rawinput" name="txtinput" rows="5" placeholder = "paste your input here."></textarea>
+                    <span for="rawinput"><a href="sample.txt" target="_blank"> Example Data File </a></span><a href="instruction.png" target="_blank" data-toggle="tooltip" data-placement="bottom" data-html="true" title="format explaination"><i class="fa fa-question-circle"></i></a>&nbsp;<a href="template.xlsx" target="_blank" data-toggle="tooltip" data-placement="bottom" data-html="true" title="download format"><i class="fa fa-download"></i></a>
+                    <p></p>
+              </div>
                   <!-- /.row -->
-                  <button id="computeMetaMapp" type="button" class="btn btn-primary">Run</button>
-				  <button id="downloadPPT_Btn" type="button" class="btn btn-default" disabled><i class="fa fa-download"></i> Editable PPTx </button>
-				  <button id="downloadCPD_Btn" type="button" class="btn btn-default" disabled><i class="fa fa-download"></i> XLSx </button>
                 </form>
+                <button id="compute" type="button" class="btn btn-primary">Run</button>
               </div>
             </div>
           </div>
         </div>
 
 
-	
-		<div class="row"> <!-- Generate Node Attribute files -->
+		<div class="row"> <!-- Output -->
           <div class="col-lg-12">
             <div class="panel panel-success">
-              <div class="panel-heading">
-                <h3 class="panel-title"><a data-toggle="collapse" data-target="#args" href="#">Clustered Visualization of the Nodes.</a></h3>
+              <div class="panel-heading" >
+                <h3 class="panel-title"><a data-toggle="collapse" data-target="#output" href="#" class="collapsed" id="outputpanelheader">Output</a></h3>
               </div>
-              <div id="clust85" class="panel-body collapse in">
-					
-              </div>
-            </div>
-          </div>
-        </div>
-		
-		<div class="row"> <!-- Generate Node Attribute files -->
-          <div class="col-lg-12">
-            <div class="panel panel-success">
-              <div class="panel-heading">
-                <h3 class="panel-title"><a data-toggle="collapse" data-target="#args" href="#">Clusters of Lipids with Enrichment results</a></h3>
-              </div>
-              <div id="pre85" class="panel-body collapse in">
-					
+              <div id="output" class="panel-body collapse">
+                No output yet.
               </div>
             </div>
           </div>
         </div>
-		
 
-
-
-		<div class="row">
+		<div class="row"> <!-- Instructions -->
           <div class="col-lg-12">
-            <div class="panel panel-primary">
-              <div class="panel-heading">
-                <h3 class="panel-title"><a data-toggle="collapse" data-target="#args" href="#">Instructions and citations</a></h3>
+            <div class="panel panel-warning">
+              <div class="panel-heading" >
+                <h3 class="panel-title"><a data-toggle="collapse" data-target="#instrtuction" href="#" class="collapsed">Instruction</a></h3>
+              </div>
+              <div id="instrtuction" class="panel-body collapse">
+                <p>Normalisation of data to minimise the impact of technical variation on comparative sample analysis is often carried out. Usually we assume that the sum (or median, mean) of the intensity across all the compound of each sample should stay consistant. Thus the sum (or median, mean) value can be an approximate quantitative index of how much the machine influence each sample. Sample specific normalization normalize each sample to its index (i.e. sum, median or mean). The equation follows the same pattern,</p>
+                <img src="tTest equation.PNG"><span>, where <em>i</em> indicates samples and &omega; is the weight of each sample, which is calculated by (using sum as an example),</span>
+                <img src="sum.PNG">
+                <p>Also, user could define their own &omega; (e.g. volumn) using the <code>custom weight</code> option. User have to justify the logic of the weight. An example of &quot;custom weight&quot; sample specific normalization is <a href="http://www.sciencedirect.com/science/article/pii/S157002320900021X" target="_blank">here</a>.</p>
+<button type="button" class="btn btn-primary btn-circle" id="codeToggle"><b>R</b></button>
+<div class="well well-sm" id='code' style="display:none;">
+<pre><code>mainApp = function(p){
+    library(pacman)
+  pacman::p_load(data.table,parallel,userfriendlyscience,ez)
+  # read.data
+  {
+    input = gsub("\r","",input)
+    cfile = strsplit(input,"\n")[[1]]
+
+    ts = sapply(regmatches(cfile, gregexpr("\t", cfile)),length)
+    t.mode = unique(ts)[which.max(tabulate(match(ts, unique(ts))))]
+    ts.first.row = ts[1]
+    cfile[[1]] = paste0(paste0(rep('\t',t.mode-ts.first.row),collapse = ''),cfile[[1]],collapse = '')
+
+
+    df1 = as.data.frame(do.call(rbind,lapply(cfile,function(x){strsplit(x,"\t")[[1]]})),stringsAsFactors = F)
+
+
+    if(t.mode==ts.first.row){
+      col_start = which(diff(as.character(df1[1,])=='')==-1) + 1
+    }else{
+      col_start = t.mode-ts.first.row + 1
+    }
+    row_start = which(diff(df1[,1]=='')==-1) + 1
+    if(length(row_start)==0 & col_start ==1){
+      row_start = 1
+    }else if(length(row_start)==0){
+      stop("There is an error in the input format. Please click the '!' icon (next to 'Example Data File') for more information.")
+    }
+
+    p = t(df1[1:(row_start-1),col_start:ncol(df1)])
+    colnames(p) = p[1,]
+    p = cbind(data.frame("sample index" = c(1,as.character(df1[row_start,(col_start+1):ncol(df1)])),check.names = FALSE,
+                         stringsAsFactors = F),
+              p,stringsAsFactors=F)[-1,]
+
+    rownames(p) = df1[row_start,(col_start+1):ncol(df1)]
+    p = data.frame(p,stringsAsFactors = F,check.names = F)
+    # write.csv(p,"p.csv")
+
+    f = df1[row_start:nrow(df1),1:col_start]
+
+    if(class(f) == "character"){ #in case there is only one column of feature index.
+      name.temp = f[1]
+      f = data.frame(f[-1])
+      colnames(f) = name.temp
+    }else{
+      colnames(f) = f[1,]
+      f = f[-1,]
+    }
+    rownames(f) = 1:nrow(f)
+    colnames_f_1 = colnames(f)[1]
+
+    # write.csv(f,"f.csv")
+
+    e = df1[(row_start+1):nrow(df1),(col_start+1):ncol(df1)]
+    e = apply(e,2,as.numeric)
+    colnames(e) = rownames(p)
+    rownames(e) = rownames(f)
+  }
+
+  multicore = T
+  if(multicore){
+    cl = makeCluster(min(detectCores(),8))
+  }else{
+    cl = makeCluster(1)
+  }
+
+  ID = colnames(p)[2]
+  group=colnames(p)[3]
+  ANOVA = parSapply(cl,1:nrow(e),function(j,e,p,group,ezANOVA,ID){
+
+    data = data.frame(value=e[j,],var2=p[[group]],id=as.factor(p[[ID]]))
+
+    ANOVA.p = ezANOVA(data = data,
+            dv = value, wid = id,within = .(var2), type = 3)$`Sphericity Corrections`[1,"p[GG]"]
+
+    test.temp = pairwise.t.test(paired = T, x = data$value, g = data$var2, p.adjust.method  = "bonf")$p.value
+    post_hoc = as.numeric(test.temp)[!is.na(as.numeric(test.temp))]
+
+    return(c(ANOVA.p, post_hoc))
+
+  },e,p,group,ezANOVA,ID)
+
+  ANOVA = t(ANOVA)
+
+
+  data = data.frame(value=e[1,],var2=p[[group]],id=as.factor(p[[ID]]))
+  colnames(ANOVA) = c("ANOVA p value",
+                      paste0("pairwise-comparison: ",apply(combn(levels(data[,2]), 2),2,function(x){paste(x[1],x[2],sep="_vs_")})))
+
+  if(!class(f)=='character'){
+    f = f[,!sapply(f,function(x){sum(x=='')==length(x)})]
+  }
+
+
+  result = data.table(f,ANOVA)
+  rownames(result) = 1:nrow(result)
+  if(class(f)=="character"){
+    colnames(result) = c(colnames_f_1,colnames(ANOVA))
+  }else{
+    colnames(result) = c(colnames(f),colnames(ANOVA))
+  }
+
+  fwrite(data.table(result),"tTest.csv")
+  fwrite(data.table(result),"tTest.txt",sep = "\t")
+
+
+  stopCluster(cl)
+
+  return(result)
+
+
+
+}</code></pre>
+                    </div>
+              </div>
             </div>
-              <div id="args" class="panel-body collapse in">
-				<p>Files downloaded from here need to be imported into Cytoscape for visualization. For more details - <a href="#">Visit this page</a> </p>
-                <form role="form">
-                  <div class="form-group">
-					<p>Barupal, Dinesh K., Pradeep K. Haldiya, Gert Wohlgemuth, Tobias Kind, Shanker L. Kothari, Kent E. Pinkerton, and Oliver Fiehn. "MetaMapp: mapping and visualizing metabolomic data by integrating information from biochemical pathways and chemical and mass spectral similarity." BMC bioinformatics 13, no. 1 (2012): 99.</p>
-					<p>Hartman, A. L., Lough, D. M., Barupal, D. K., Fiehn, O., Fishbein, T., Zasloff, M., & Eisen, J. A. (2009). Human gut microbiome adopts an alternative state following small bowel transplantation. Proceedings of the National Academy of Sciences, 106(40), 17187-17192.</p>
-                  </div>
+          </div>
+        </div>
 
-                  <!-- /.row -->
 
-                </form>
+
+
+		<div class="row"> <!-- Citations -->
+          <div class="col-lg-12">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title"><a data-toggle="collapse" data-target="#citations" href="#">Citations</a></h3>
+            </div>
+              <div id="citations" class="panel-body collapse in">
+                <p>NA</p>
               </div>
             </div>
           </div>
@@ -163,7 +232,7 @@
 
 
       <!-- notify box -->
-        <div id="notifyBox" class="modal fade" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div id="spinner" class="modal fade" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
           <div class="modal-dialog"><div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -185,5 +254,12 @@
     <!-- /#page-wrapper -->
   </div>
   <!-- /#wrapper -->
+
+
 </body>
+
+
+
+
+
 </html>

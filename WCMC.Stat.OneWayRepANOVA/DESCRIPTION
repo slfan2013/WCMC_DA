@@ -1,4 +1,4 @@
-Package: WCMC.Stat.tTest
+Package: WCMC.Stat.OneWayRepANOVA
 Type: Package
 Title: What the Package Does (Title Case)
 Version: 0.1.0

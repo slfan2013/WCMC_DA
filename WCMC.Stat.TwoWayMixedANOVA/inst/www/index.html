@@ -7,7 +7,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Normalization.SampleSpecific </title>
+  <title>Stat.TwoWayMixedANOVA </title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
 	<script src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.2.0.js"></script>
@@ -17,12 +17,12 @@
   <script type="text/javascript" src="spin.js"></script>
   <script type="text/javascript" src="spinner.js"></script>
   <script type="text/javascript" src="opencpu-0.5.js"></script>
-  <script type="text/javascript" src="WCMC.Normalization.SampleSpecific.js"></script>
+  <script type="text/javascript" src="WCMC.Stat.TwoWayMixedANOVA.js"></script>
 
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
   <link href="sb-admin-2.min.css" rel="stylesheet">
   <link href="font-awesome.css" rel="stylesheet">
-  <link href="WCMC.Normalization.SampleSpecific.css" rel="stylesheet">
+  <link href="WCMC.Stat.TwoWayMixedANOVA.css" rel="stylesheet">
 </head>
 
 <body ng-controller="ctr">
@@ -31,7 +31,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">SampleSpecific: normalize samples by sample weights.</a>
+            <a class="navbar-brand" href="#">TwoWayMixedANOVA: normalize samples by sample weights.</a>
         </div>
     </nav>
 
@@ -58,21 +58,6 @@
                     <textarea class="form-control" id="rawinput" name="txtinput" rows="5" placeholder = "paste your input here."></textarea>
                     <span for="rawinput"><a href="sample.txt" target="_blank"> Example Data File </a></span><a href="instruction.png" target="_blank" data-toggle="tooltip" data-placement="bottom" data-html="true" title="format explaination"><i class="fa fa-question-circle"></i></a>&nbsp;<a href="template.xlsx" target="_blank" data-toggle="tooltip" data-placement="bottom" data-html="true" title="download format"><i class="fa fa-download"></i></a>
                     <p></p>
-    <span>normalization type:</span>
-    <label class="radio-inline">
-      <input type="radio" name="type" value = "sum" ng-model="type">sum
-    </label>
-    <label class="radio-inline">
-      <input type="radio" name="type" value="median" ng-model="type">median
-    </label>
-    <label class="radio-inline">
-      <input type="radio" name="type" value="mean" ng-model="type">mean
-    </label>
-    <label class="radio-inline">
-      <input type="radio" name="type" value="custom sample weight" ng-model="type">custom weight
-    </label>
-    <textarea ng-show= "type=='custom sample weight'" class="form-control" id="customWeight" name="customWeight" rows="1" placeholder = "paste your custom weight here."></textarea>
-    <span ng-show= "type=='custom sample weight'" for="rawinput"><a href="sample - weight.txt" target="_blank"> Example Weight </a></span><a ng-show= "type=='custom sample weight'" href="instruction2.png" target="_blank" data-toggle="tooltip" data-placement="bottom" data-html="true" title="sample weight explaination"><i class="fa fa-question-circle"></i></a>&nbsp;<a ng-show= "type=='custom sample weight'" href="template - sample weight.xlsx" target="_blank" data-toggle="tooltip" data-placement="bottom" data-html="true" title="download sample weight format"><i class="fa fa-download"></i></a>
               </div>
                   <!-- /.row -->
                 </form>
@@ -104,46 +89,104 @@
               </div>
               <div id="instrtuction" class="panel-body collapse">
                 <p>Normalisation of data to minimise the impact of technical variation on comparative sample analysis is often carried out. Usually we assume that the sum (or median, mean) of the intensity across all the compound of each sample should stay consistant. Thus the sum (or median, mean) value can be an approximate quantitative index of how much the machine influence each sample. Sample specific normalization normalize each sample to its index (i.e. sum, median or mean). The equation follows the same pattern,</p>
-                <img src="SampleSpecific equation.PNG"><span>, where <em>i</em> indicates samples and &omega; is the weight of each sample, which is calculated by (using sum as an example),</span>
+                <img src="TwoWayMixedANOVA equation.PNG"><span>, where <em>i</em> indicates samples and &omega; is the weight of each sample, which is calculated by (using sum as an example),</span>
                 <img src="sum.PNG">
                 <p>Also, user could define their own &omega; (e.g. volumn) using the <code>custom weight</code> option. User have to justify the logic of the weight. An example of &quot;custom weight&quot; sample specific normalization is <a href="http://www.sciencedirect.com/science/article/pii/S157002320900021X" target="_blank">here</a>.</p>
 <button type="button" class="btn btn-primary btn-circle" id="codeToggle"><b>R</b></button>
 <div class="well well-sm" id='code' style="display:none;">
-<pre><code>mainApp = function(input,type,weight){
+<pre><code>mainApp = function(p){
   library(pacman)
-  pacman::p_load(data.table)
-  input 0 gsub("\r","",input)
-  cfile = strsplit(input,"\n")[[1]]
-  df1 = as.data.frame(do.call(rbind,lapply(cfile,function(x){strsplit(x,"\t")[[1]]})),stringsAsFactors = F)
-  colnames(df1) = as.matrix(df1[1,])[1,]
-  df1 = df1[-1,]
-  data = sapply(df1[,-1], as.numeric)
+  pacman::p_load(data.table,parallel,userfriendlyscience,ez)
+  # read.data
+  {
+    input = gsub("\r","",input)
+    cfile = strsplit(input,"\n")[[1]]
 
-  if(type=="sum"){
-    sums = colSums(data,na.rm = T)
-    result = t(t(data)/sums*mean(sums,na.rm = T))
-  }else if(type=="median"){
-    medians = apply(data,2,median,na.rm = T)
-    result = t(t(data)/medians*mean(medians,na.rm = T))
-  }else if(type=='mean'){
-    means = colMeans(data,na.rm = T)
-    result = t(t(data)/means*mean(means,na.rm = T))
-  }else if(type=="custom sample weight"){
-    weight = gsub("\r","",weight)
-    cfile = strsplit(weight,"\n")[[1]]
-    df2 = as.data.frame(do.call(rbind,lapply(cfile,function(x){strsplit(x,"\t")[[1]]})),stringsAsFactors = F)
-    colnames(df2) = as.matrix(df2[1,])[1,]
-    df2 = df2[-1,]
-    weight = as.numeric(df2[1,]);
-    weight = weight[!is.na(weight)]
-    result = t(t(data)*weight)
+    ts = sapply(regmatches(cfile, gregexpr("\t", cfile)),length)
+    t.mode = unique(ts)[which.max(tabulate(match(ts, unique(ts))))]
+    ts.first.row = ts[1]
+    cfile[[1]] = paste0(paste0(rep('\t',t.mode-ts.first.row),collapse = ''),cfile[[1]],collapse = '')
+
+
+    df1 = as.data.frame(do.call(rbind,lapply(cfile,function(x){strsplit(x,"\t")[[1]]})),stringsAsFactors = F)
+
+    if(t.mode==ts.first.row){
+      col_start = which(diff(as.character(df1[1,])=='')==-1) + 1
+    }else{
+      col_start = t.mode-ts.first.row + 1
+    }
+    row_start = which(diff(df1[,1]=='')==-1) + 1
+    if(length(row_start)==0 & col_start ==1){
+      row_start = 1
+    }else if(length(row_start)==0){
+      stop("There is an error in the input format. Please click the '!' icon (next to 'Example Data File') for more information.")
+    }
+
+    p = t(df1[1:(row_start-1),col_start:ncol(df1)])
+    colnames(p) = p[1,]
+    p = cbind(data.frame("sample index" = c(1,as.character(df1[row_start,(col_start+1):ncol(df1)])),check.names = FALSE,
+                         stringsAsFactors = F),
+              p,stringsAsFactors=F)[-1,]
+
+    rownames(p) = df1[row_start,(col_start+1):ncol(df1)]
+    p = data.frame(p,stringsAsFactors = F,check.names = F)
+    # write.csv(p,"p.csv")
+
+    f = df1[row_start:nrow(df1),1:col_start]
+
+    if(class(f) == "character"){ #in case there is only one column of feature index.
+      name.temp = f[1]
+      f = data.frame(f[-1])
+      colnames(f) = name.temp
+    }else{
+      colnames(f) = f[1,]
+      f = f[-1,]
+    }
+    rownames(f) = 1:nrow(f)
+
+    # write.csv(f,"f.csv")
+
+    e = df1[(row_start+1):nrow(df1),(col_start+1):ncol(df1)]
+    e = apply(e,2,as.numeric)
+    colnames(e) = rownames(p)
+    rownames(e) = rownames(f)
   }
 
-  result = cbind(data.frame(df1[,1]),result)
+  multicore = T
+  if(multicore){
+    cl = makeCluster(min(detectCores(),8))
+  }else{
+    cl = makeCluster(1)
+  }
+
+  ID = colnames(p)[2]
+  group1=colnames(p)[3]
+  group2=colnames(p)[4]
+  interaction = parSapply(cl,1:nrow(e),function(j,e,p,group1,group2,ezANOVA,ID){
+    ezANOVA(data = data.frame(value=e[j,],var1=p[[group1]],var2=p[[group2]],id=as.factor(p[[ID]])),
+            dv = value, wid = id, between = .(var1),within = .(var2), type = 3)$`Sphericity Corrections`[2,"p[GG]"]
+  },e,p,group1,group2,ezANOVA,ID)
+
+  colnames_f_1 = colnames(f)[1]
+  f = f[,!sapply(f,function(x){sum(x=='')==length(x)})]
+
+  result = data.table(f,twowaymixedANOVApvalue = interaction)
   rownames(result) = 1:nrow(result)
-  colnames(result) = colnames(df1)
-  fwrite(data.table(result),"SampleSpecific-normalization.csv")
+  if(class(f)=="character"){
+    colnames(result) = c(colnames_f_1,"twowaymixedANOVApvalue")
+  }else{
+    colnames(result) = c(colnames(f),"twowaymixedANOVApvalue")
+  }
+
+  fwrite(data.table(result),"TwoWayMixedANOVA.csv")
+  fwrite(data.table(result),"TwoWayMixedANOVA.txt",sep = "\t")
+
+
+  stopCluster(cl)
+
   return(result)
+
+
 }</code></pre>
                     </div>
               </div>
@@ -161,9 +204,7 @@
                 <h3 class="panel-title"><a data-toggle="collapse" data-target="#citations" href="#">Citations</a></h3>
             </div>
               <div id="citations" class="panel-body collapse in">
-                <p>Cairns DA, Thompson D, Perkins DN, Stanley AJ, Selby PJ, Banks RE. Proteomic profiling using mass spectrometry–does normalising by total ion current potentially mask some biological differences?. Proteomics. 2008 Jan 1;8(1):21-7. <a href="https://www.ncbi.nlm.nih.gov/pubmed/18095358" target="_blank">18095358</a></p>
-                <p>Wang W, Zhou H, Lin H, Roy S, Shaler TA, Hill LR, Norton S, Kumar P, Anderle M, Becker CH. Quantification of proteins and metabolites by mass spectrometry without isotopic labeling or spiked standards. Analytical chemistry. 2003 Sep 15;75(18):4818-26.<a href="https://www.ncbi.nlm.nih.gov/pubmed/14674459" target="_blank">14674459</a></p>
-                <p>Warrack BM, Hnatyshyn S, Ott KH, Reily MD, Sanders M, Zhang H, Drexler DM. Normalization strategies for metabonomic analysis of urine samples. Journal of Chromatography B. 2009 Feb 15;877(5):547-52. <a href="http://www.sciencedirect.com/science/article/pii/S157002320900021X" target="_blank">S157002320900021X</a></p>
+                <p>NA</p>
               </div>
             </div>
           </div>
