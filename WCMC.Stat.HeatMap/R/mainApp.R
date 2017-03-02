@@ -64,7 +64,7 @@ mainApp = function(input,
   # dend_row <- hang.dendrogram(dend_row)
 
   # Label Size
-  dend_row <- set(dend_row, "labels_cex", 0.5)
+  dend_row <- set(dend_row, "labels_cex", 1)
 
   # plot(dend_row,
   #      main = "Clustered Iris data set
@@ -112,7 +112,7 @@ mainApp = function(input,
     # dend_col <- hang.dendrogram(dend_col)
 
     # Label Size
-    dend_col <- set(dend_col, "labels_cex", 0.5)
+    dend_col <- set(dend_col, "labels_cex", 1)
 
     plot(dend_col,
          main = "Clustered Iris data set
@@ -129,14 +129,18 @@ mainApp = function(input,
   some_col_func <- function(n) rev(colorspace::heat_hcl(n, c = c(80, 30), l = c(30, 90),
                                                         power = c(1/5, 1.5)))
   order.dendrogram(dend_row)= 1:nrow(p)
+  order.dendrogram(dend_col)= 1:nrow(f)
+
+  png(filename = "HeatMap.png",
+      width = 2000, height = 768)
   gplots::heatmap.2(data_row,
                     main = "Heatmap for the Iris data set",
-                    srtCol = 20,
+                    srtCol = 45,
                     dendrogram = "both",
                     Rowv = dend_row,
                     Colv = dend_col, # this to make sure the columns are not ordered
                     trace="none",
-                    margins =c(5,5),
+                    margins =c(10,10),
                     key.xlab = "sd",
                     denscol = "grey",
                     density.info = "density",
@@ -144,9 +148,13 @@ mainApp = function(input,
                     ColSideColors = labels_colors(dend_col), # to add nice colored strips
                     col = some_col_func,
                     colRow = labels_colors(dend_row),
-                    labRow = labels(dend_row)
+                    labRow = labels(dend_row),
+                    colCol = labels_colors(dend_col),
+                    labCol = labels(dend_col),
+                    cexCol = 1,
+                    keysize =1
   )
-
+  dev.off()
 
   cut_row = data.frame(cutree(hc_iris_row,k=row_branchColorNumber))
   colnames(cut_row) = paste0("Cut into ",row_branchColorNumber, " clusters")
