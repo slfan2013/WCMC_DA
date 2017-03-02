@@ -9,145 +9,157 @@ mainApp = function(input,
                    minkowski_p = NULL, # only used when minkowski is used.
                    cluster_method = "complete",
                    row_col = "treatment",
-                   row_branchColorNumber = 2
+                   row_branchColorNumber = 2,
+
+                   col_col = NULL,
+                   col_branchColorNumber = 1
                    ){
   library(pacman)
   pacman::p_load(data.table,parallel, ez, userfriendlyscience,dendextend,
-                 colorspace,gplots)
+                 colorspace,gplots,stringr)
 
-  # get the data.
+  data. = WCMC.Fansly::FiehnLabFormat(input)
+  e = data.$e
+  f = data.$f
+  p = data.$p
 
-  # if(scale){
-  #   data = scale(t(e))
-  # }else{
-  #   data = t(e)
-  # }
-  #
-  #
-  # data = data[order(as.factor(p[[row_col]])),]
-  # p = p[order(as.factor(p[[row_col]])),]
-  # rownames(data) = 1:nrow(data)
-  # d_e <- dist(data, method = distance_method)
-  # hc_iris <- hclust(d_e, method = cluster_method)
-  # iris_species <- rev(levels(as.factor(p[[row_col]])))
-  #
-  # dend <- as.dendrogram(hc_iris)
-  # # order it the closest we can to the order of the observations:
-  # dend <- rotate(dend, 1:nrow(p))
-  #
-  # # Branch Color
-  # dend <- color_branches(dend, k=row_branchColorNumber) #, groupLabels=iris_species)
-  #
-  # # Label Color
-  # labels_colors(dend) <-
-  #   rainbow_hcl(row_branchColorNumber)[sort_levels_values(
-  #     as.numeric(as.factor(p[[row_col]]))[order.dendrogram(dend)]
-  #   )]
-  #
-  #
-  #   # Change Label
-  #   labels(dend) <- paste(as.character(p$treatment)[order.dendrogram(dend)],
-  #                         "(",p$`sample label`,")",
-  #                         sep = "")
-  #
-  # # Hang
-  # # dend <- hang.dendrogram(dend)
-  #
-  # # Label Size
-  # dend <- set(dend, "labels_cex", 0.5)
-  #
-  # # par(mar = c(3,3,3,7))
-  # plot(dend,
+  # e = fread("C:\\Users\\Sili Fan\\Desktop\\WORK\\WCMC\\projects\\mx 300486_Ganeshan\\e.csv")[,-1]
+  # f = fread("C:\\Users\\Sili Fan\\Desktop\\WORK\\WCMC\\projects\\mx 300486_Ganeshan\\f.csv")[,-1]
+  # p = fread("C:\\Users\\Sili Fan\\Desktop\\WORK\\WCMC\\projects\\mx 300486_Ganeshan\\p.csv")[,-1]
+
+
+
+  # get the data_row
+  if(scale){
+    data_row = scale(t(e))
+  }else{
+    data_row = t(e)
+  }
+
+  rownames(data_row) = p$`sample index`
+  d_e <- dist(data_row, method = distance_method)
+  hc_iris_row <- hclust(d_e, method = cluster_method)
+  iris_species <- rev(levels(as.factor(p[[row_col]])))
+
+  dend_row <- as.dendrogram(hc_iris_row)
+  # order it the closest we can to the order of the observations:
+  dend_row <- rotate(dend_row, 1:nrow(p))
+
+  # Branch Color
+  dend_row <- color_branches(dend_row, k=row_branchColorNumber) #, groupLabels=iris_species)
+
+  # Label Color
+  labels_colors(dend_row) <-
+    rainbow_hcl(row_branchColorNumber)[sort_levels_values(
+      as.numeric(as.factor(p[[row_col]]))[order.dendrogram(dend_row)]
+    )]
+
+
+    # Change Label
+    labels(dend_row) <- paste(as.character(p[[row_col]])[order.dendrogram(dend_row)],
+                          "(",p$`sample label`,")",
+                          sep = "")
+
+  # Hang
+  # dend_row <- hang.dendrogram(dend_row)
+
+  # Label Size
+  dend_row <- set(dend_row, "labels_cex", 0.5)
+
+  # plot(dend_row,
   #      main = "Clustered Iris data set
   #      (the labels give the true flower species)",
   #      horiz =  TRUE,  nodePar = list(cex = .007))
   # legend("topleft", legend = iris_species, fill = rainbow_hcl(row_branchColorNumber))
   #
-  #
-  #
-  # # HEATMAP
-  # some_col_func <- function(n) rev(colorspace::heat_hcl(n, c = c(80, 30), l = c(30, 90),
-  #                                                       power = c(1/5, 1.5)))
-  # order.dendrogram(dend)= 1:nrow(p)
-  # gplots::heatmap.2(data,
-  #                   main = "Heatmap for the Iris data set",
-  #                   srtCol = 20,
-  #                   dendrogram = "both",
-  #                   Rowv = dend,
-  #                   Colv = T, # this to make sure the columns are not ordered
-  #                   trace="none",
-  #                   margins =c(5,5),
-  #                   key.xlab = "sd",
-  #                   denscol = "grey",
-  #                   density.info = "density",
-  #                   RowSideColors = labels_colors(dend), # to add nice colored strips
-  #                   col = some_col_func,
-  #                   colRow = labels_colors(dend),
-  #                   labRow = labels(dend)
-  # )
-  #
-  #
-  #
-  #
-  # fwrite(data.table(result),"HeatMap.csv")
-  # fwrite(data.table(result),"HeatMap.txt",sep = "\t")
 
-  # {
-  #   input = gsub("\r","",input)
-  #   cfile = strsplit(input,"\n")[[1]]
-  #
-  #   ts = sapply(regmatches(cfile, gregexpr("\t", cfile)),length)
-  #   t.mode = unique(ts)[which.max(tabulate(match(ts, unique(ts))))]
-  #   ts.first.row = ts[1]
-  #   cfile[[1]] = paste0(paste0(rep('\t',t.mode-ts.first.row),collapse = ''),cfile[[1]],collapse = '')
-  #
-  #
-  #   df1 = as.data.frame(do.call(rbind,lapply(cfile,function(x){strsplit(x,"\t")[[1]]})),stringsAsFactors = F)
-  #
-  #   if(t.mode==ts.first.row){
-  #     col_start = which(diff(as.character(df1[1,])=='')==-1) + 1
-  #   }else{
-  #     col_start = t.mode-ts.first.row + 1
-  #   }
-  #   row_start = which(diff(df1[,1]=='')==-1) + 1
-  #   if(length(row_start)==0 & col_start ==1){
-  #     row_start = 1
-  #   }else if(length(row_start)==0){
-  #     stop("There is an error in the input format. Please click the '!' icon (next to 'Example Data File') for more information.")
-  #   }
-  #
-  #   p = t(df1[1:(row_start-1),col_start:ncol(df1)])
-  #   colnames(p) = p[1,]
-  #   p = cbind(data.frame("sample index" = c(1,as.character(df1[row_start,(col_start+1):ncol(df1)])),check.names = FALSE,
-  #                        stringsAsFactors = F),
-  #             p,stringsAsFactors=F)[-1,]
-  #
-  #   rownames(p) = df1[row_start,(col_start+1):ncol(df1)]
-  #   p = data.frame(p,stringsAsFactors = F,check.names = F)
-  #   # write.csv(p,"p.csv")
-  #
-  #   f = df1[row_start:nrow(df1),1:col_start]
-  #
-  #   if(class(f) == "character"){ #in case there is only one column of feature index.
-  #     name.temp = f[1]
-  #     f = data.frame(f[-1])
-  #     colnames(f) = name.temp
-  #   }else{
-  #     colnames(f) = f[1,]
-  #     f = f[-1,]
-  #   }
-  #   rownames(f) = 1:nrow(f)
-  #
-  #   # write.csv(f,"f.csv")
-  #
-  #   e = df1[(row_start+1):nrow(df1),(col_start+1):ncol(df1)]
-  #   e = apply(e,2,as.numeric)
-  #   colnames(e) = rownames(p)
-  #   rownames(e) = rownames(f)
-  # }
+  # column dend.
+  {
+    if(scale){
+      data_col = scale(as.matrix(e))
+    }else{
+      data_col = as.matrix(e)
+    }
 
-  # result = list(e = e, p =p, f=f)
-  result = input
+    rownames(data_col) = f[[1]]
+    d_e <- dist(data_col, method = distance_method)
+    hc_iris_col <- hclust(d_e, method = cluster_method)
+    iris_species <- rev(levels(as.factor(p[[row_col]])))
+
+    dend_col <- as.dendrogram(hc_iris_col)
+    # order it the closest we can to the order of the observations:
+    dend_col <- rotate(dend_col, 1:nrow(f))
+
+    # Branch Color
+    dend_col <- color_branches(dend_col, k=col_branchColorNumber) #, groupLabels=iris_species)
+
+    # Label Color
+
+    labels_colors(dend_col) <-
+      rainbow_hcl(col_branchColorNumber)[sort_levels_values(
+        as.numeric(as.factor(f[[col_col]]))[order.dendrogram(dend_col)]
+      )]
+
+
+
+
+    # Change Label
+    labels(dend_col) <- paste(as.character(f[[col_col]])[order.dendrogram(dend_col)],
+                              "(",f[[1]],")",
+                              sep = "")
+
+    # Hang
+    # dend_col <- hang.dendrogram(dend_col)
+
+    # Label Size
+    dend_col <- set(dend_col, "labels_cex", 0.5)
+
+    plot(dend_col,
+         main = "Clustered Iris data set
+         (the labels give the true flower species)",
+         horiz =  TRUE,  nodePar = list(cex = .007))
+    legend("topleft", legend = iris_species, fill = rainbow_hcl(col_branchColorNumber))
+
+  }
+
+
+
+
+  # HEATMAP
+  some_col_func <- function(n) rev(colorspace::heat_hcl(n, c = c(80, 30), l = c(30, 90),
+                                                        power = c(1/5, 1.5)))
+  order.dendrogram(dend_row)= 1:nrow(p)
+  gplots::heatmap.2(data_row,
+                    main = "Heatmap for the Iris data set",
+                    srtCol = 20,
+                    dendrogram = "both",
+                    Rowv = dend_row,
+                    Colv = dend_col, # this to make sure the columns are not ordered
+                    trace="none",
+                    margins =c(5,5),
+                    key.xlab = "sd",
+                    denscol = "grey",
+                    density.info = "density",
+                    RowSideColors = labels_colors(dend_row), # to add nice colored strips
+                    ColSideColors = labels_colors(dend_col), # to add nice colored strips
+                    col = some_col_func,
+                    colRow = labels_colors(dend_row),
+                    labRow = labels(dend_row)
+  )
+
+
+  cut_row = data.frame(cutree(hc_iris_row,k=row_branchColorNumber))
+  colnames(cut_row) = paste0("Cut into ",row_branchColorNumber, " clusters")
+  result_row = cbind(p,cut_row)
+
+  cut_col = data.frame(cutree(hc_iris_col,k=col_branchColorNumber))
+  colnames(cut_col) = paste0("Cut into ",col_branchColorNumber, " clusters")
+  result_col = cbind(f,cut_col)
+
+
+  fwrite(data.table(result),"HeatMap.csv")
+  fwrite(data.table(result),"HeatMap.txt",sep = "\t")
+
   return(result)
 
 
