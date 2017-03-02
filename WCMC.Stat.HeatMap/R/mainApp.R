@@ -57,21 +57,21 @@ mainApp = function(input,
 
     # Change Label
     labels(dend_row) <- paste(as.character(p[[row_col]])[order.dendrogram(dend_row)],
-                          "(",p$`sample label`,")",
+                          "(",p$`sample index`,")",
                           sep = "")
 
   # Hang
-  # dend_row <- hang.dendrogram(dend_row)
+  # dend_row <- hang.dendrogram(dend_row,hang = 0.1)
 
   # Label Size
-  dend_row <- set(dend_row, "labels_cex", 1)
+  dend_row <- set(dend_row, "labels_cex", 0.3)
 
-  # plot(dend_row,
-  #      main = "Clustered Iris data set
-  #      (the labels give the true flower species)",
-  #      horiz =  TRUE,  nodePar = list(cex = .007))
-  # legend("topleft", legend = iris_species, fill = rainbow_hcl(row_branchColorNumber))
-  #
+  pdf(file = "Dendrogram_Sample.pdf")
+  plot(dend_row,
+       main = "Clustered Samples",
+       horiz =  TRUE,  nodePar = list(cex = .007))
+  legend("topleft", legend = iris_species, fill = rainbow_hcl(row_branchColorNumber))
+  dev.off()
 
   # column dend.
   {
@@ -109,17 +109,18 @@ mainApp = function(input,
                               sep = "")
 
     # Hang
-    # dend_col <- hang.dendrogram(dend_col)
+    # dend_col <- hang.dendrogram(dend_col,0.1)
 
     # Label Size
-    dend_col <- set(dend_col, "labels_cex", 1)
+    dend_col <- set(dend_col, "labels_cex", 0.1)
 
+
+    pdf(file = "Dendrogram_Compound.pdf",height = 14)
     plot(dend_col,
-         main = "Clustered Iris data set
-         (the labels give the true flower species)",
-         horiz =  TRUE,  nodePar = list(cex = .007))
+         main = "Clustered On Compounds",
+         horiz =  T,  nodePar = list(cex = .007))
     legend("topleft", legend = iris_species, fill = rainbow_hcl(col_branchColorNumber))
-
+    dev.off()
   }
 
 
@@ -132,7 +133,7 @@ mainApp = function(input,
   order.dendrogram(dend_col)= 1:nrow(f)
 
   png(filename = "HeatMap.png",
-      width = 2000, height = 768)
+      width = 3000, height = 800, res = 72)
   gplots::heatmap.2(data_row,
                     main = "Heatmap for the Iris data set",
                     srtCol = 45,
@@ -165,10 +166,13 @@ mainApp = function(input,
   result_col = cbind(f,cut_col)
 
 
-  fwrite(data.table(result),"HeatMap.csv")
-  fwrite(data.table(result),"HeatMap.txt",sep = "\t")
+  fwrite(data.table(result_row),"Dendrogram_row.csv")
+  fwrite(data.table(result_row),"Dendrogram_row.txt",sep = "\t")
 
-  return(result)
+  fwrite(data.table(result_col),"Dendrogram_col.csv")
+  fwrite(data.table(result_col),"Dendrogram_col.txt",sep = "\t")
+
+  # return(result)
 
 
 }
