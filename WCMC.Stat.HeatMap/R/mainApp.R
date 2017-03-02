@@ -11,7 +11,7 @@ mainApp = function(input,
                    row_col = "treatment",
                    row_branchColorNumber = 2,
 
-                   col_col = NULL,
+                   col_col = "none",
                    col_branchColorNumber = 1
                    ){
   library(pacman)
@@ -61,7 +61,7 @@ mainApp = function(input,
                           sep = "")
 
   # Hang
-  # dend_row <- hang.dendrogram(dend_row,hang = 0.1)
+  dend_row <- hang.dendrogram(dend_row,hang = 0.1)
 
   # Label Size
   dend_row <- set(dend_row, "labels_cex", 0.3)
@@ -70,10 +70,15 @@ mainApp = function(input,
   plot(dend_row,
        main = "Clustered Samples",
        horiz =  TRUE,  nodePar = list(cex = .007))
-  legend("topleft", legend = iris_species, fill = rainbow_hcl(row_branchColorNumber))
+  if(!length(iris_species)==0){
+    legend("topleft", legend = iris_species, fill = rainbow_hcl(row_branchColorNumber))
+  }
   dev.off()
 
-  # column dend.
+  # Hang back
+  dend_row <- hang.dendrogram(dend_row,-1)
+
+    # column dend.
   {
     if(scale){
       data_col = scale(as.matrix(e))
@@ -84,14 +89,18 @@ mainApp = function(input,
     rownames(data_col) = f[[1]]
     d_e <- dist(data_col, method = distance_method)
     hc_iris_col <- hclust(d_e, method = cluster_method)
-    iris_species <- rev(levels(as.factor(p[[row_col]])))
+    iris_species <- rev(levels(as.factor(p[[col_col]])))
 
     dend_col <- as.dendrogram(hc_iris_col)
     # order it the closest we can to the order of the observations:
     dend_col <- rotate(dend_col, 1:nrow(f))
 
     # Branch Color
-    dend_col <- color_branches(dend_col, k=col_branchColorNumber) #, groupLabels=iris_species)
+    if(col_branchColorNumber==1){
+      dend_col <- color_branches(dend_col, k=col_branchColorNumber,col='black')
+    }else{
+      dend_col <- color_branches(dend_col, k=col_branchColorNumber)
+    }
 
     # Label Color
 
@@ -109,18 +118,23 @@ mainApp = function(input,
                               sep = "")
 
     # Hang
-    # dend_col <- hang.dendrogram(dend_col,0.1)
+    dend_col <- hang.dendrogram(dend_col,0.1)
 
     # Label Size
-    dend_col <- set(dend_col, "labels_cex", 0.1)
+    # dend_col <- set(dend_col, "labels_cex", 0.1)
 
 
     pdf(file = "Dendrogram_Compound.pdf",height = 14)
     plot(dend_col,
          main = "Clustered On Compounds",
          horiz =  T,  nodePar = list(cex = .007))
-    legend("topleft", legend = iris_species, fill = rainbow_hcl(col_branchColorNumber))
+    if(!length(iris_species)==0){
+      legend("topleft", legend = iris_species, fill = rainbow_hcl(col_branchColorNumber))
+    }
     dev.off()
+
+    # Hang back
+    # dend_col <- hang.dendrogram(dend_col,-1)
   }
 
 
@@ -135,7 +149,7 @@ mainApp = function(input,
   png(filename = "HeatMap.png",
       width = 3000, height = 800, res = 72)
   gplots::heatmap.2(data_row,
-                    main = "Heatmap for the Iris data set",
+                    main = "A global View of Heatmap",
                     srtCol = 45,
                     dendrogram = "both",
                     Rowv = dend_row,
@@ -172,6 +186,13 @@ mainApp = function(input,
   fwrite(data.table(result_col),"Dendrogram_col.csv")
   fwrite(data.table(result_col),"Dendrogram_col.txt",sep = "\t")
 
+
+
+  zip(zipfile = "HeatMap&Dendrogram.zip",files = c("Dendrogram_col.csv",
+                                                   "Dendrogram_Compound.pdf",
+                                                   "Dendrogram_row.csv",
+                                                   "Dendrogram_Sample.pdf",
+                                                   "HeatMap.png"))
   # return(result)
 
 
