@@ -19,8 +19,8 @@ mainApp = function(input,
                    col_branchColorNumber = 1
                    ){
   library(pacman)
-  pacman::p_load(data.table,parallel, ez, userfriendlyscience,dendextend,
-                 colorspace,gplots,stringr)
+  pacman::p_load(data.table,parallel, dendextend,
+                 colorspace,gplots,stringr,RColorBrewer)
 
   data. = WCMC.Fansly::FiehnLabFormat(input)
   e = data.$e
@@ -53,11 +53,12 @@ mainApp = function(input,
   if(row_branchColorNumber==1){
     dend_row <- color_branches(dend_row, k=row_branchColorNumber,col='black')
   }else{
-    dend_row < color_branches(dend_row, k=row_branchColorNumber)
+    dend_row <- color_branches(dend_row, k=row_branchColorNumber,
+                               col=brewer.pal(n=row_branchColorNumber,name="Set1"))
   }
   # Label Color
   labels_colors(dend_row) <-
-    rainbow_hcl(row_branchColorNumber)[sort_levels_values(
+    rainbow_hcl(length(unique(p[[row_col]])))[sort_levels_values(
       as.numeric(as.factor(p[[row_col]]))[order.dendrogram(dend_row)]
     )]
 
@@ -76,15 +77,15 @@ mainApp = function(input,
   dend_row <- hang.dendrogram(dend_row,hang = 0.1)
 
   # Label Size
-  dend_row <- set(dend_row, "labels_cex", 0.3)
+  dend_row <- set(dend_row, "labels_cex",0.5)
 
   pdf(file = "Dendrogram_Sample.pdf")
   plot(dend_row,
        main = "Clustered Samples",
        horiz =  TRUE,  nodePar = list(cex = .007))
-  if(!length(iris_species)==0){
-    legend("topleft", legend = iris_species, fill = rainbow_hcl(row_branchColorNumber))
-  }
+  # if(!length(iris_species)==0){
+  #   legend("topleft", legend = unique(p[[row_col]]), fill = rainbow_hcl(length(unique(p[[row_col]]))))
+  # }
   dev.off()
 
   # Hang back
@@ -111,13 +112,14 @@ mainApp = function(input,
     if(col_branchColorNumber==1){
       dend_col <- color_branches(dend_col, k=col_branchColorNumber,col='black')
     }else{
-      dend_col <- color_branches(dend_col, k=col_branchColorNumber)
+      dend_col <- color_branches(dend_col, k=col_branchColorNumber,
+                                 col=brewer.pal(n=col_branchColorNumber,name="Set1"))
     }
 
     # Label Color
 
     labels_colors(dend_col) <-
-      rainbow_hcl(col_branchColorNumber)[sort_levels_values(
+      rainbow_hcl(length(unique(f[[col_col]])))[sort_levels_values(
         as.numeric(as.factor(f[[col_col]]))[order.dendrogram(dend_col)]
       )]
 
@@ -144,9 +146,9 @@ mainApp = function(input,
     plot(dend_col,
          main = "Clustered On Compounds",
          horiz =  T,  nodePar = list(cex = .007))
-    if(!length(iris_species)==0){
-      legend("topleft", legend = iris_species, fill = rainbow_hcl(col_branchColorNumber))
-    }
+    # if(!length(iris_species)==0){
+    #   legend("none", legend = iris_species, fill = rainbow_hcl(length(unique(f[[col_col]]))))
+    # }
     dev.off()
 
     # Hang back
