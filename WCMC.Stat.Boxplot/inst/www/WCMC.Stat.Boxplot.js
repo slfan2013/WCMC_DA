@@ -40,7 +40,7 @@ $("#download_all").on("click",function(){
 
     },function(session){
       console.log(session)
-      download_all_address = session.loc +"/files/Boxplots.zip"
+      download_all_address = session.loc +"files/Boxplots.zip"
     }).done(function(){
       window.open(download_all_address)
     }).always(function(){hideSpinner(loadSpinner);});//ocpu.call
