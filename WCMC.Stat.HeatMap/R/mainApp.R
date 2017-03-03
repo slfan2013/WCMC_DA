@@ -4,12 +4,16 @@
 #   Check Package:             'Ctrl + Shift + E'
 #   Test Package:              'Ctrl + Shift + T'
 mainApp = function(input,
-                   scale = T,
+
                    distance_method = "euclidean",
                    minkowski_p = NULL, # only used when minkowski is used.
                    cluster_method = "complete",
-                   row_col = "treatment",
-                   row_branchColorNumber = 2,
+
+                   scale_feature = T,
+                   scale_sample = T,
+
+                   row_col = "none",
+                   row_branchColorNumber = 1,
 
                    col_col = "none",
                    col_branchColorNumber = 1
@@ -23,21 +27,21 @@ mainApp = function(input,
   f = data.$f
   p = data.$p
 
-  # e = fread("C:\\Users\\Sili Fan\\Desktop\\WORK\\WCMC\\projects\\mx 300486_Ganeshan\\e.csv")[,-1]
-  # f = fread("C:\\Users\\Sili Fan\\Desktop\\WORK\\WCMC\\projects\\mx 300486_Ganeshan\\f.csv")[,-1]
-  # p = fread("C:\\Users\\Sili Fan\\Desktop\\WORK\\WCMC\\projects\\mx 300486_Ganeshan\\p.csv")[,-1]
+  # e = fread("e.csv")[,-1]
+  # f = fread("f.csv")[,-1]
+  # p = fread("p.csv")[,-1]
 
 
 
   # get the data_row
-  if(scale){
+  if(scale_feature){
     data_row = scale(t(e))
   }else{
     data_row = t(e)
   }
 
   rownames(data_row) = p$`sample index`
-  d_e <- dist(data_row, method = distance_method)
+  d_e <- dist(data_row, method = distance_method,p=minkowski_p)
   hc_iris_row <- hclust(d_e, method = cluster_method)
   iris_species <- rev(levels(as.factor(p[[row_col]])))
 
@@ -46,8 +50,11 @@ mainApp = function(input,
   dend_row <- rotate(dend_row, 1:nrow(p))
 
   # Branch Color
-  dend_row <- color_branches(dend_row, k=row_branchColorNumber) #, groupLabels=iris_species)
-
+  if(row_branchColorNumber==1){
+    dend_row <- color_branches(dend_row, k=row_branchColorNumber,col='black')
+  }else{
+    dend_row < color_branches(dend_row, k=row_branchColorNumber)
+  }
   # Label Color
   labels_colors(dend_row) <-
     rainbow_hcl(row_branchColorNumber)[sort_levels_values(
@@ -56,9 +63,14 @@ mainApp = function(input,
 
 
     # Change Label
+  if(length(as.character(p[[row_col]]))==0){
+    labels(dend_row) <- p$`sample index`
+  }else{
     labels(dend_row) <- paste(as.character(p[[row_col]])[order.dendrogram(dend_row)],
-                          "(",p$`sample index`,")",
-                          sep = "")
+                              "(",p$`sample index`[order.dendrogram(dend_row)],")",
+                              sep = "")
+  }
+
 
   # Hang
   dend_row <- hang.dendrogram(dend_row,hang = 0.1)
@@ -80,7 +92,7 @@ mainApp = function(input,
 
     # column dend.
   {
-    if(scale){
+    if(scale_sample){
       data_col = scale(as.matrix(e))
     }else{
       data_col = as.matrix(e)
@@ -113,15 +125,19 @@ mainApp = function(input,
 
 
     # Change Label
-    labels(dend_col) <- paste(as.character(f[[col_col]])[order.dendrogram(dend_col)],
-                              "(",f[[1]],")",
-                              sep = "")
+    if(length(as.character(f[[col_col]]))==0){
+      labels(dend_col) <- f[[1]][order.dendrogram(dend_col)]
+    }else{
+      labels(dend_col) <- paste(as.character(f[[col_col]])[order.dendrogram(dend_col)],
+                                "(",f[[1]][order.dendrogram(dend_col)],")",
+                                sep = "")
+    }
 
     # Hang
-    dend_col <- hang.dendrogram(dend_col,0.1)
+    # dend_col <- hang.dendrogram(dend_col,0.1)
 
     # Label Size
-    # dend_col <- set(dend_col, "labels_cex", 0.1)
+    dend_col <- set(dend_col, "labels_cex", 0.1)
 
 
     pdf(file = "Dendrogram_Compound.pdf",height = 14)

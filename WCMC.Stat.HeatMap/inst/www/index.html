@@ -59,8 +59,69 @@
                     <span for="rawinput"><a href="sample.txt" target="_blank"> Example Data File </a></span><a href="instruction.png" target="_blank" data-toggle="tooltip" data-placement="bottom" data-html="true" title="format explaination"><i class="fa fa-question-circle"></i></a>&nbsp;<a href="template.xlsx" target="_blank" data-toggle="tooltip" data-placement="bottom" data-html="true" title="download format"><i class="fa fa-download"></i></a>
                     <p></p>
               </div>
-                  <!-- /.row -->
+                 </form> <!-- /.row -->
+                <form role = "form">
+                  <div class="form-group">
+                      <label>Distance Measure:</label>
+                      <select class="form-control" ng-model="distance_method">
+                          <option value="euclidean">euclidean</option>
+                          <option value="manhattan">manhattan</option>
+                          <option value="minkowski">minkowski</option>
+                          <option value="maximum">maximum</option>
+                          <option value="canberra">canberra</option>
+                          <option value="binary">binary</option>
+                      </select>
+                  </div>
+                  <div class="form-group" ng-show="distance_method=='minkowski'">
+                      <label>The power of the Minkowski distance.</label>
+                      <input type = "number" class="form-control" ng-model="minkowski_p">
+                      <p class="help-block">Only used for minkowski distance measure.</p>
+                  </div>
+                  <div class="form-group">
+                      <label>Clustering methods:</label>
+                      <select class="form-control" ng-model="cluster_method">
+                          <option value="complete">complete</option>
+                          <option value="average">average</option>
+                          <option value="median">median</option>
+                          <option value="centroid">centroid</option>
+                          <option value="ward.D">ward.D</option>
+                          <option value="ward.D2">binary</option>
+                      </select>
+                  </div>
+                  <div class="form-group">
+                      <label>Scale: </label>
+                      <label class="checkbox-inline">
+                          <input type="checkbox" ng-model="scale_sample">samples
+                      </label>
+                      <label class="checkbox-inline">
+                          <input type="checkbox" ng-model="scale_feature">features
+                      </label>
+                  </div>
+                  <div class="form-group">
+                      <label>Color the sample labels by:</label>
+                      <select class="form-control" ng-model="row_col">
+                          <option value="none">none</option>
+                          <option ng-repeat='colname_p in colnames_p' value="{{colname_p}}">{{colname_p}}</option>
+                      </select>
+                  </div>
+                  <div class="form-group">
+                      <label>Color the feature labels by:</label>
+                      <select class="form-control" ng-model="col_col">
+                          <option value="none">none</option>
+                          <option ng-repeat='colname_f in colnames_f' value="{{colname_f}}">{{colname_f}}</option>
+                      </select>
+                  </div>
+                  <div class="form-group">
+                      <label>Number of Sample Clusters:</label>
+                      <input type = "number" class="form-control" ng-model="row_branchColorNumber">
+                  </div>
+                  <div class="form-group">
+                      <label>Number of Feature Clusters:</label>
+                      <input type = "number" class="form-control" ng-model="col_branchColorNumber">
+                  </div>
                 </form>
+
+                <p></p>
                 <button id="compute" type="button" class="btn btn-primary">Run</button>
               </div>
             </div>
