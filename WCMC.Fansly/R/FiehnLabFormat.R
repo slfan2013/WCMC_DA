@@ -30,7 +30,7 @@ FiehnLabFormat = function(input){
 
   p = t(df1[1:(row_start-1),col_start:ncol(df1)])
   colnames(p) = p[1,]
-  p = cbind(data.frame("sample index" = c(1,as.character(df1[row_start,(col_start+1):ncol(df1)])),check.names = FALSE,
+  p = cbind(data.frame("sample label" = c(1,as.character(df1[row_start,(col_start+1):ncol(df1)])),check.names = FALSE,
                        stringsAsFactors = F),
             p,stringsAsFactors=F)[-1,]
   if(sum(duplicated(as.character(df1[row_start,(col_start+1):ncol(df1)])))>0){
@@ -60,7 +60,7 @@ FiehnLabFormat = function(input){
   colnames(e) = rownames(p)
   rownames(e) = rownames(f)
   write.csv(e,"e.csv")
-  
+
   return(list(
     e=e,
     f=f,

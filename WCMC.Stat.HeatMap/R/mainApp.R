@@ -40,7 +40,7 @@ mainApp = function(input,
     data_row = t(e)
   }
 
-  rownames(data_row) = p$`sample index`
+  rownames(data_row) = p$`sample label`
   d_e <- dist(data_row, method = distance_method,p=minkowski_p)
   hc_iris_row <- hclust(d_e, method = cluster_method)
   iris_species <- rev(levels(as.factor(p[[row_col]])))
@@ -64,10 +64,10 @@ mainApp = function(input,
 
     # Change Label
   if(length(as.character(p[[row_col]]))==0){
-    labels(dend_row) <- p$`sample index`
+    labels(dend_row) <- p$`sample label`
   }else{
     labels(dend_row) <- paste(as.character(p[[row_col]])[order.dendrogram(dend_row)],
-                              "(",p$`sample index`[order.dendrogram(dend_row)],")",
+                              "(",p$`sample label`[order.dendrogram(dend_row)],")",
                               sep = "")
   }
 
