@@ -53,6 +53,9 @@ FiehnLabFormat = function(input){
     f = f[-1,]
   }
   rownames(f) = 1:nrow(f)
+  f[[1]] = make.names(f[[1]],unique = T)
+
+
   write.csv(f,"f.csv")
 
   e = df1[(row_start+1):nrow(df1),(col_start+1):ncol(df1)]

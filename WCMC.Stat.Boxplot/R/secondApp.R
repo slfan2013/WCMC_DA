@@ -21,6 +21,8 @@ secondApp = function(input, twoway){
   p = p[,c(2,3)] # this makes the group1 the first column and the group2 2nd column.
 
 
+
+
   return(list(
     factor_order1 = paste0(unique(p[[1]]),collapse = ','),
     factor_order2 = paste0(unique(p[[2]]),collapse = ','),

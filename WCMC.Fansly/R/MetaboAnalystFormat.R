@@ -18,7 +18,7 @@ MetaboAnalystFormat = function(input, row_start =3){
 
   f = data.frame(df1[(row_start+1):nrow(df1),1])
   colnames(f) = "compound label"
-
+  f[[1]] = make.names(f[[1]],unique = T)
 
   e = df1[(row_start+1):nrow(df1),2:ncol(df1)]
   e = apply(e,2,as.numeric)

@@ -10,6 +10,7 @@ $scope.legend_position = "topleft"
 $scope.getFactorOrder = function(){
   var txtinput = $("#rawinput").val().trim();
   var req = ocpu.call("secondApp",{input:txtinput, twoway : $scope.twoway}, function(session) {//for factor_order1 and factor_order2
+  console.log(session)
     session.getObject(function(obj){
       $scope.$apply(function(){
         $scope.factor_order1 = obj.factor_order1
@@ -40,7 +41,7 @@ $("#download_all").on("click",function(){
 
     },function(session){
       console.log(session)
-      download_all_address = session.loc +"/files/Boxplots.zip"
+      download_all_address = session.loc +"files/Boxplots.zip"
     }).done(function(){
       window.open(download_all_address)
     }).always(function(){hideSpinner(loadSpinner);});//ocpu.call
