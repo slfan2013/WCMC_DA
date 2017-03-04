@@ -20,7 +20,7 @@ mainApp = function(input,
                    ){
   library(pacman)
   pacman::p_load(data.table,parallel, dendextend,
-                 colorspace,gplots,stringr,RColorBrewer)
+                 colorspace,gplots,stringr,RColorBrewer,mvtnorm)
 
   data. = WCMC.Fansly::FiehnLabFormat(input)
   e = data.$e
@@ -31,7 +31,12 @@ mainApp = function(input,
   # f = fread("f.csv")[,-1]
   # p = fread("p.csv")[,-1]
 
+  e = as.matrix(e)
 
+  e = t(apply(e,1,function(x){
+    x[is.na(x)] = 0.5*min(x,na.rm = T)
+    return(x)
+  }))
 
   # get the data_row
   if(scale_feature){

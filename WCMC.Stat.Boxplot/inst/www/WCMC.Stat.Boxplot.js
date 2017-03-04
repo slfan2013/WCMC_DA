@@ -10,6 +10,7 @@ $scope.legend_position = "topleft"
 $scope.getFactorOrder = function(){
   var txtinput = $("#rawinput").val().trim();
   var req = ocpu.call("secondApp",{input:txtinput, twoway : $scope.twoway}, function(session) {//for factor_order1 and factor_order2
+  console.log(session)
     session.getObject(function(obj){
       $scope.$apply(function(){
         $scope.factor_order1 = obj.factor_order1
