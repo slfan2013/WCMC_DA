@@ -13,9 +13,9 @@ mainApp = function(input){
   df1 = df1[-1,]
   data = sapply(df1[,-1], as.numeric)
 
-  reference <- apply(data, 1, median)
+  reference <- apply(data, 1, median,na.rm = T)
   quotient <- data / reference
-  quotient.median <- apply(quotient, 2, median)
+  quotient.median <- apply(quotient, 2, median,na.rm = T)
   result <- t(t(data) / quotient.median)
 
 

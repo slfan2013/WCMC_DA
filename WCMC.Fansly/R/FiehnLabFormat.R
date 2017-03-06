@@ -1,4 +1,7 @@
 FiehnLabFormat = function(input){
+
+  pacman::p_load(data.table,stringr)
+
   input = gsub("\r","",input)
   cfile = strsplit(input,"\n")[[1]]
 
@@ -22,6 +25,8 @@ FiehnLabFormat = function(input){
     col_start = t.mode-ts.first.row + 1
   }
   row_start = which(diff(df1[,1]=='')==-1) + 1
+
+
   if(length(row_start)==0 & col_start ==1){
     row_start = 1
   }else if(length(row_start)==0){
@@ -53,7 +58,7 @@ FiehnLabFormat = function(input){
     f = f[-1,]
   }
   rownames(f) = 1:nrow(f)
-  f[[1]] = make.names(f[[1]],unique = T)
+  f[[length(f)]] = make.names(f[[length(f)]],unique = T)
 
 
   write.csv(f,"f.csv")
