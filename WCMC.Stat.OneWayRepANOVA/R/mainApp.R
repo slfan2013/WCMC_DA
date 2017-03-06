@@ -3,65 +3,17 @@
 #   Build and Reload Package:  'Ctrl + Shift + B'
 #   Check Package:             'Ctrl + Shift + E'
 #   Test Package:              'Ctrl + Shift + T'
-mainApp = function(input){
+mainApp = function(input, posthocNeeded = T){
   library(pacman)
   pacman::p_load(data.table,parallel,userfriendlyscience,ez)
   # read.data
-  {
-    input = gsub("\r","",input)
-    cfile = strsplit(input,"\n")[[1]]
+  data. = WCMC.Fansly::MetaboAnalystFormat(input,row_start = 3)
+  e = data.$e
+  f = data.$f
+  p = data.$p
 
-    ts = sapply(regmatches(cfile, gregexpr("\t", cfile)),length)
-    t.mode = unique(ts)[which.max(tabulate(match(ts, unique(ts))))]
-    ts.first.row = ts[1]
-    cfile[[1]] = paste0(paste0(rep('\t',t.mode-ts.first.row),collapse = ''),cfile[[1]],collapse = '')
+  e = as.matrix(e)
 
-
-    df1 = as.data.frame(do.call(rbind,lapply(cfile,function(x){strsplit(x,"\t")[[1]]})),stringsAsFactors = F)
-
-
-    if(t.mode==ts.first.row){
-      col_start = which(diff(as.character(df1[1,])=='')==-1) + 1
-    }else{
-      col_start = t.mode-ts.first.row + 1
-    }
-    row_start = which(diff(df1[,1]=='')==-1) + 1
-    if(length(row_start)==0 & col_start ==1){
-      row_start = 1
-    }else if(length(row_start)==0){
-      stop("There is an error in the input format. Please click the '!' icon (next to 'Example Data File') for more information.")
-    }
-
-    p = t(df1[1:(row_start-1),col_start:ncol(df1)])
-    colnames(p) = p[1,]
-    p = cbind(data.frame("sample index" = c(1,as.character(df1[row_start,(col_start+1):ncol(df1)])),check.names = FALSE,
-                         stringsAsFactors = F),
-              p,stringsAsFactors=F)[-1,]
-
-    rownames(p) = df1[row_start,(col_start+1):ncol(df1)]
-    p = data.frame(p,stringsAsFactors = F,check.names = F)
-    # write.csv(p,"p.csv")
-
-    f = df1[row_start:nrow(df1),1:col_start]
-
-    if(class(f) == "character"){ #in case there is only one column of feature index.
-      name.temp = f[1]
-      f = data.frame(f[-1])
-      colnames(f) = name.temp
-    }else{
-      colnames(f) = f[1,]
-      f = f[-1,]
-    }
-    rownames(f) = 1:nrow(f)
-    colnames_f_1 = colnames(f)[1]
-
-    # write.csv(f,"f.csv")
-
-    e = df1[(row_start+1):nrow(df1),(col_start+1):ncol(df1)]
-    e = apply(e,2,as.numeric)
-    colnames(e) = rownames(p)
-    rownames(e) = rownames(f)
-  }
 
   multicore = T
   if(multicore){
@@ -70,28 +22,36 @@ mainApp = function(input){
     cl = makeCluster(1)
   }
 
-  ID = colnames(p)[2]
-  group=colnames(p)[3]
-  ANOVA = parSapply(cl,1:nrow(e),function(j,e,p,group,ezANOVA,ID){
+  ID = colnames(p)[3]
+  group=colnames(p)[2]
+  ANOVA = parSapply(cl,1:nrow(e),function(j,e,p,group,ezANOVA,ID,posthocNeeded){
 
     data = data.frame(value=e[j,],var2=p[[group]],id=as.factor(p[[ID]]))
 
     ANOVA.p = ezANOVA(data = data,
             dv = value, wid = id,within = .(var2), type = 3)$`Sphericity Corrections`[1,"p[GG]"]
 
-    test.temp = pairwise.t.test(paired = T, x = data$value, g = data$var2, p.adjust.method  = "bonf")$p.value
-    post_hoc = as.numeric(test.temp)[!is.na(as.numeric(test.temp))]
+    if(posthocNeeded){
+      test.temp = pairwise.t.test(paired = T, x = data$value, g = data$var2, p.adjust.method  = "bonf")$p.value
+      post_hoc = as.numeric(test.temp)[!is.na(as.numeric(test.temp))]
+    }else{
+      post_hoc=NULL
+    }
 
     return(c(ANOVA.p, post_hoc))
 
-  },e,p,group,ezANOVA,ID)
+  },e,p,group,ezANOVA,ID,posthocNeeded)
 
-  ANOVA = t(ANOVA)
+  if(posthocNeeded){
+    ANOVA = t(ANOVA)
+    data = data.frame(value=e[1,],var2=p[[group]],id=as.factor(p[[ID]]))
+    colnames(ANOVA) = c("repANOVA p value",
+                        paste0("pairwise-comparison: ",apply(combn(levels(data[,2]), 2),2,function(x){paste(x[1],x[2],sep="_vs_")})))
+  }else{
+    ANOVA = data.frame("repANOVA p value"= ANOVA)
+  }
 
 
-  data = data.frame(value=e[1,],var2=p[[group]],id=as.factor(p[[ID]]))
-  colnames(ANOVA) = c("ANOVA p value",
-                      paste0("pairwise-comparison: ",apply(combn(levels(data[,2]), 2),2,function(x){paste(x[1],x[2],sep="_vs_")})))
 
   # Greenhouse-Geisser adjusted one-way repeated measures ANOVA. Greenhouse & Geisser (1959)
   # The exercise intervention elicited statistically significant changes in CRP concentration over time, F(1.296, 11.663) = 26.938, p < .0005.
@@ -108,7 +68,7 @@ mainApp = function(input){
   result = data.table(f,ANOVA)
   rownames(result) = 1:nrow(result)
   if(class(f)=="character"){
-    colnames(result) = c(colnames_f_1,colnames(ANOVA))
+    colnames(result) = c('compound label',colnames(ANOVA))
   }else{
     colnames(result) = c(colnames(f),colnames(ANOVA))
   }
