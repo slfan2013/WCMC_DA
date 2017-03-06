@@ -28,9 +28,13 @@ mainApp = function(input,type,weight){
     df2 <- as.data.frame(do.call(rbind,lapply(cfile,function(x){strsplit(x,"\t")[[1]]})),stringsAsFactors = F)
     colnames(df2) = as.matrix(df2[1,])[1,]
     df2 = df2[-1,]
+    colnames(df2)[2:ncol(df2)] = colnames(df2)[1:(ncol(df2)-1)]
+    colnames(df2)[1] = 'column1'
+    df2 = df2[,c('column1',colnames(df1)[2:ncol(df1)])]
     weight = as.numeric(df2[1,]);
     weight = weight[!is.na(weight)]
     result = t(t(data)*weight)
+    # fwrite(data.table(df2),"df2.csv")
   }
 
   result = cbind(data.frame(df1[,1]),result)
@@ -38,5 +42,8 @@ mainApp = function(input,type,weight){
   colnames(result) = colnames(df1)
   fwrite(data.table(result),"SampleSpecific-normalization.csv")
   fwrite(data.table(result),"SampleSpecific-normalization.txt",sep = "\t")
+
+  # fwrite(data.table(df1),"df1.csv")
+
   return(result)
 }

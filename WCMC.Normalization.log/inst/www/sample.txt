@@ -1,4 +1,4 @@
-input = 'compound index	sample1	sample2	sample3	sample4	sample5	sample6	sample7	sample8	sample9	sample10
+compound index	sample1	sample2	sample3	sample4	sample5	sample6	sample7	sample8	sample9	sample10
 compound 1	0.375539896	0.065899686	0.496939834	0.534084846	0.716702517	0.950021081	0.750360989	0.689267761	0.484818318	0.531683366
 compound 2	0.206362605	0.751998348	0.942184615	0.206394675	0.585332792	0.747429124	0.591602986	0.892103949	0.213276914	0.841363479
 compound 3	0.320140356	0.282510381	0.152143414	0.660063056	0.563975871	0.455721993	0.248184925	0.551075501	0.513916307	0.605137837
@@ -19,53 +19,3 @@ compound 17	0.532976966	0.706289045	0.486952088	0.412154294	0.439943672	0.475253
 compound 18	0.658270205	0.310558256	0.560285311	0.369547645	0.50986586	0.126320243	0.138691771	0.118098592	0.013933713	0.642171724
 compound 19	0.976136566	0.935824649	0.477713008	0.369850288	0.830332397	0.173360166	0.166329562	0.623136293	0.633352067	0.430893335
 compound 20	0.934374814	0.840576377	0.384396985	0.328708995	0.146584056	0.078071197	0.301708041	0.213188032	0.153279604	0.240768458
-'
-pacman::p_load(data.table)
-input <- gsub("\r","",input)
-cfile <- strsplit(input,"\n")[[1]]
-df1 <- as.data.frame(do.call(rbind,lapply(cfile,function(x){strsplit(x,"\t")[[1]]})),stringsAsFactors = F)
-colnames(df1) = as.matrix(df1[1,])[1,]
-df1 = df1[-1,]
-data = sapply(df1[,-1], as.numeric)
-reference <- apply(data, 1, median)
-quotient <- data / reference
-quotient.median <- apply(quotient, 2, median)
-result <- t(t(data) / quotient.median)
-result = cbind(data.frame(df1[,1]),result)
-rownames(result) = 1:nrow(result)
-colnames(result) = colnames(df1)
-result
-library(WCMC.Normalization.PQN)
-library(opencpu);
-opencpu$browse("library/WCMC.Normalization.PQN/www")
-library(WCMC.Normalization.PQN)
-library(opencpu);
-opencpu$browse("library/WCMC.Normalization.PQN/www")
-library(WCMC.Normalization.PQN)
-library(opencpu);
-opencpu$browse("library/WCMC.Normalization.PQN/www")
-library(WCMC.Normalization.PQN)
-library(opencpu);
-opencpu$browse("library/WCMC.Normalization.PQN/www")
-install.packages("pacman")
-library(WCMC.Normalization.PQN)
-library(opencpu);
-opencpu$browse("library/WCMC.Normalization.PQN/www")
-library(opencpu);
-opencpu$browse("library/WCMC.Normalization.PQN/www")
-library(WCMC.Normalization.PQN)
-library(opencpu);
-opencpu$browse("library/WCMC.Normalization.PQN/www")
-library(opencpu);
-opencpu$browse("library/WCMC.Normalization.PQN/www")
-library(WCMC.Normalization.PQN)
-library(WCMC.Normalization.PQN)
-library(opencpu);
-opencpu$browse("library/WCMC.Normalization.PQN/www")
-library(WCMC.Normalization.PQN)
-library(opencpu);
-opencpu$browse("library/WCMC.Normalization.PQN/www")
-library(WCMC.Normalization.PQN)
-library(opencpu);
-opencpu$browse("library/WCMC.Normalization.PQN/www")
-library(WCMC.Normalization.PQN)

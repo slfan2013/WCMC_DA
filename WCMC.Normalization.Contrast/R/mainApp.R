@@ -13,6 +13,11 @@ mainApp = function(input){
   df1 = df1[-1,]
   data = sapply(df1[,-1], as.numeric)
 
+  if(sum(is.na(data))>0){
+    stop(paste0(sum(is.na(data))," missing value detected. Contrast normalization does not tolerate with missing values."))
+  }
+
+
   #---First adaption: Make the data matrix non-negative
   threshold = 1e-11
   data[data <= 0] <- threshold
@@ -22,7 +27,7 @@ mainApp = function(input){
                                 family = "gaussian", log.it = FALSE)
   #---Second adaption: Subtract 10% Quantile from each sample
   subtract <- function(x) {
-    t(t(x) - apply(x, 2, quantile, 0.1))
+    t(t(x) - apply(x, 2, quantile, 0.1,na.rm=T))
   }
   result <- subtract(maffy.data)
 
