@@ -33,10 +33,10 @@ mainApp = function(input,
 
   e = as.matrix(e)
 
-  e = t(apply(e,1,function(x){
-    x[is.na(x)] = 0.5*min(x,na.rm = T)
-    return(x)
-  }))
+  # e = t(apply(e,1,function(x){
+  #   x[is.na(x)] = 0.5*min(x,na.rm = T)
+  #   return(x)
+  # }))
 
   # get the data_row
   if(scale_feature){

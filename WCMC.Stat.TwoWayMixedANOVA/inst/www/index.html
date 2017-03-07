@@ -31,7 +31,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">TwoWayMixedANOVA: normalize samples by sample weights.</a>
+            <a class="navbar-brand" href="#">TwoWayMixedANOVA: two way ANOVA for interation test.</a>
         </div>
     </nav>
 
@@ -88,101 +88,133 @@
                 <h3 class="panel-title"><a data-toggle="collapse" data-target="#instrtuction" href="#" class="collapsed">Instruction</a></h3>
               </div>
               <div id="instrtuction" class="panel-body collapse">
-                <p>Normalisation of data to minimise the impact of technical variation on comparative sample analysis is often carried out. Usually we assume that the sum (or median, mean) of the intensity across all the compound of each sample should stay consistant. Thus the sum (or median, mean) value can be an approximate quantitative index of how much the machine influence each sample. Sample specific normalization normalize each sample to its index (i.e. sum, median or mean). The equation follows the same pattern,</p>
-                <img src="TwoWayMixedANOVA equation.PNG"><span>, where <em>i</em> indicates samples and &omega; is the weight of each sample, which is calculated by (using sum as an example),</span>
-                <img src="sum.PNG">
-                <p>Also, user could define their own &omega; (e.g. volumn) using the <code>custom weight</code> option. User have to justify the logic of the weight. An example of &quot;custom weight&quot; sample specific normalization is <a href="http://www.sciencedirect.com/science/article/pii/S157002320900021X" target="_blank">here</a>.</p>
+                <p>NA</p>
 <button type="button" class="btn btn-primary btn-circle" id="codeToggle"><b>R</b></button>
 <div class="well well-sm" id='code' style="display:none;">
-<pre><code>mainApp = function(p){
+<pre><code>mainApp = function(input,
+                   posthocNeeded = TRUE){
   library(pacman)
-  pacman::p_load(data.table,parallel,userfriendlyscience,ez)
+  pacman::p_load(data.table,parallel, ez, userfriendlyscience)
   # read.data
   {
-    input = gsub("\r","",input)
-    cfile = strsplit(input,"\n")[[1]]
-
-    ts = sapply(regmatches(cfile, gregexpr("\t", cfile)),length)
-    t.mode = unique(ts)[which.max(tabulate(match(ts, unique(ts))))]
-    ts.first.row = ts[1]
-    cfile[[1]] = paste0(paste0(rep('\t',t.mode-ts.first.row),collapse = ''),cfile[[1]],collapse = '')
-
-
-    df1 = as.data.frame(do.call(rbind,lapply(cfile,function(x){strsplit(x,"\t")[[1]]})),stringsAsFactors = F)
-
-    if(t.mode==ts.first.row){
-      col_start = which(diff(as.character(df1[1,])=='')==-1) + 1
-    }else{
-      col_start = t.mode-ts.first.row + 1
-    }
-    row_start = which(diff(df1[,1]=='')==-1) + 1
-    if(length(row_start)==0 & col_start ==1){
-      row_start = 1
-    }else if(length(row_start)==0){
-      stop("There is an error in the input format. Please click the '!' icon (next to 'Example Data File') for more information.")
-    }
-
-    p = t(df1[1:(row_start-1),col_start:ncol(df1)])
-    colnames(p) = p[1,]
-    p = cbind(data.frame("sample index" = c(1,as.character(df1[row_start,(col_start+1):ncol(df1)])),check.names = FALSE,
-                         stringsAsFactors = F),
-              p,stringsAsFactors=F)[-1,]
-
-    rownames(p) = df1[row_start,(col_start+1):ncol(df1)]
-    p = data.frame(p,stringsAsFactors = F,check.names = F)
-    # write.csv(p,"p.csv")
-
-    f = df1[row_start:nrow(df1),1:col_start]
-
-    if(class(f) == "character"){ #in case there is only one column of feature index.
-      name.temp = f[1]
-      f = data.frame(f[-1])
-      colnames(f) = name.temp
-    }else{
-      colnames(f) = f[1,]
-      f = f[-1,]
-    }
-    rownames(f) = 1:nrow(f)
-
-    # write.csv(f,"f.csv")
-
-    e = df1[(row_start+1):nrow(df1),(col_start+1):ncol(df1)]
-    e = apply(e,2,as.numeric)
-    colnames(e) = rownames(p)
-    rownames(e) = rownames(f)
+    data.list = WCMC.Fansly::MetaboAnalystFormat(input=input, row_start = 4)
+    p = data.list$p
+    f = data.list$f
+    e = data.list$e
   }
+
+  e = as.matrix(e)
+  # e = t(apply(e,1,function(x){
+  #   x[is.na(x)] = 0.5*min(x,na.rm = T)+rnorm(sum(is.na(x)),mean=0,sd = 0.1)
+  #   return(x)
+  # }))
+
 
   multicore = T
   if(multicore){
-    cl = makeCluster(min(detectCores(),8))
+    cl = makeCluster(min(detectCores(),20))
   }else{
     cl = makeCluster(1)
   }
 
-  ID = colnames(p)[2]
-  group1=colnames(p)[3]
-  group2=colnames(p)[4]
-  interaction = parSapply(cl,1:nrow(e),function(j,e,p,group1,group2,ezANOVA,ID){
-    ezANOVA(data = data.frame(value=e[j,],var1=p[[group1]],var2=p[[group2]],id=as.factor(p[[ID]])),
-            dv = value, wid = id, between = .(var1),within = .(var2), type = 3)$`Sphericity Corrections`[2,"p[GG]"]
-  },e,p,group1,group2,ezANOVA,ID)
+  twowayMixedANOVA = parSapply(cl,1:nrow(e),function(j,e,p,ezANOVA){
+    test = ezANOVA(data = data.frame(value=e[j,],var1=p[[2]],var2=p[[3]],id=as.factor(p[[4]])),
+            dv = value, wid = id, between = .(var1),within=.(var2), type = 3)
+    return(c(test$ANOVA[1,'p'],test$`Sphericity Corrections`[,'p[GG]']))
+  },e,p,ezANOVA)
+  rownames(twowayMixedANOVA) = c(paste0("ANOVA (",colnames(p)[2],")"), paste0("ANOVA (",colnames(p)[3], ")"), paste0(colnames(p)[c(2,3)], collapse = "*"))
+  twowayMixedANOVA = t(twowayMixedANOVA[c(3,1,2),])
 
-  colnames_f_1 = colnames(f)[1]
-  f = f[,!sapply(f,function(x){sum(x=='')==length(x)})]
+  if(posthocNeeded){# only simple main effect comparison.
+    if(length(unique(p[[2]]))==2){# this means that the independent factor needs a t test.
+      simpleMainEffect1.by = by(p,p[[3]],FUN = function(x){
+                            # x=p[p[[3]]==p[[3]][1],]
+                            e.=e[,p[[3]]%in%x[[3]]];p.=x;
+                            t_test = parSapply(cl,1:nrow(e.),function(j,e.,p.){
+                                      oneway.test(e.[j,] ~ as.factor(p.[[2]]), var.equal = FALSE)$p.value
+                                    },e.,p.)
+                            t_test_FDR = p.adjust(t_test,"fdr")
+                            return(data.frame(t_test,t_test_FDR))
+                          })
+      simpleMainEffect1 = do.call(cbind,simpleMainEffect1.by)
+      colnames(simpleMainEffect1) = rep(paste0(paste0(levels(as.factor(p[[2]])),collapse = " vs ")," @",names(simpleMainEffect1.by)),each=2)
+      colnames(simpleMainEffect1) = paste0(colnames(simpleMainEffect1),rep(c(""," (FDR)"),ncol(simpleMainEffect1)/2))
 
-  result = data.table(f,twowaymixedANOVApvalue = interaction)
-  rownames(result) = 1:nrow(result)
-  if(class(f)=="character"){
-    colnames(result) = c(colnames_f_1,"twowaymixedANOVApvalue")
-  }else{
-    colnames(result) = c(colnames(f),"twowaymixedANOVApvalue")
+    }else{
+      simpleMainEffect1. = by(p,p[[3]],FUN=function(x){
+        # x=p[p[[3]]==p[[3]][1],]
+        e.=e[,p[[3]]%in%x[[3]]];p.=x
+        ANOVA = parSapply(cl,1:nrow(e.),function(j,e.,p.,posthocTGH){
+          paraANOVAposthoc = posthocTGH(e.[j,],as.factor(p.[[2]]),digits = 4)$output[["games.howell"]][,6]
+          return(c(oneway.test(e.[j,] ~ as.factor(p.[[2]]), var.equal = FALSE)$p.value,paraANOVAposthoc))
+        },e.,p.,posthocTGH)
+        ANOVA = data.frame(t(ANOVA))
+        colnames(ANOVA)=paste0(c(paste0("ANOVA (",colnames(p.)[2],")"),
+                                 gsub("-"," vs ",rownames(posthocTGH(e.[1,],as.factor(p.[[2]]),digits = 4)$output[["games.howell"]]))),
+                               paste0(" @",unique(p.[[3]])))
+        return(ANOVA)
+      })
+      names(simpleMainEffect1.) = rep("",length(names(simpleMainEffect1.)))
+      simpleMainEffect1 = do.call(cbind,simpleMainEffect1.)
+    }
+
+    if(length(unique(p[[3]]))==2){# this means that we need to do a paired t test on each level of p[[3]] and do a FDR cor.
+      simpleMainEffect2.by = by(p,p[[2]],FUN = function(x){
+        # x=p[p[[2]]==p[[2]][1],]
+        e.=e[,p[[2]]%in%x[[2]]];p.=x;
+        t_test = parSapply(cl,1:nrow(e.),function(j,e.,p.){
+          t.test(e.[j,] ~ as.factor(p.[[3]]), var.equal = FALSE, paired = T)$p.value
+        },e.,p.)
+        t_test_FDR = p.adjust(t_test,"fdr")
+        return(data.frame(t_test,t_test_FDR))
+      })
+      simpleMainEffect2 = do.call(cbind,simpleMainEffect2.by)
+      colnames(simpleMainEffect2) = rep(paste0(paste0(levels(as.factor(p[[3]])),collapse = " vs ")," @",names(simpleMainEffect2.by)),each=2)
+      colnames(simpleMainEffect2) = paste0(colnames(simpleMainEffect2),rep(c(""," (FDR)"),ncol(simpleMainEffect2)/2))
+
+    }else{
+      simpleMainEffect2. = by(p,p[[2]],FUN=function(x){
+        # x=p[p[[2]]==p[[2]][1],]
+        e.=e[,p[[2]]%in%x[[2]]];p.=x
+        ANOVA = parSapply(cl,1:nrow(e.),function(j,e.,p.,posthocNeeded,ezANOVA){
+
+          data = data.frame(value=e.[j,],var2=p.[[3]],id=as.factor(p.[[4]]))
+
+          ANOVA.p = ezANOVA(data = data,
+                            dv = value, wid = id,within = .(var2), type = 3)$`Sphericity Corrections`[1,"p[GG]"]
+
+          if(posthocNeeded){
+            test.temp = pairwise.t.test(paired = T, x = data$value, g = data$var2, p.adjust.method  = "holm")$p.value
+            post_hoc = as.numeric(test.temp)[!is.na(as.numeric(test.temp))]
+          }else{
+            post_hoc=NULL
+          }
+
+          return(c(ANOVA.p, post_hoc))
+        },e.,p.,posthocNeeded,ezANOVA)
+        ANOVA = data.frame(t(ANOVA))
+        colnames(ANOVA)=paste0(c(paste0("ANOVA (",colnames(p.)[3],")"),
+                                 gsub("-"," vs ",rownames(posthocTGH(e.[1,],as.factor(p.[[3]]),digits = 4)$output[["games.howell"]]))),
+                               paste0(" @",unique(p.[[2]])))
+        return(ANOVA)
+      })
+      names(simpleMainEffect2.) = rep("",length(names(simpleMainEffect2.)))
+      simpleMainEffect2 = do.call(cbind,simpleMainEffect2.)
+    }
+
+    posthoc = cbind(simpleMainEffect1,simpleMainEffect2)
   }
+  stopCluster(cl)
+
+  result = cbind(twowayMixedANOVA, posthoc)
+  result = cbind(data.frame(f$`compound label`),result)
+  colnames(result)[1] = "compound label"
+
+
 
   fwrite(data.table(result),"TwoWayMixedANOVA.csv")
   fwrite(data.table(result),"TwoWayMixedANOVA.txt",sep = "\t")
 
-
-  stopCluster(cl)
 
   return(result)
 

@@ -32,7 +32,7 @@ mainApp = function(input, posthocNeeded = T){
             dv = value, wid = id,within = .(var2), type = 3)$`Sphericity Corrections`[1,"p[GG]"]
 
     if(posthocNeeded){
-      test.temp = pairwise.t.test(paired = T, x = data$value, g = data$var2, p.adjust.method  = "bonf")$p.value
+      test.temp = pairwise.t.test(paired = T, x = data$value, g = data$var2, p.adjust.method  = "holm")$p.value
       post_hoc = as.numeric(test.temp)[!is.na(as.numeric(test.temp))]
     }else{
       post_hoc=NULL
