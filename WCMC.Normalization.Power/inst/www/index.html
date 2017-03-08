@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Normalization.Power </title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+	<script src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.2.0.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-resource.min.js"></script>
+  <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="spin.js"></script>
+  <script type="text/javascript" src="spinner.js"></script>
+  <script type="text/javascript" src="opencpu-0.5.js"></script>
+  <script type="text/javascript" src="WCMC.Normalization.Power.js"></script>
+
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <link href="sb-admin-2.min.css" rel="stylesheet">
+  <link href="font-awesome.css" rel="stylesheet">
+  <link href="WCMC.Normalization.Power.css" rel="stylesheet">
+</head>
+
+<body ng-controller="ctr">
+
+  <div >
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Power: power transformation.</a>
+        </div>
+    </nav>
+
+
+    <div>
+      <div class="container-fluid">
+        <!-- Page Heading -->
+        <div class="row">
+          <div class="col-lg-12">
+          </div>
+        </div>
+        <!-- /.row -->
+        <!-- Main content -->
+
+		<div class="row"> <!-- Data File Input -->
+          <div class="col-lg-12">
+            <div class="panel panel-info">
+              <div class="panel-heading">
+                <h3 class="panel-title"><a data-toggle="collapse" data-target="#input" href="#">Input</a></h3>
+              </div>
+              <div id="input" class="panel-body collapse in">
+                <form role="form">
+                  <div class="form-group">
+                    <textarea class="form-control" id="rawinput" name="txtinput" rows="5" placeholder = "paste your input here."></textarea>
+                    <span for="rawinput"><a href="sample.txt" target="_blank"> Example Data File </a></span><a href="instruction.png" target="_blank" data-toggle="tooltip" data-placement="bottom" data-html="true" title="format explaination"><i class="fa fa-question-circle"></i></a>&nbsp;<a href="template.xlsx" target="_blank" data-toggle="tooltip" data-placement="bottom" data-html="true" title="download format"><i class="fa fa-download"></i></a>
+                    <p></p>
+              </div>
+                  <div class="form-group">
+                      <label>power:</label>
+                      <input class="form-control" ng-model = 'power'>
+                      <p class="help-block">Example: <em>1/3</em> or <em>0.333</em>.</p>
+                  </div>
+                </form>
+                <button id="compute" type="button" class="btn btn-primary">Run</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+		<div class="row"> <!-- Output -->
+          <div class="col-lg-12">
+            <div class="panel panel-success">
+              <div class="panel-heading" >
+                <h3 class="panel-title"><a data-toggle="collapse" data-target="#output" href="#" class="collapsed" id="outputpanelheader">Output</a></h3>
+              </div>
+              <div id="output" class="panel-body collapse">
+                No output yet.
+              </div>
+            </div>
+          </div>
+        </div>
+
+		<div class="row"> <!-- Instructions -->
+          <div class="col-lg-12">
+            <div class="panel panel-warning">
+              <div class="panel-heading" >
+                <h3 class="panel-title"><a data-toggle="collapse" data-target="#instrtuction" href="#" class="collapsed">Instruction</a></h3>
+              </div>
+              <div id="instrtuction" class="panel-body collapse">
+                <img src="Helping.PNG" />
+                <p></p>
+<button type="button" class="btn btn-primary btn-circle" id="codeToggle"><b>R</b></button>
+<div class="well well-sm" id='code' style="display:none;">
+<pre><code>mainApp = function(input, power = "1/3"){
+  library(pacman)
+  pacman::p_load(data.table)
+  input = gsub("\r","",input)
+  cfile = strsplit(input,"\n")[[1]]
+  df1 = as.data.frame(do.call(rbind,lapply(cfile,function(x){strsplit(x,"\t")[[1]]})),stringsAsFactors = F)
+  colnames(df1) = as.matrix(df1[1,])[1,]
+  df1 = df1[-1,]
+  data = sapply(df1[,-1], as.numeric)
+
+
+
+  result = data^eval(parse(text=power))
+
+
+  result = cbind(data.frame(df1[,1]),result)
+  rownames(result) = 1:nrow(result)
+  colnames(result) = colnames(df1)
+  fwrite(data.table(result),"Power-normalization.csv")
+  fwrite(data.table(result),"Power-normalization.txt",sep = "\t")
+  return(result)
+}</code></pre>
+                    </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+		<div class="row"> <!-- Citations -->
+          <div class="col-lg-12">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title"><a data-toggle="collapse" data-target="#citations" href="#">Citations</a></h3>
+            </div>
+              <div id="citations" class="panel-body collapse in">
+                 <p>Van den Berg, R. A., Hoefsloot, H. C., Westerhuis, J. A., Smilde, A. K., & van der Werf, M. J. (2006). Centering, scaling, and transformations: improving the biological information content of metabolomics data. BMC Genomics, 7, 142. http://doi.org/10.1186/1471-2164-7-142 <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1534033/" target="_blank">PMC1534033</a></p>
+                <p>Wanichthanarak K, Fan S, Grapov D, Barupal DK, Fiehn O. Metabox: A Toolbox for Metabolomic Data Analysis, Interpretation and Integrative Exploration. PloS one. 2017 Jan 31;12(1):e0171046. <a href='http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0171046' target="_blank">0171046</a></p>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      <!-- notify box -->
+        <div id="spinner" class="modal fade" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+          <div class="modal-dialog"><div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4>Computing ...</h4>
+              <span id="notifyTxt"></span>
+            </div>
+            <div class="modal-body"><div style="height:200px">
+              <span id="loading_spinner" style="position: absolute;display: block;top: 50%;left: 50%;"></span>
+            </div></div>
+          </div></div>
+        </div>
+        <!-- /.notify box -->
+
+
+
+      </div>
+      <!-- /.container-fluid -->
+    </div>
+    <!-- /#page-wrapper -->
+  </div>
+  <!-- /#wrapper -->
+
+
+</body>
+
+
+
+
+
+</html>

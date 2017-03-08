@@ -2,15 +2,9 @@ var myApp = angular.module('myApp', ['ngRoute', 'ui.bootstrap']);
 
 myApp.controller('ctr',function($scope){
   $scope.base = 'exp(1)'
-})
-
-
-$(function(){
-$( "#codeToggle" ).click(function() {
-  $( "#code" ).toggle( "fast");
-});
-
-	$("#compute").click(function(){
+  
+  
+  	$("#compute").click(function(){
     $('#output').empty();
     $("#output").html("<p>No output yet.</p>")
     $("#outputpanelheader").addClass("collapsed")
@@ -19,7 +13,7 @@ $( "#codeToggle" ).click(function() {
 
     var loadSpinner = showSpinner(txt='Computing..');
     var txtinput = $("#rawinput").val().trim();
-    var req = ocpu.call("mainApp",{input:txtinput}, function(session) {//calls R function:
+    var req = ocpu.call("mainApp",{input:txtinput,base:$scope.base}, function(session) {//calls R function:
 			console.log(session);
 			view_address = session.loc + "files/log-normalization.txt"
 			download_address = session.loc + "files/log-normalization.csv"
@@ -37,5 +31,15 @@ $( "#codeToggle" ).click(function() {
 		  alert("Error: " + req.responseText)})
 		.always(function(){hideSpinner(loadSpinner);});//ocpu.call
 	})
+
+	
+})
+
+
+$(function(){
+$( "#codeToggle" ).click(function() {
+  $( "#code" ).toggle( "fast");
+});
+
 
 })

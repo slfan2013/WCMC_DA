@@ -7,7 +7,8 @@ mainApp = function(input,
                    twoway = TRUE,
                    factor_order1 = NULL, factor_order2 = NULL,
                    legend_position = 'topleft',
-                   draw_single = T,compoundName = 'zymosterol'){
+                   draw_single = T,compoundName = 'zymosterol',
+                   jitter = TRUE){
   library(pacman)
   pacman::p_load(data.table,parallel, ez, userfriendlyscience,dendextend,
                  colorspace,gplots,stringr)
@@ -78,6 +79,10 @@ mainApp = function(input,
       }
       boxplot(value~group1*group2,data = data,notch=FALSE,col=terrain.colors(length(factor_order1)),
               xaxt="n",at = at.x)
+      if(jitter){
+        stripchart(value ~ group1*group2, vertical = TRUE, data = data,
+                   method = "jitter", add = TRUE, pch = 20, col = 'black',at=at.x)
+      }
       title(main=f[[1]][j], sub=paste0("compound #: ", j),
             xlab=xlab, ylab='intensity')
       axis(1,at = text.pos.x, labels = F)# x axis
@@ -115,6 +120,10 @@ mainApp = function(input,
         }
         boxplot(value~group1,data = data,notch=FALSE,col=terrain.colors(length(factor_order1)),
                 xaxt="n")
+        if(jitter){
+          stripchart(value ~ group1, vertical = TRUE, data = data,
+                     method = "jitter", add = TRUE, pch = 20, col = 'black',at=at.x)
+        }
         title(main=f[[1]][j], sub=paste0("compound #: ", j),
               xlab=xlab, ylab='intensity')
         axis(1,at = 1:length(factor_order1), labels = F)# x axis

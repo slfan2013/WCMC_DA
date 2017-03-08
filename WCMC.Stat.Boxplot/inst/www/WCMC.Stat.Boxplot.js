@@ -5,6 +5,7 @@ myApp.controller('ctr',function($scope){
 
 $scope.twoway = "true"
 $scope.legend_position = "topleft"
+$scope.jitter = true
 
 
 $scope.getFactorOrder = function(){
@@ -50,6 +51,7 @@ $("#download_all").on("click",function(){
 
 
 	$("#compute").click(function(){
+
     $('#output').empty();
     $("#output").html("<p>No output yet.</p>")
     $("#outputpanelheader").addClass("collapsed")
@@ -62,7 +64,8 @@ $("#download_all").on("click",function(){
     twoway : $scope.twoway,
                    factor_order1 : $scope.factor_order1, factor_order2 : $scope.factor_order2,
                    legend_position : $scope.legend_position,
-                   draw_single : true,compoundName : $scope.compoundName
+                   draw_single : true,compoundName : $scope.compoundName,
+                   jitter: true
 
     })
 		.done(function(){
