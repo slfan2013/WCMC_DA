@@ -6,6 +6,10 @@
 mainApp = function(input,
                    center=T,
                    scale = T,
+                   contribute_axes=1,
+                   score_axis = c(1,2),
+                   color = 'treatment',
+                   num_of_var = 15
                    ){
   library(pacman)
   pacman::p_load(data.table,parallel, dendextend,
@@ -33,10 +37,27 @@ mainApp = function(input,
   res.pca <- prcomp(t(e),center = center, scale = scale)
   eig.val <- get_eigenvalue(res.pca)
 
+  png(filename = "ScreePlot.png",width=800,height=600)
   fviz_screeplot(res.pca, ncp=10,linecolor="red",addlabels=T)
+  dev.off()
 
-  fviz_pca_var(res.pca)
+  png(filename = "Contributer.png",width=800,height=800)
+  fviz_pca_var(res.pca, col.var="contrib") +
+    scale_color_gradient2(low="white", mid="blue",
+                          high="red", midpoint=median(a$data$contrib)) + theme_minimal()
+  dev.off()
 
+  contributes = get_pca_ind(res.pca)$contrib
+
+  png(filename = "ContributerSingleDim.png",width=800,height=800)
+  fviz_pca_contrib(res.pca, choice = "var", axes = contribute_axes, top = num_of_var)
+  dev.off()
+
+  png(filename = "ScorePlot.png",width=800,height=800)
+  fviz_pca_ind(res.pca,
+               habillage = p[[color]], addEllipses = TRUE, ellipse.level = 0.95,repel=T,axes = score_axis) +
+    theme_minimal()
+  dev.off()
 
 
 }
