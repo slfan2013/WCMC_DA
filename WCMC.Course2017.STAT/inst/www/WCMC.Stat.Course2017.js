@@ -5,7 +5,6 @@ myApp.controller('ctr',function($scope){
 
 
 
-
 })
 $(function(){
 
