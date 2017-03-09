@@ -1,15 +1,17 @@
 var myApp = angular.module('myApp', ['ngRoute', 'ui.bootstrap']);
 
 myApp.controller('ctr',function($scope){
-  $scope.distance_method = 'euclidean'
-  $scope.minkowski_p = 1.5
-  $scope.cluster_method = "complete"
-  $scope.scale_sample  = true
-  $scope.scale_feature  = true
-  $scope.row_col = "none"
-  $scope.col_col = "none"
-  $scope.row_branchColorNumber = 1
-  $scope.col_branchColorNumber = 1
+
+  $scope.center = true
+  $scope.scale = true
+  $scope.contribute_axes = 1
+  $scope.xaxis = "1"
+  $scope.yaxis = "2"
+  $scope.contribute_axes = "1"
+  $scope.num_of_var = 15
+
+  $scope.plotType = 'Scree'
+
 
 
 
@@ -33,8 +35,8 @@ $('#rawinput').on('blur',function() {
 
 
 	$("#compute").click(function(){
-    $('#output').empty();
-    $("#output").html("<p>No output yet.</p>")
+    $('#text').empty();
+    $("#text").html("<p>No output yet.</p>")
     $("#outputpanelheader").addClass("collapsed")
 		$("#output").removeClass("in");
 		var notready = true;
@@ -42,32 +44,30 @@ $('#rawinput').on('blur',function() {
     var loadSpinner = showSpinner(txt='Computing..');
     var txtinput = $("#rawinput").val().trim();
     var req = ocpu.call("mainApp",{input:txtinput,
-    distance_method : $scope.distance_method,
-                   minkowski_p : $scope.minkowski_p,
-                   cluster_method : $scope.cluster_method,
+                   center:$scope.center,
+                   scale : $scope.scale,
+                   score_axis : [$scope.xaxis,$scope.yaxis],
+                   color : $scope.row_col,
 
-                   scale_feature : $scope.scale_feature,
-                   scale_sample : $scope.scale_sample,
-
-                   row_col : $scope.row_col,
-                   row_branchColorNumber : $scope.row_branchColorNumber,
-
-                   col_col : $scope.col_col,
-                   col_branchColorNumber : $scope.col_branchColorNumber
+                   num_of_var : $scope.num_of_var,
+                   contribute_axes:$scope.contribute_axes
 
     }, function(session) {//calls R function:
 			console.log(session);
+			$scope.$apply(function(){
+			  $scope.session = session.loc
+			})
 			view_address = session.loc + "files/PCA.txt"
-			download_address = session.loc + "files/PCA&Dendrogram.zip"
+			download_address = session.loc + "files/PCA.zip"
 		})
 		.done(function(){
         $("#outputpanelheader").removeClass("collapsed")
         $("#output").addClass( "in" );
-        $("#output").html( "<b style='color:#3C763D;'>Success!</b><br /><div class='well well-sm'><p>NA</p></div><p style='color:grey';'>You can download your result by clicking the Download button.</p><a type='button' href='"+download_address+"' class='btn btn-primary' target='_blank'  download='PCA&Dendrogram.zip'>Download</a>" );
+        $("#text").html( "<b style='color:#3C763D;'>Success!</b><br /><div class='well well-sm'><p>NA</p></div><p style='color:grey';'>You can download your result by clicking the Download button.</p><a type='button' href='"+download_address+"' class='btn btn-primary' target='_blank'  download='PCA&Dendrogram.zip'>Download</a>" );
 		})
 		.fail(function() {
 		  $('#output').empty();
-      $("#output").html("<p>No output yet.</p>")
+      $("#text").html("<p>No output yet.</p>")
       $("#outputpanelheader").addClass("collapsed")
 		  $("#output").removeClass("in");
 		  alert("Error: " + req.responseText)})

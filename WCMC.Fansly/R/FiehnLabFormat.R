@@ -20,11 +20,12 @@ FiehnLabFormat = function(input){
   })),stringsAsFactors = F)
 
   if(t.mode==ts.first.row){
-    col_start = which(diff(as.character(df1[1,])=='')==-1) + 1
+    col_start = which(diff(as.character(df1[1,])=='')==-1)[1] + 1
   }else{
     col_start = t.mode-ts.first.row + 1
   }
-  row_start = which(diff(df1[,1]=='')==-1) + 1
+  row_start = which(diff(df1[,1]=='')==-1)[1] + 1
+
 
 
   if(length(row_start)==0 & col_start ==1){
