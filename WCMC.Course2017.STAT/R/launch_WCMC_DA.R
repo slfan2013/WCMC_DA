@@ -24,5 +24,5 @@ update_childs <- function() {
   devtools::install_github("slfan2013/WCMC_DA/WCMC.Stat.FoldChanges")
   devtools::install_github("slfan2013/WCMC_DA/WCMC.Stat.Boxplot")
   devtools::install_github("slfan2013/WCMC_DA/WCMC.Stat.PCA")
-  devtools::install_github('barupal/metamapp')
+  devtools::install_github("barupal/metamapp")
 }
