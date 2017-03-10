@@ -26,3 +26,10 @@ update_childs <- function() {
   devtools::install_github("slfan2013/WCMC_DA/WCMC.Stat.PCA")
   devtools::install_github("barupal/metamapp")
 }
+
+
+
+
+
+
+
