@@ -16,7 +16,7 @@ install.packages("pacman")
 
 #Install WCMC_DA
 devtools::install_github("slfan2013/WCMC_DA/WCMC.MasterController")
-WCMC.MasterController:update_master()
+WCMC.MasterController::update_master()
 WCMC.Course2017.STAT::update_childs()
 ```
 
@@ -28,7 +28,7 @@ opencpu$browse("library/WCMC.Course2017.STAT/www");
 
 ## To update to the newest version (automatically skip the non-updated files): 
 ```
-WCMC.MasterController:update_master()
+WCMC.MasterController::update_master()
 WCMC.Course2017.STAT::update_childs()
 ```
 
