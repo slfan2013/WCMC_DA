@@ -14,7 +14,7 @@ update_childs <- function() {
   devtools::install_github("slfan2013/WCMC_DA/WCMC.Normalization.log")
   devtools::install_github("slfan2013/WCMC_DA/WCMC.Normalization.Power")
   devtools::install_github("slfan2013/WCMC_DA/WCMC.Normalization.Scale")
-  devtools::install_github("slfan2013/WCMC_DA/WCMC.Stat.tTest")
+  devtools::install_github("slfan2013/WCMC_DA/WCMC.Stat.TTest")
   devtools::install_github("slfan2013/WCMC_DA/WCMC.Stat.PairedTTest")
   devtools::install_github("slfan2013/WCMC_DA/WCMC.Stat.OneWayANOVA")
   devtools::install_github("slfan2013/WCMC_DA/WCMC.Stat.OneWayRepANOVA")
@@ -26,10 +26,3 @@ update_childs <- function() {
   devtools::install_github("slfan2013/WCMC_DA/WCMC.Stat.PCA")
   devtools::install_github("barupal/metamapp")
 }
-
-
-
-
-
-
-
