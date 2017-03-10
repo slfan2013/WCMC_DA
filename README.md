@@ -1,6 +1,6 @@
 # Metabox
 This package is for West Coast Metabolomics Center 2017 Summer Course Statistics Part.
-This package is built as a wrapper of metabox. [paper](http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0171046). [code](https://github.com/kwanjeeraw/metabox)
+
 
 cite:
 Wanichthanarak K, Fan S, Grapov D, Barupal DK, Fiehn O. Metabox: A Toolbox for Metabolomic Data Analysis, Interpretation and Integrative Exploration. PloS one. 2017 Jan 31;12(1):e0171046.
@@ -34,3 +34,5 @@ WCMC.Course2017.STAT::update_childs()
 
 #### please note that the first time running the package will be slow because it downloads all the dependency packages. 
 #### If reporting any bug or requirement, please contact the maintainer through email, slfan at ucdavis dot edu.
+
+This package is built as a wrapper of metabox. [paper](http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0171046) [code](https://github.com/kwanjeeraw/metabox)
