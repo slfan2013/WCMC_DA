@@ -29,7 +29,7 @@ mainApp = function(input, posthocNeeded = T){
     data = data.frame(value=e[j,],var2=p[[group]],id=as.factor(p[[ID]]))
 
     ANOVAp = ezANOVA(data = data,
-            dv = value, wid = id,within = var2, type = 3)$`Sphericity Corrections`[1,"p[GG]"]
+            dv = value, wid = id,within = var2, type = 3)[["Sphericity Corrections"]][1,"p[GG]"]
     # ANOVAp = NULL
     if(posthocNeeded){
       test.temp = pairwise.t.test(paired = T, x = data$value, g = data$var2, p.adjust.method  = "holm")$p.value
