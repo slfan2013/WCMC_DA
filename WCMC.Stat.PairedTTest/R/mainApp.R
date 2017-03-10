@@ -20,7 +20,7 @@ mainApp = function(input){
 
   multicore = T
   if(multicore){
-    cl = makeCluster(min(detectCores(),8))
+    cl = makeCluster(min(detectCores(),2))
   }else{
     cl = makeCluster(1)
   }

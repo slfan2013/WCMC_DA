@@ -14,7 +14,7 @@ mainApp = function(input){
 
   multicore = T
   if(multicore){
-    cl = makeCluster(min(detectCores(),8))
+    cl = makeCluster(min(detectCores(),2))
   }else{
     cl = makeCluster(1)
   }
@@ -25,12 +25,18 @@ mainApp = function(input){
   },e,p,group)
   tTest.FDR=p.adjust(tTest,'fdr')
 
-  result = data.table(f,tTest,tTest.FDR)
+  medians = by(t(e),p[[length(p)]],function(x){
+    sapply(x,median,na.rm=T)
+  })
+  FC = medians[[1]]/medians[[2]]
+
+
+  result = data.table(f,tTest,tTest.FDR,FC)
   rownames(result) = 1:nrow(result)
   if(class(f)=="character"){
-    colnames(result) = c(colnames_f_1,c('p value', 'adjusted p value'))
+    colnames(result) = c(colnames_f_1,c('p value', 'adjusted p value',paste0("FC: ",names(medians)[1],"/",names(medians)[2])))
   }else{
-    colnames(result) = c(colnames(f),c('p value', 'adjusted p value'))
+    colnames(result) = c(colnames(f),c('p value', 'adjusted p value',paste0("FC: ",names(medians)[1],"/",names(medians)[2])))
   }
 
   fwrite(data.table(result),"tTest.csv")

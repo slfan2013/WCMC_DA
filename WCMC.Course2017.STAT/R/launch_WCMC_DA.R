@@ -19,7 +19,7 @@ update_childs <- function() {
   devtools::install_github("slfan2013/WCMC_DA/WCMC.Stat.OneWayANOVA")
   devtools::install_github("slfan2013/WCMC_DA/WCMC.Stat.OneWayRepANOVA")
   devtools::install_github("slfan2013/WCMC_DA/WCMC.Stat.TwoWayANOVA")
-  devtools::install_github("slfan2013/WCMC_DA/WCMC.Stat.TwoWayRepANOVA")
+  # devtools::install_github("slfan2013/WCMC_DA/WCMC.Stat.TwoWayRepANOVA")
   devtools::install_github("slfan2013/WCMC_DA/WCMC.Stat.TwoWayMixedANOVA")
   devtools::install_github("slfan2013/WCMC_DA/WCMC.Stat.FoldChanges")
   devtools::install_github("slfan2013/WCMC_DA/WCMC.Stat.Boxplot")
