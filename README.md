@@ -1,5 +1,5 @@
 # WCMC_DA
-This package is for West Coast Metabolomics Center 2017 Summer Course.
+This package is for West Coast Metabolomics Center 2017 Summer Course Statistics Part.
 ## To Install:
 ```
 #Install dependency packages.
