@@ -76,7 +76,7 @@ $('#rawinput').on('blur',function() {
 
 
 })
-$(function(){var loadSpinner = showSpinner(txt='Computing..');var install= ocpu.call("install",{force:false},function(session){console.log(session)}).always(function(){hideSpinner(loadSpinner)});
+$(function(){
 
 
 $( "#codeToggle" ).click(function() {
