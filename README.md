@@ -21,7 +21,7 @@ library(opencpu);
 opencpu$browse("library/WCMC.Course2017.STAT/www");
 ```
 
-## To update to the newest version (automatically skip non-updated files): 
+## To update to the newest version (automatically skip the non-updated files): 
 ```
 WCMC.MasterController:update_master()
 WCMC.Course2017.STAT::update_childs()
