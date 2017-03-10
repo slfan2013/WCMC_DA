@@ -1,5 +1,6 @@
 # WCMC_DA
-To install:
+This package is for West Coast Metabolomics Center 2017 Summer Course.
+## To Install:
 ```
 #Install dependency packages.
 install.packages('devtools', repos="http://cran.rstudio.com/")
@@ -14,13 +15,13 @@ WCMC.MasterController:update_master()
 WCMC.Course2017.STAT::update_childs()
 ```
 
-To Launch:
+## To Launch:
 ```
 library(opencpu);
 opencpu$browse("library/WCMC.Course2017.STAT/www");
 ```
 
-To update to the newest version (automaticallly skip non-updated files): 
+## To update to the newest version (automaticallly skip non-updated files): 
 ```
 WCMC.MasterController:update_master()
 WCMC.Course2017.STAT::update_childs()
