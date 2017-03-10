@@ -3,7 +3,7 @@ purl <- "http://wcmc-da.fiehnlab.ucdavis.edu/ocpu/library/devtools/R/install_git
 
 
 getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Course2017.STAT")))
-
+getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Fansly")))
 getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Normalization.mTIC")))
 getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Normalization.SampleSpecific")))
 getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Normalization.Quantile")))
@@ -63,3 +63,8 @@ devtools::install_github("barupal/metamapp")
 
 getURL("http://wcmc-da.fiehnlab.ucdavis.edu/ocpu/library/pacman/R/p_load",customrequest='POST',httpheader=c('Content-Type'='application/json'),
        postfields=toJSON(list(char="RCurl")))
+
+getURL("http://wcmc-da.fiehnlab.ucdavis.edu/ocpu/library/pacman/R/p_load",customrequest='POST',httpheader=c('Content-Type'='application/json'),
+       postfields=toJSON(list(char="tidyr")))
+getURL("http://wcmc-da.fiehnlab.ucdavis.edu/ocpu/library/pacman/R/p_load",customrequest='POST',httpheader=c('Content-Type'='application/json'),
+       postfields=toJSON(list(char="ez")))
