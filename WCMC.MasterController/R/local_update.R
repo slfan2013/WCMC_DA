@@ -68,3 +68,9 @@ getURL("http://wcmc-da.fiehnlab.ucdavis.edu/ocpu/library/pacman/R/p_load",custom
        postfields=toJSON(list(char="tidyr")))
 getURL("http://wcmc-da.fiehnlab.ucdavis.edu/ocpu/library/pacman/R/p_load",customrequest='POST',httpheader=c('Content-Type'='application/json'),
        postfields=toJSON(list(char="ez")))
+
+
+
+
+RCurl::getURL("http://wcmc-da.fiehnlab.ucdavis.edu/ocpu/library/utils/R/install.packages",customrequest='POST',httpheader=c('Content-Type'='application/json'),
+       postfields=jsonlite::toJSON(list(pkgs="userfriendlyscience")))

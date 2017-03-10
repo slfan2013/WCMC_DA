@@ -28,9 +28,9 @@ mainApp = function(input, posthocNeeded = T){
 
     data = data.frame(value=e[j,],var2=p[[group]],id=as.factor(p[[ID]]))
 
-    ANOVA.p = ezANOVA(data = data,
-            dv = value, wid = id,within = var2, type = 3)$`Sphericity Corrections`[1,"p[GG]"]
-
+    # ANOVA.p = ezANOVA(data = data,
+    #         dv = value, wid = id,within = var2, type = 3)$`Sphericity Corrections`[1,"p[GG]"]
+    ANOVA.p = NULL
     if(posthocNeeded){
       test.temp = pairwise.t.test(paired = T, x = data$value, g = data$var2, p.adjust.method  = "holm")$p.value
       post_hoc = as.numeric(test.temp)[!is.na(as.numeric(test.temp))]
