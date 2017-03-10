@@ -15,7 +15,7 @@ mainApp = function(input, posthocNeeded = T){
   e = as.matrix(e)
 
 
-  multicore = T
+  multicore = F
   if(multicore){
     cl = makeCluster(min(detectCores(),2))
   }else{
@@ -29,7 +29,7 @@ mainApp = function(input, posthocNeeded = T){
     data = data.frame(value=e[j,],var2=p[[group]],id=as.factor(p[[ID]]))
 
     ANOVA.p = ezANOVA(data = data,
-            dv = value, wid = id,within = .(var2), type = 3)$`Sphericity Corrections`[1,"p[GG]"]
+            dv = value, wid = id,within = var2, type = 3)$`Sphericity Corrections`[1,"p[GG]"]
 
     if(posthocNeeded){
       test.temp = pairwise.t.test(paired = T, x = data$value, g = data$var2, p.adjust.method  = "holm")$p.value
