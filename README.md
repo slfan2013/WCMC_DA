@@ -32,7 +32,7 @@ WCMC.MasterController:update_master()
 WCMC.Course2017.STAT::update_childs()
 ```
 
-#### please note that the first time running will be slow depending on the internet because it downloads all the dependency packages. 
+#### please note that the first time running will be slow depending on the internet because it needs to download all the dependency packages. 
 #### If reporting any bug or requirement, please contact the maintainer through email, slfan at ucdavis dot edu.
 
 This package is built as a wrapper of [metabox](http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0171046) [code](https://github.com/kwanjeeraw/metabox).
