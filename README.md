@@ -27,4 +27,4 @@ WCMC.MasterController:update_master()
 WCMC.Course2017.STAT::update_childs()
 ```
 
-#### please note that the first time running the package will be slow because it downloads all the dependency packages. If any bug or other requirement, please contact the maintainer through email, slfan at ucdavis dot edu.
+#### please note that the first time running the package will be slow because it downloads all the dependency packages. If reporting any bug or requirement, please contact the maintainer through email, slfan at ucdavis dot edu.
