@@ -18,7 +18,12 @@ mainApp = function(input,
   f = data.$f
   p = data.$p
 
-  p = p[,c(2,3)] # this makes the group1 the first column and the group2 2nd column.
+  if(twoway){
+    p = p[,c(2,3)] # this makes the group1 the first column and the group2 2nd column.
+  }else{
+    p = p[2]
+  }
+
 
   # e = fread("e.csv")[,-1]
   # f = fread("f.csv")[,-1]
@@ -100,10 +105,21 @@ mainApp = function(input,
 
   }else{
     if(is.null(factor_order1)||is.na(factor_order1)){
-      factor_order1 = unique(p[[group1]])
+      factor_order1 = unique(p[[1]])
     }else{
       factor_order1 = strsplit(factor_order1, ",")[[1]]
     }
+    tot.n = length(factor_order1)
+    m=1
+    at.x = vector()
+    for(i in 1:(tot.n+length(factor_order2))){
+      if(!(i%%(length(factor_order1)+1)==0)){
+        at.x[m] = m
+      }
+      m=m+1
+    }
+    at.x = at.x[!is.na(at.x)]
+    text.pos.x = 1:length(factor_order1)
 
     if(draw_single){
       index=which(gsub(" ", "", f[[1]], fixed = TRUE)%in%gsub(" ", "", compoundName, fixed = TRUE))[1]
