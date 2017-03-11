@@ -1,5 +1,7 @@
 purl <- "http://wcmc-da.fiehnlab.ucdavis.edu/ocpu/library/devtools/R/install_github"
 
+library(RCurl)
+library(jsonlite)
 
 
 getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Course2017.STAT")))
@@ -73,4 +75,4 @@ getURL("http://wcmc-da.fiehnlab.ucdavis.edu/ocpu/library/pacman/R/p_load",custom
 
 
 RCurl::getURL("http://wcmc-da.fiehnlab.ucdavis.edu/ocpu/library/utils/R/install.packages",customrequest='POST',httpheader=c('Content-Type'='application/json'),
-       postfields=jsonlite::toJSON(list(pkgs="userfriendlyscience")))
+       postfields=jsonlite::toJSON(list(pkgs="plyr")))
