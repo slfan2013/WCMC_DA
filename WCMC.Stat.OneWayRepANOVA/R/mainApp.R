@@ -24,7 +24,7 @@ mainApp = function(input, posthocNeeded = T){
 
   ID = colnames(p)[3]
   group=colnames(p)[2]
-  ANOVA = parSapply(cl,1:nrow(e),function(j,e,p,group,ezANOVA,ID,posthocNeeded){
+  ANOVA = parSapply(cl,1:nrow(e),function(j,e,p,group,ezANOVA,ID,posthocNeeded,.){
 
     data = data.frame(value=e[j,],var2=p[[group]],id=as.factor(p[[ID]]))
 
@@ -40,7 +40,7 @@ mainApp = function(input, posthocNeeded = T){
 
     return(c(ANOVAp, post_hoc))
 
-  },e,p,group,ezANOVA,ID,posthocNeeded)
+  },e,p,group,ezANOVA,ID,posthocNeeded,.)
 
   if(posthocNeeded){
     ANOVA = t(ANOVA)

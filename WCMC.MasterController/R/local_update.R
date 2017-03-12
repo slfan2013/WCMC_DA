@@ -83,7 +83,7 @@ RCurl::getURL("http://wcmc-da.fiehnlab.ucdavis.edu/ocpu/library/utils/R/install.
 
 for(i in rownames(installed.packages())){
   RCurl::getURL("http://wcmc-da.fiehnlab.ucdavis.edu/ocpu/library/utils/R/install.packages",customrequest='POST',httpheader=c('Content-Type'='application/json'),
-                postfields=jsonlite::toJSON(list(pkgs=i)))
+                postfields=jsonlite::toJSON(list(pkgs="RCurl")))
   print(i)
 }
 
