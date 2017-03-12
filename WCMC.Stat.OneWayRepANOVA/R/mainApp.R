@@ -25,7 +25,7 @@ mainApp = function(input, posthocNeeded = T){
   ID = colnames(p)[3]
   group=colnames(p)[2]
 
-
+  clusterExport(cl, list("."))
 
 
   ANOVA = parSapply(cl,1:nrow(e),function(j,e,p,group,ezANOVA,ID,posthocNeeded){
