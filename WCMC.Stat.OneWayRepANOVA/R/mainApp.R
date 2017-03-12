@@ -26,17 +26,15 @@ mainApp = function(input, posthocNeeded = T){
   group=colnames(p)[2]
 
 
-  clusterEvalQ(cl, {
-    . = .()
-  })
 
-  ANOVA = parSapply(cl,1:nrow(e),function(j,e,p,group,ezANOVA,ID,posthocNeeded,.){
-    .(a, b, c)
+
+  ANOVA = parSapply(cl,1:nrow(e),function(j,e,p,group,ezANOVA,ID,posthocNeeded){
+    # .(a, b, c)
 
     data = data.frame(value=e[j,],var2=p[[group]],id=as.factor(p[[ID]]))
 
 
-    ANOVAp = 1
+    # ANOVAp = 1
     ANOVAp = ezANOVA(data = data,
             dv = value, wid = id,within = var2, type = 3)[["Sphericity Corrections"]][1,"p[GG]"]
     # ANOVAp = NULL
@@ -49,7 +47,7 @@ mainApp = function(input, posthocNeeded = T){
 
     return(c(ANOVAp, post_hoc))
 
-  },e,p,group,ezANOVA,ID,posthocNeeded,.)
+  },e,p,group,ezANOVA,ID,posthocNeeded)
 
   if(posthocNeeded){
     ANOVA = t(ANOVA)
