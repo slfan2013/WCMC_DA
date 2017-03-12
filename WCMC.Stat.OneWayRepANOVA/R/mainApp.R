@@ -14,6 +14,7 @@ mainApp = function(input, posthocNeeded = T){
 
   e = as.matrix(e)
 
+  .(a, b, c)
 
   multicore = T
   if(multicore){
