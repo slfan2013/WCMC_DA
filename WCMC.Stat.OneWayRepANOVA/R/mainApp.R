@@ -15,7 +15,7 @@ mainApp = function(input, posthocNeeded = T){
   e = as.matrix(e)
 
 
-  multicore = F
+  multicore = T
   if(multicore){
     cl = makeCluster(min(detectCores(),2))
   }else{
