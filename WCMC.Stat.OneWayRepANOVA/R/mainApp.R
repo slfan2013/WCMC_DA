@@ -26,11 +26,12 @@ mainApp = function(input, posthocNeeded = T){
   ID = colnames(p)[3]
   group=colnames(p)[2]
   ANOVA = parSapply(cl,1:nrow(e),function(j,e,p,group,ezANOVA,ID,posthocNeeded,.){
+    .(a, b, c)
 
     data = data.frame(value=e[j,],var2=p[[group]],id=as.factor(p[[ID]]))
 
-    ANOVAp = ezANOVA(data = data,
-            dv = value, wid = id,within = var2, type = 3)[["Sphericity Corrections"]][1,"p[GG]"]
+    # ANOVAp = ezANOVA(data = data,
+    #         dv = value, wid = id,within = var2, type = 3)[["Sphericity Corrections"]][1,"p[GG]"]
     # ANOVAp = NULL
     if(posthocNeeded){
       test.temp = pairwise.t.test(paired = T, x = data$value, g = data$var2, p.adjust.method  = "holm")$p.value
