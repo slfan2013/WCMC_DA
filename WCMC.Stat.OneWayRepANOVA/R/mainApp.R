@@ -26,14 +26,9 @@ mainApp = function(input, posthocNeeded = T){
   group=colnames(p)[2]
 
 
-  data = data.frame(value=e[1,],var2=p[[group]],id=as.factor(p[[ID]]))
-
-
-  ANOVAp = ezANOVA(data = data,
-                   dv = value, wid = id,within = var2, type = 3)[["Sphericity Corrections"]][1,"p[GG]"]
-
-
-
+  clusterEvalQ(cl, {
+    .
+  })
 
   ANOVA = parSapply(cl,1:nrow(e),function(j,e,p,group,ezANOVA,ID,posthocNeeded,.){
     .(a, b, c)
