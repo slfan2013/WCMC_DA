@@ -14,7 +14,6 @@ mainApp = function(input, posthocNeeded = T){
 
   e = as.matrix(e)
 
-  .(a, b, c)
 
   multicore = T
   if(multicore){
@@ -25,6 +24,17 @@ mainApp = function(input, posthocNeeded = T){
 
   ID = colnames(p)[3]
   group=colnames(p)[2]
+
+
+  data = data.frame(value=e[1,],var2=p[[group]],id=as.factor(p[[ID]]))
+
+
+  ANOVAp = ezANOVA(data = data,
+                   dv = value, wid = id,within = var2, type = 3)[["Sphericity Corrections"]][1,"p[GG]"]
+
+
+
+
   ANOVA = parSapply(cl,1:nrow(e),function(j,e,p,group,ezANOVA,ID,posthocNeeded,.){
     .(a, b, c)
 
@@ -32,8 +42,8 @@ mainApp = function(input, posthocNeeded = T){
 
 
     ANOVAp = 1
-    # ANOVAp = ezANOVA(data = data,
-    #         dv = value, wid = id,within = var2, type = 3)[["Sphericity Corrections"]][1,"p[GG]"]
+    ANOVAp = ezANOVA(data = data,
+            dv = value, wid = id,within = var2, type = 3)[["Sphericity Corrections"]][1,"p[GG]"]
     # ANOVAp = NULL
     if(posthocNeeded){
       test.temp = pairwise.t.test(paired = T, x = data$value, g = data$var2, p.adjust.method  = "holm")$p.value
