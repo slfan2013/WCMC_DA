@@ -27,7 +27,7 @@ mainApp = function(input, posthocNeeded = T){
 
 
   clusterEvalQ(cl, {
-    .
+    . = .()
   })
 
   ANOVA = parSapply(cl,1:nrow(e),function(j,e,p,group,ezANOVA,ID,posthocNeeded,.){
