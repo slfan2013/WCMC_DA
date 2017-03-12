@@ -30,6 +30,8 @@ mainApp = function(input, posthocNeeded = T){
 
     data = data.frame(value=e[j,],var2=p[[group]],id=as.factor(p[[ID]]))
 
+
+    ANOVAp = 1
     # ANOVAp = ezANOVA(data = data,
     #         dv = value, wid = id,within = var2, type = 3)[["Sphericity Corrections"]][1,"p[GG]"]
     # ANOVAp = NULL
