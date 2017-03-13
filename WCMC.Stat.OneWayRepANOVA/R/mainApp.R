@@ -92,5 +92,4 @@ mainApp = function(input, posthocNeeded = T){
 
   return(result)
 
-  # return(search())
 }
