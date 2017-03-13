@@ -35,6 +35,7 @@ mainApp = function(input, posthocNeeded = T){
       }
       return(c(ANOVAp, post_hoc))
     },e,p,group,ezANOVA,ID,posthocNeeded)
+    stopCluster(cl)
   }else{
     ANOVA = NULL
     for(j in 1:nrow(e)){
@@ -52,12 +53,6 @@ mainApp = function(input, posthocNeeded = T){
       ANOVA = cbind(ANOVA,c(ANOVAp,post_hoc))
     }
   }
-
-
-
-
-
-
   if(posthocNeeded){
     ANOVA = t(ANOVA)
     data = data.frame(value=e[1,],var2=p[[group]],id=as.factor(p[[ID]]))
@@ -93,7 +88,7 @@ mainApp = function(input, posthocNeeded = T){
   fwrite(data.table(result),"OneWayRepANOVA.txt",sep = "\t")
 
 
-  stopCluster(cl)
+
 
   return(result)
 
