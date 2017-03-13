@@ -4,14 +4,8 @@
 #   Check Package:             'Ctrl + Shift + E'
 #   Test Package:              'Ctrl + Shift + T'
 mainApp = function(input, posthocNeeded = T){
-
   library(pacman)
-  # pacman::p_load(data.table,parallel,userfriendlyscience,ez,plyr)
-  library(data.table)
-  library(parallel)
-  library(userfriendlyscience)
-  library(ez)
-  library(plyr)
+  pacman::p_load(data.table,parallel,userfriendlyscience,ez,plyr)
   # read.data
   data. = WCMC.Fansly::MetaboAnalystFormat(input,row_start = 3)
   e = data.$e
@@ -31,6 +25,7 @@ mainApp = function(input, posthocNeeded = T){
   ID = colnames(p)[3]
   group=colnames(p)[2]
 
+  clusterEvalQ(cl, library(ez))
   clusterExport(cl, list(".","ezANOVA"))
 
 
