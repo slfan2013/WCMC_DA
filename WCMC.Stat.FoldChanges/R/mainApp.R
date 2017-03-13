@@ -36,7 +36,7 @@ mainApp = function(input,method="median"){
 
 
 
-  # multicore = T
+  # multicore = Sys.info()['sysname']=="Windows"
   # if(multicore){
   #   cl = makeCluster(min(detectCores(),2))
   # }else{

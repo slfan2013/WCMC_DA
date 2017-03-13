@@ -15,41 +15,48 @@ mainApp = function(input, posthocNeeded = T){
 
   e = as.matrix(e)
 
-
-  multicore = T
-  if(multicore){
-    cl = makeCluster(min(detectCores(),2))
-  }else{
-    cl = makeCluster(1)
-  }
-
   ID = colnames(p)[3]
   group=colnames(p)[2]
 
-  clusterEvalQ(cl, library("ez"))
-  clusterExport(cl, list(".","ezANOVA"))
+  multicore = Sys.info()['sysname']=="Windows"
+  if(multicore){
+    cl = makeCluster(min(detectCores(),20))
+    ANOVA = parSapply(cl,1:nrow(e),function(j,e,p,group,ezANOVA,ID,posthocNeeded){
+      data = data.frame(value=e[j,],var2=p[[group]],id=as.factor(p[[ID]]))
 
+      ANOVAp = ezANOVA(data = data,
+                       dv = value, wid = id,within = var2, type = 3)[["Sphericity Corrections"]][1,"p[GG]"]
 
-  ANOVA = parSapply(cl,1:nrow(e),function(j,e,p,group,ezANOVA,ID,posthocNeeded){
-    # .(a, b, c)
-    attach(NULL, name="tools:rstudio")
-    data = data.frame(value=e[j,],var2=p[[group]],id=as.factor(p[[ID]]))
+      if(posthocNeeded){
+        test.temp = pairwise.t.test(paired = T, x = data$value, g = data$var2, p.adjust.method  = "holm")$p.value
+        post_hoc = as.numeric(test.temp)[!is.na(as.numeric(test.temp))]
+      }else{
+        post_hoc=NULL
+      }
+      return(c(ANOVAp, post_hoc))
+    },e,p,group,ezANOVA,ID,posthocNeeded)
+  }else{
+    ANOVA = NULL
+    for(j in 1:nrow(e)){
+      data = data.frame(value=e[j,],var2=p[[group]],id=as.factor(p[[ID]]))
 
+      ANOVAp = ezANOVA(data = data,
+                       dv = value, wid = id,within = var2, type = 3)[["Sphericity Corrections"]][1,"p[GG]"]
 
-    # ANOVAp = 1
-    ANOVAp = ezANOVA(data = data,
-            dv = value, wid = id,within = var2, type = 3)[["Sphericity Corrections"]][1,"p[GG]"]
-    # ANOVAp = NULL
-    if(posthocNeeded){
-      test.temp = pairwise.t.test(paired = T, x = data$value, g = data$var2, p.adjust.method  = "holm")$p.value
-      post_hoc = as.numeric(test.temp)[!is.na(as.numeric(test.temp))]
-    }else{
-      post_hoc=NULL
+      if(posthocNeeded){
+        test.temp = pairwise.t.test(paired = T, x = data$value, g = data$var2, p.adjust.method  = "holm")$p.value
+        post_hoc = as.numeric(test.temp)[!is.na(as.numeric(test.temp))]
+      }else{
+        post_hoc=NULL
+      }
+      ANOVA = cbind(ANOVA,c(ANOVAp,post_hoc))
     }
+  }
 
-    return(c(ANOVAp, post_hoc))
 
-  },e,p,group,ezANOVA,ID,posthocNeeded)
+
+
+
 
   if(posthocNeeded){
     ANOVA = t(ANOVA)

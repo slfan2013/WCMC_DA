@@ -12,7 +12,7 @@ mainApp = function(input,posthocNeeded = T){
   f = data.$f
   p = data.$p
 
-  multicore = T
+  multicore = Sys.info()['sysname']=="Windows"
   if(multicore){
     cl = makeCluster(min(detectCores(),2))
   }else{

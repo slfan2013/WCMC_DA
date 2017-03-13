@@ -22,7 +22,7 @@ mainApp = function(input,
   # }))
 
 
-  multicore = T
+  multicore = Sys.info()['sysname']=="Windows"
   if(multicore){
     cl = makeCluster(min(detectCores(),20))
   }else{
