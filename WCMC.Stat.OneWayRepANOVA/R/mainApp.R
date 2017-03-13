@@ -26,7 +26,7 @@ mainApp = function(input, posthocNeeded = T){
   ID = colnames(p)[3]
   group=colnames(p)[2]
 
-  clusterEvalQ(cl, library(ez))
+  clusterEvalQ(cl, library("ez"))
   clusterExport(cl, list(".","ezANOVA"))
 
 
