@@ -4,7 +4,7 @@
 #   Check Package:             'Ctrl + Shift + E'
 #   Test Package:              'Ctrl + Shift + T'
 mainApp = function(input, posthocNeeded = T){
-  library(pacman)
+  # library(pacman)
   # pacman::p_load(data.table,parallel,userfriendlyscience,ez,plyr)
   library(data.table)
   library(parallel)
