@@ -32,12 +32,17 @@ mainApp = function(input){
   },e,p,group)
   PairedTtest.FDR=p.adjust(PairedTtest,'fdr')
 
-  result = data.table(f,PairedTtest,PairedTtest.FDR)
+  medians = by(t(e),p[[2]],function(x){
+    sapply(x,median,na.rm=T)
+  })
+  FC = medians[[1]]/medians[[2]]
+
+  result = data.table(f,PairedTtest,PairedTtest.FDR,FC)
   rownames(result) = 1:nrow(result)
   if(class(f)=="character"){
-    colnames(result) = c(colnames_f_1,c('p value', 'adjusted p value'))
+    colnames(result) = c(colnames_f_1,c('p value', 'adjusted p value',paste0("FC: ",names(medians)[1],"/",names(medians)[2])))
   }else{
-    colnames(result) = c(colnames(f),c('p value', 'adjusted p value'))
+    colnames(result) = c(colnames(f),c('p value', 'adjusted p value',paste0("FC: ",names(medians)[1],"/",names(medians)[2])))
   }
 
   fwrite(data.table(result),"PairedTtest.csv")
