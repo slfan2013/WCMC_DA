@@ -27,9 +27,9 @@ mainApp = function(input,
   f = data.$f
   p = data.$p
 
-  # e = fread("e.csv")[,-1]
-  # f = fread("f.csv")[,-1]
-  # p = fread("p.csv")[,-1]
+  # e = fread("C:\\Users\\fansi\\Desktop\\mx 300486_Ganeshan\\GC\\e.csv")[,-1]
+  # f = fread("C:\\Users\\fansi\\Desktop\\mx 300486_Ganeshan\\GC\\f.csv")[,-1]
+  # p = fread("C:\\Users\\fansi\\Desktop\\mx 300486_Ganeshan\\GC\\p.csv")[,-1]
 
   e = as.matrix(e)
 
