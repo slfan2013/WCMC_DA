@@ -21,6 +21,7 @@ $('#rawinput').on('blur',function() {
   var txtinput = $("#rawinput").val().trim();
   var req = ocpu.call("secondApp",{input:txtinput}, function(session) {//This function is designed for the column names of p and f.
     session.getObject(function(obj){
+		console.log(session)
       $scope.$apply(function(){
         $scope.colnames_p = obj.colnames_p
         $scope.colnames_f = obj.colnames_f
