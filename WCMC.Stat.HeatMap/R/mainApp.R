@@ -166,7 +166,7 @@ mainApp = function(input,
   # HEATMAP
   # some_col_func <- function(n) rev(colorspace::heat_hcl(n, c = c(80, 30), l = c(30, 90),
   #                                                       power = c(1/5, 1.5)))
-  some_col_func <- colorRampPalette(c('red','green'))
+  some_col_func <- colorRampPalette(c('green','red'))
 
 
   order.dendrogram(dend_row)= 1:nrow(p)
