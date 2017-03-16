@@ -8,6 +8,7 @@ Wanichthanarak K, Fan S, Grapov D, Barupal DK, Fiehn O. Metabox: A Toolbox for M
 Software requirement: [R](https://www.r-project.org/about.html) (and [RTools](https://github.com/stan-dev/rstan/wiki/Install-Rtools-for-Windows) for Windows Users).
 ## To Install:
 ```
+shell("zip") # Some packages ask for zip. If error returns, visit https://cran.r-project.org/web/packages/openxlsx/vignettes/Introduction.pdf.
 #Install dependency packages.
 install.packages('devtools', repos="http://cran.rstudio.com/")
 library(devtools)
