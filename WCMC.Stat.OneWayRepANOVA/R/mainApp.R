@@ -18,7 +18,7 @@ mainApp = function(input, posthocNeeded = T){
   ID = colnames(p)[3]
   group=colnames(p)[2]
 
-  multicore = Sys.info()['sysname']=="Windows"
+  multicore = T
   if(multicore){
     cl = makeCluster(min(detectCores(),20))
     ANOVA = parSapply(cl,1:nrow(e),function(j,e,p,group,ezANOVA,ID,posthocNeeded){

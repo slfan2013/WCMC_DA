@@ -22,7 +22,7 @@ mainApp = function(input,
   # }))
 
 
-  multicore = Sys.info()['sysname']=="Windows"
+  multicore = T
   if(multicore){
     cl = makeCluster(min(detectCores(),20))
     twowayMixedANOVA = parSapply(cl,1:nrow(e),function(j,e,p,ezANOVA){

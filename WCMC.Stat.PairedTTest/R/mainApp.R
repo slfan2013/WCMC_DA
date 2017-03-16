@@ -18,7 +18,7 @@ mainApp = function(input){
   e = e[,order(p[[3]])]
   p = p[order(p[[3]]),]
 
-  multicore = Sys.info()['sysname']=="Windows"
+  multicore = T
   if(multicore){
     cl = makeCluster(min(detectCores(),20))
   }else{

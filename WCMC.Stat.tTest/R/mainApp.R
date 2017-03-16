@@ -12,7 +12,7 @@ mainApp = function(input){
   f = data.$f
   p = data.$p
 
-  multicore = Sys.info()['sysname']=="Windows"
+  multicore = T
   if(multicore){
     cl = makeCluster(min(detectCores(),20))
   }else{
