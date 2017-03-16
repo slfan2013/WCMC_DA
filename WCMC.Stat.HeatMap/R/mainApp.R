@@ -214,7 +214,7 @@ mainApp = function(input,
 
 
 
-  zip(zipfile = "HeatMap&Dendrogram.zip",files = c("Dendrogram_col.csv",
+  zip(zipfile = "HeatMap_Dendrogram.zip",files = c("Dendrogram_col.csv",
                                                    "Dendrogram_Compound.pdf",
                                                    "Dendrogram_row.csv",
                                                    "Dendrogram_Sample.pdf",
