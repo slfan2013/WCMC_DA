@@ -34,7 +34,7 @@ WCMC.MasterController::update_master()
 WCMC.Course2017.STAT::update_childs()
 ```
 ## To Report Bugs or Provide Suggestions:
-Pl
+Please go to https://github.com/slfan2013/WCMC_DA/issues, and thanks for your contribution.
 
 
 #### please note that the first time running will be slow depending on the internet because it needs to download all the dependency packages. 
