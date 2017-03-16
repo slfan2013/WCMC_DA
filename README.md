@@ -5,7 +5,7 @@ This package is for West Coast Metabolomics Center 2017 Summer Course Statistics
 cite:
 Wanichthanarak K, Fan S, Grapov D, Barupal DK, Fiehn O. Metabox: A Toolbox for Metabolomic Data Analysis, Interpretation and Integrative Exploration. PloS one. 2017 Jan 31;12(1):e0171046.
 
-Software requirement: [R](https://www.r-project.org/about.html) and [RTools](https://github.com/stan-dev/rstan/wiki/Install-Rtools-for-Windows) (for Windows Users).
+Software requirement: [R](https://www.r-project.org/about.html) and ([RTools](https://github.com/stan-dev/rstan/wiki/Install-Rtools-for-Windows) for Windows Users).
 ## To Install:
 ```
 #Install dependency packages.
