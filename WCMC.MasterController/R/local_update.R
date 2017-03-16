@@ -5,7 +5,7 @@ foo = function(){
   library(jsonlite)
 
 
-  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Course2017.STAT")))
+  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Course2017.STAT",force=T)))
   getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Fansly")))
   getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Normalization.mTIC")))
   getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Normalization.SampleSpecific")))
