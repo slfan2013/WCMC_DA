@@ -33,8 +33,10 @@ opencpu$browse("library/WCMC.Course2017.STAT/www");
 WCMC.MasterController::update_master()
 WCMC.Course2017.STAT::update_childs()
 ```
+## To Report Bugs or Provide Suggestions:
+Please go to https://github.com/slfan2013/WCMC_DA/issues OR contact the maintainer through email, slfan at ucdavis dot edu, and thanks for your contribution.
+
 
 #### please note that the first time running will be slow depending on the internet because it needs to download all the dependency packages. 
-#### If reporting any bug or requirement, please contact the maintainer through email, slfan at ucdavis dot edu.
 
 This package is built as a wrapper of [metabox](http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0171046) [code](https://github.com/kwanjeeraw/metabox).
