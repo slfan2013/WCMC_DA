@@ -5,34 +5,34 @@ FiehnLabFormat = function(input){
   input = gsub("\r","",input)
   cfile = strsplit(input,"\n")[[1]]
 
-  ts = sapply(regmatches(cfile, gregexpr("\t", cfile)),length)
-  t.mode = unique(ts)[which.max(tabulate(match(ts, unique(ts))))]
-  ts.first.row = ts[1]
-  cfile[[1]] = paste0(paste0(rep('\t',t.mode-ts.first.row),collapse = ''),cfile[[1]],collapse = '')
 
+    ts = sapply(regmatches(cfile, gregexpr("\t", cfile)),length)
+    t.mode = unique(ts)[which.max(tabulate(match(ts, unique(ts))))]
+    ts.first.row = ts[1]
+    cfile[[1]] = paste0(paste0(rep('\t',t.mode-ts.first.row),collapse = ''),cfile[[1]],collapse = '')
 
-  df1 = as.data.frame(do.call(rbind,lapply(cfile,function(x){
-    # if "BinBase name\tret.index\tquant mz\tBB id\tmass spec\tPubChem\tKEGG\tInChI Key\t", then last \t would be excluded.
-    if(str_sub(x,-1,-1)=="\t"){
-      x = paste0(x,"\t")
+    df1 = as.data.frame(do.call(rbind,lapply(cfile,function(x){
+      # if "BinBase name\tret.index\tquant mz\tBB id\tmass spec\tPubChem\tKEGG\tInChI Key\t", then last \t would be excluded.
+      if(str_sub(x,-1,-1)=="\t"){
+        x = paste0(x,"\t")
+      }
+      strsplit(x,"\t")[[1]]
+    })),stringsAsFactors = F)
+
+    if(t.mode==ts.first.row){
+      col_start = which(diff(as.character(df1[1,])=='')==-1)[1] + 1
+    }else{
+      col_start = t.mode-ts.first.row + 1
     }
-    strsplit(x,"\t")[[1]]
-  })),stringsAsFactors = F)
+    row_start = which(diff(df1[,1]=='')==-1)[1] + 1
 
-  if(t.mode==ts.first.row){
-    col_start = which(diff(as.character(df1[1,])=='')==-1)[1] + 1
-  }else{
-    col_start = t.mode-ts.first.row + 1
-  }
-  row_start = which(diff(df1[,1]=='')==-1)[1] + 1
+    if(length(row_start)==0 & col_start ==1){
+      row_start = 1
+    }else if(length(row_start)==0 | is.na(col_start) | is.na(row_start)){
+      stop("There is an error in the input format. Please click the '!' icon (next to 'Example Data File') for more information.")
+    }
 
 
-
-  if(length(row_start)==0 & col_start ==1){
-    row_start = 1
-  }else if(length(row_start)==0){
-    stop("There is an error in the input format. Please click the '!' icon (next to 'Example Data File') for more information.")
-  }
 
   p = t(df1[1:(row_start-1),col_start:ncol(df1)])
   colnames(p) = p[1,]
