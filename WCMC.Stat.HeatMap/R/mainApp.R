@@ -213,8 +213,8 @@ mainApp = function(input,
   fwrite(data.table(result_col),"Dendrogram_col.txt",sep = "\t")
 
 
-
-  zip(zipfile = "HeatMap_Dendrogram.zip",files = c("Dendrogram_col.csv",
+  # shell("zip")
+  zip(zipfile = "HeatMap&Dendrogram.zip",files = c("Dendrogram_col.csv",
                                                    "Dendrogram_Compound.pdf",
                                                    "Dendrogram_row.csv",
                                                    "Dendrogram_Sample.pdf",
