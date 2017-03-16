@@ -60,6 +60,7 @@ FiehnLabFormat = function(input){
   }
   rownames(f) = 1:nrow(f)
   f[[length(f)]] = make.names(f[[length(f)]],unique = T)
+  colnames(f)[ncol(f)] = "compound label"
 
 
   write.csv(f,"f.csv")

@@ -104,7 +104,7 @@ mainApp = function(input,
       data_col = as.matrix(e)
     }
 
-    rownames(data_col) = f[[1]]
+    rownames(data_col) = f$`compound label`
     d_e <- dist(data_col, method = distance_method)
     hc_iris_col <- hclust(d_e, method = cluster_method)
     iris_species <- rev(levels(as.factor(p[[col_col]])))
@@ -133,10 +133,10 @@ mainApp = function(input,
 
     # Change Label
     if(length(as.character(f[[col_col]]))==0){
-      labels(dend_col) <- f[[1]][order.dendrogram(dend_col)]
+      labels(dend_col) <- f$`compound label`[order.dendrogram(dend_col)]
     }else{
       labels(dend_col) <- paste(as.character(f[[col_col]])[order.dendrogram(dend_col)],
-                                "(",f[[1]][order.dendrogram(dend_col)],")",
+                                "(",f$`compound label`[order.dendrogram(dend_col)],")",
                                 sep = "")
     }
 
