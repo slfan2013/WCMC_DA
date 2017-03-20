@@ -1,0 +1,11 @@
+sample label,PCA_color,Normality_factor,RSD
+sample1,factor1,factor1,TRUE
+sample2,factor1,factor1,TRUE
+sample3,factor1,factor1,TRUE
+sample4,factor1,factor1,FALSE
+sample5,factor1,factor1,FALSE
+sample6,factor2,factor2,FALSE
+sample7,factor2,factor2,FALSE
+sample8,factor2,factor2,FALSE
+sample9,factor2,factor2,FALSE
+sample10,factor2,factor2,FALSE

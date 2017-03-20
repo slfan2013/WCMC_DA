@@ -15,7 +15,7 @@ mainApp = function(input, base = exp(1)){
 
 
 
-  result = log(data,base = eval(parse(text=base)))
+  result = log(data+1,base = eval(parse(text=base)))
 
 
   result = cbind(data.frame(df1[,1]),result)

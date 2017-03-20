@@ -36,7 +36,7 @@ mainApp = function(input,
 
   #pca
   res.pca <- prcomp(t(e),center = center, scale = scale)
-  eig.val <- get_eigenvalue(res.pca)
+  # eig.val <- get_eigenvalue(res.pca)
 
 
 
@@ -68,7 +68,6 @@ mainApp = function(input,
                        res = 300) +
             theme_minimal())
   }
-
   dev.off()
 
   scores = res.pca$x

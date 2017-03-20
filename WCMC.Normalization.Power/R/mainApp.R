@@ -15,7 +15,7 @@ mainApp = function(input, power = "1/3"){
 
 
 
-  result = data^eval(parse(text=power))
+  result = (data+1)^eval(parse(text=power))
 
 
   result = cbind(data.frame(df1[,1]),result)

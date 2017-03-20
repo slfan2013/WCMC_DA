@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Normalization </title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+	<script src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.2.0.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-resource.min.js"></script>
+  <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="spin.js"></script>
+  <script type="text/javascript" src="spinner.js"></script>
+  <script type="text/javascript" src="opencpu-0.5.js"></script>
+  <script type="text/javascript" src="WCMC.Normalization.js"></script>
+
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <link href="sb-admin-2.min.css" rel="stylesheet">
+  <link href="font-awesome.css" rel="stylesheet">
+  <link href="WCMC.Normalization.css" rel="stylesheet">
+</head>
+
+<body ng-controller="ctr">
+
+  <div >
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Normalization: Apply multiple normailzation methods at once.</a>
+        </div>
+    </nav>
+
+
+    <div>
+      <div class="container-fluid">
+        <!-- Page Heading -->
+        <div class="row">
+          <div class="col-lg-12">
+          </div>
+        </div>
+        <!-- /.row -->
+        <!-- Main content -->
+
+		<div class="row"> <!-- Data File Input -->
+          <div class="col-lg-12">
+            <div class="panel panel-info">
+              <div class="panel-heading">
+                <h3 class="panel-title"><a data-toggle="collapse" data-target="#input" href="#">Input</a></h3>
+              </div>
+              <div id="input" class="panel-body collapse in">
+                <form role="form">
+                  <div class="form-group">
+                    <textarea class="form-control" id="rawinput" name="txtinput" rows="5" placeholder = "paste your input here."></textarea>
+                    <span for="rawinput"><a href="sample.txt" target="_blank"> Example Data File </a></span><a href="instruction.png" target="_blank" data-toggle="tooltip" data-placement="bottom" data-html="true" title="format explaination"><i class="fa fa-question-circle"></i></a>&nbsp;<a href="template.xlsx" target="_blank" data-toggle="tooltip" data-placement="bottom" data-html="true" title="download format"><i class="fa fa-download"></i></a>
+                    <p></p>
+              </div>
+                <div class="form-group">
+                    <label>Normalization Methods:</label>
+                    <div class="checkbox" ng-repeat="normalizationMethod in normalizationMethods">
+                        <label>
+                            <input type="checkbox" value="{{normalizationMethod}}"
+                            ng-checked="normalizationMethodsSelection.indexOf(normalizationMethod)>-1"
+                            ng-click="togglenormalizationMethodsSelection(normalizationMethod)">{{normalizationMethod}}
+                        </label>
+                        <span style="font-style: italic;" ng-show="normalizationMethodsSelection.indexOf('SampleSpecific')>-1 && normalizationMethods.indexOf('SampleSpecific')==$index">
+                        <span>Types:</span>
+                        <label class="checkbox-inline" ng-repeat = "sampleSpecificMethod in sampleSpecificMethods">
+                            <input type="checkbox" value="{{sampleSpecificMethod}}"
+                            ng-checked="sampleSpecificMethodsSelection.indexOf(sampleSpecificMethod)>-1"
+                            ng-click="togglesampleSpecificMethodsSelection(sampleSpecificMethod)">{{sampleSpecificMethod}}
+                        </label>
+      <textarea ng-show= "sampleSpecificMethodsSelection.indexOf('custom sample weight')>-1" class="form-control" id="customWeight" name="customWeight" rows="1" placeholder = "paste your custom weight here."></textarea>
+      <span ng-show= "sampleSpecificMethodsSelection.indexOf('custom sample weight')>-1" for="rawinput"><a href="sample - weight.txt" target="_blank"> Example Weight </a></span><a ng-show= "sampleSpecificMethodsSelection.indexOf('custom sample weight')>-1" href="instruction2.png" target="_blank" data-toggle="tooltip" data-placement="bottom" data-html="true" title="sample weight explaination"><i class="fa fa-question-circle"></i></a>&nbsp;<a ng-show= "sampleSpecificMethodsSelection.indexOf('custom sample weight')>-1" href="template - sample weight.xlsx" target="_blank" data-toggle="tooltip" data-placement="bottom" data-html="true" title="download sample weight format"><i class="fa fa-download"></i></a>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Transformation Methods:</label>
+                    <div class="checkbox" ng-repeat="transformationMethod in transformationMethods">
+                        <label>
+                            <input type="checkbox" value="{{transformationMethod}}"
+                            ng-checked="transformationMethodsSelection.indexOf(transformationMethod)>-1"
+                            ng-click="toggletransformationMethodsSelection(transformationMethod)">{{transformationMethod}}
+                        </label>
+                        <span style="font-style: italic;" ng-show="transformationMethodsSelection.indexOf('log')>-1 && transformationMethods.indexOf('log')==$index">
+                          base: <input type="text" ng-model='logbase' style="width: 64px">
+                        </span>
+                        <span style="font-style: italic;" ng-show="transformationMethodsSelection.indexOf('power')>-1 && transformationMethods.indexOf('power')==$index">
+                          power: <input type="text" ng-model='power' style="width: 64px">
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Scale Methods:</label>
+                    <div class="checkbox" ng-repeat="scaleMethod in scaleMethods">
+                        <label>
+                            <input type="checkbox" value="{{scaleMethod}}"
+                            ng-checked="scaleMethodsSelection.indexOf(scaleMethod)>-1"
+                            ng-click="togglescaleMethodsSelection(scaleMethod)">{{scaleMethod}}
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Performance Assessment:</label>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="PCA">PCA
+                        </label>&nbsp;&nbsp;<em style="color:red" ng-show="scaleMethodsSelection.indexOf('centering')==-1 && scaleMethodsSelection.indexOf('auto')==-1 && scaleMethodsSelection.indexOf('parato')==-1 && scaleMethodsSelection.indexOf('vast')==-1 && scaleMethodsSelection.indexOf('level')==-1 && scaleMethodsSelection.indexOf('range')==-1 && PCA">It is recommanded that at least one scale method is selected for PCA.</em>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="Normality">Normality
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="RSD">Relative Standard Deviation
+                        </label>&nbsp;&nbsp;<em style="color:red" ng-show="(scaleMethodsSelection.indexOf('centering')>-1 || scaleMethodsSelection.indexOf('auto')>-1 || scaleMethodsSelection.indexOf('parato')>-1 || scaleMethodsSelection.indexOf('vast')>-1 || scaleMethodsSelection.indexOf('level')>-1 || scaleMethodsSelection.indexOf('range')>-1 || transformationMethodsSelection.indexOf('log')>-1 || transformationMethodsSelection.indexOf('power')>-1) && RSD">Only None transformation and None scale will be used since RSD on a different scale is meaningless.</em>&nbsp;&nbsp;<em style="color:red" ng-show="(scaleMethodsSelection.indexOf('None')==-1 || transformationMethodsSelection.indexOf('None')==-1) && RSD">Must select None transformation and None scale.</em>
+                    </div>
+                </div>
+                </form>
+                <button id="compute" type="button" class="btn btn-primary">Run</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+		<div class="row"> <!-- Output -->
+          <div class="col-lg-12">
+            <div class="panel panel-success">
+              <div class="panel-heading" >
+                <h3 class="panel-title"><a data-toggle="collapse" data-target="#output" href="#" class="collapsed" id="outputpanelheader">Output</a></h3>
+              </div>
+              <div id="output" class="panel-body collapse">
+                No output yet.
+              </div>
+            </div>
+          </div>
+        </div>
+
+		<div class="row"> <!-- Instructions -->
+          <div class="col-lg-12">
+            <div class="panel panel-warning">
+              <div class="panel-heading" >
+                <h3 class="panel-title"><a data-toggle="collapse" data-target="#instrtuction" href="#" class="collapsed">Instruction</a></h3>
+              </div>
+              <div id="instrtuction" class="panel-body collapse">
+                <p>Normalisation of data to minimise the impact of technical variation on comparative sample analysis is often carried out. Usually we assume that the sum (or median, mean) of the intensity across all the compound of each sample should stay consistant. Thus the sum (or median, mean) value can be an approximate quantitative index of how much the machine influence each sample. Sample specific normalization normalize each sample to its index (i.e. sum, median or mean). The equation follows the same pattern,</p>
+                <img src="SampleSpecific equation.PNG"><span>, where <em>i</em> indicates samples and &omega; is the weight of each sample, which is calculated by (using sum as an example),</span>
+                <img src="sum.PNG">
+                <p>Also, user could define their own &omega; (e.g. volumn) using the <code>custom weight</code> option. User have to justify the logic of the weight. An example of &quot;custom weight&quot; sample specific normalization is <a href="http://www.sciencedirect.com/science/article/pii/S157002320900021X" target="_blank">here</a>.</p>
+<button type="button" class="btn btn-primary btn-circle" id="codeToggle"><b>R</b></button>
+<div class="well well-sm" id='code' style="display:none;">
+<pre><code>mainApp = function(input,type,weight){
+  library(pacman)
+  pacman::p_load(data.table)
+  input 0 gsub("\r","",input)
+  cfile = strsplit(input,"\n")[[1]]
+  df1 = as.data.frame(do.call(rbind,lapply(cfile,function(x){strsplit(x,"\t")[[1]]})),stringsAsFactors = F)
+  colnames(df1) = as.matrix(df1[1,])[1,]
+  df1 = df1[-1,]
+  data = sapply(df1[,-1], as.numeric)
+
+  if(type=="sum"){
+    sums = colSums(data,na.rm = T)
+    result = t(t(data)/sums*mean(sums,na.rm = T))
+  }else if(type=="median"){
+    medians = apply(data,2,median,na.rm = T)
+    result = t(t(data)/medians*mean(medians,na.rm = T))
+  }else if(type=='mean'){
+    means = colMeans(data,na.rm = T)
+    result = t(t(data)/means*mean(means,na.rm = T))
+  }else if(type=="custom sample weight"){
+    weight = gsub("\r","",weight)
+    cfile = strsplit(weight,"\n")[[1]]
+    df2 = as.data.frame(do.call(rbind,lapply(cfile,function(x){strsplit(x,"\t")[[1]]})),stringsAsFactors = F)
+    colnames(df2) = as.matrix(df2[1,])[1,]
+    df2 = df2[-1,]
+    weight = as.numeric(df2[1,]);
+    weight = weight[!is.na(weight)]
+    result = t(t(data)*weight)
+  }
+
+  result = cbind(data.frame(df1[,1]),result)
+  rownames(result) = 1:nrow(result)
+  colnames(result) = colnames(df1)
+  fwrite(data.table(result),"SampleSpecific-normalization.csv")
+  return(result)
+}</code></pre>
+                    </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+		<div class="row"> <!-- Citations -->
+          <div class="col-lg-12">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title"><a data-toggle="collapse" data-target="#citations" href="#">Citations</a></h3>
+            </div>
+              <div id="citations" class="panel-body collapse in">
+                <p>Cairns DA, Thompson D, Perkins DN, Stanley AJ, Selby PJ, Banks RE. Proteomic profiling using mass spectrometry–does normalising by total ion current potentially mask some biological differences?. Proteomics. 2008 Jan 1;8(1):21-7. <a href="https://www.ncbi.nlm.nih.gov/pubmed/18095358" target="_blank">18095358</a></p>
+                <p>Wang W, Zhou H, Lin H, Roy S, Shaler TA, Hill LR, Norton S, Kumar P, Anderle M, Becker CH. Quantification of proteins and metabolites by mass spectrometry without isotopic labeling or spiked standards. Analytical chemistry. 2003 Sep 15;75(18):4818-26.<a href="https://www.ncbi.nlm.nih.gov/pubmed/14674459" target="_blank">14674459</a></p>
+                <p>Warrack BM, Hnatyshyn S, Ott KH, Reily MD, Sanders M, Zhang H, Drexler DM. Normalization strategies for metabonomic analysis of urine samples. Journal of Chromatography B. 2009 Feb 15;877(5):547-52. <a href="http://www.sciencedirect.com/science/article/pii/S157002320900021X" target="_blank">S157002320900021X</a></p>
+                <p>Wanichthanarak K, Fan S, Grapov D, Barupal DK, Fiehn O (2017) Metabox: A Toolbox for Metabolomic Data Analysis, Interpretation and Integrative Exploration. PLOS ONE 12(1): e0171046. doi: 10.1371/journal.pone.0171046</p>
+			  </div>
+            </div>
+          </div>
+        </div>
+
+
+      <!-- notify box -->
+        <div id="spinner" class="modal fade" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+          <div class="modal-dialog"><div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4>Computing ...</h4>
+              <span id="notifyTxt"></span>
+            </div>
+            <div class="modal-body"><div style="height:200px">
+              <span id="loading_spinner" style="position: absolute;display: block;top: 50%;left: 50%;"></span>
+            </div></div>
+          </div></div>
+        </div>
+        <!-- /.notify box -->
+
+
+
+      </div>
+      <!-- /.container-fluid -->
+    </div>
+    <!-- /#page-wrapper -->
+  </div>
+  <!-- /#wrapper -->
+
+
+</body>
+
+
+
+
+
+</html>
