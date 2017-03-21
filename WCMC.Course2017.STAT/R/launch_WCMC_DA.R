@@ -26,5 +26,8 @@ update_childs <- function() {
   devtools::install_github("slfan2013/WCMC_DA/WCMC.Stat.PCA")
   devtools::install_github("slfan2013/WCMC_DA/WCMC.Stat.VolcanoPlot")
   devtools::install_github("slfan2013/WCMC_DA/WCMC.Stat.HeatMap")
+  devtools::install_github("slfan2013/WCMC_DA/WCMC.Normalization.Batch")
+  devtools::install_github("slfan2013/WCMC_DA/WCMC.Normalization.LOESS")
+  devtools::install_github("slfan2013/WCMC_DA/WCMC.Normalization")
   devtools::install_github("barupal/metamapp")
 }
