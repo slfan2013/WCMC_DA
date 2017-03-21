@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Normalization.LOESS </title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+	<script src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.2.0.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-resource.min.js"></script>
+  <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="spin.js"></script>
+  <script type="text/javascript" src="spinner.js"></script>
+  <script type="text/javascript" src="opencpu-0.5.js"></script>
+  <script type="text/javascript" src="WCMC.Normalization.LOESS.js"></script>
+
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <link href="sb-admin-2.min.css" rel="stylesheet">
+  <link href="font-awesome.css" rel="stylesheet">
+  <link href="WCMC.Normalization.LOESS.css" rel="stylesheet">
+</head>
+
+<body ng-controller="ctr">
+
+  <div >
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">LOESS: batch-wise loess normalization.</a>
+        </div>
+    </nav>
+
+
+    <div>
+      <div class="container-fluid">
+        <!-- Page Heading -->
+        <div class="row">
+          <div class="col-lg-12">
+          </div>
+        </div>
+        <!-- /.row -->
+        <!-- Main content -->
+
+		<div class="row"> <!-- Data File Input -->
+          <div class="col-lg-12">
+            <div class="panel panel-info">
+              <div class="panel-heading">
+                <h3 class="panel-title"><a data-toggle="collapse" data-target="#input" href="#">Input</a></h3>
+              </div>
+              <div id="input" class="panel-body collapse in">
+                <form role="form">
+                  <div class="form-group">
+                    <textarea class="form-control" id="rawinput" name="txtinput" rows="5" placeholder = "paste your input here."></textarea>
+                    <span for="rawinput"><a href="sample.txt" target="_blank"> Example Data File </a></span><a href="instruction.png" target="_blank" data-toggle="tooltip" data-placement="bottom" data-html="true" title="format explaination"><i class="fa fa-question-circle"></i></a>&nbsp;<a href="template.xlsx" target="_blank" data-toggle="tooltip" data-placement="bottom" data-html="true" title="download format"><i class="fa fa-download"></i></a>
+
+              </div>
+                  <!-- /.row -->
+                </form>
+                <button id="compute" type="button" class="btn btn-primary">Run</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+		<div class="row"> <!-- Output -->
+          <div class="col-lg-12">
+            <div class="panel panel-success">
+              <div class="panel-heading" >
+                <h3 class="panel-title"><a data-toggle="collapse" data-target="#output" href="#" class="collapsed" id="outputpanelheader">Output</a></h3>
+              </div>
+              <div id="output" class="panel-body collapse">
+                No output yet.
+              </div>
+            </div>
+          </div>
+        </div>
+
+		<div class="row"> <!-- Instructions -->
+          <div class="col-lg-12">
+            <div class="panel panel-warning">
+              <div class="panel-heading" >
+                <h3 class="panel-title"><a data-toggle="collapse" data-target="#instrtuction" href="#" class="collapsed">Instruction</a></h3>
+              </div>
+              <div id="instrtuction" class="panel-body collapse">
+                <p>NA</p>
+<button type="button" class="btn btn-primary btn-circle" id="codeToggle"><b>R</b></button>
+<div class="well well-sm" id='code' style="display:none;">
+<pre><code>mainApp = function(input,type){
+  library(pacman)
+  pacman::p_load(data.table)
+  input <- gsub("\r","",input)
+  cfile <- strsplit(input,"\n")[[1]]
+  df1 <- as.data.frame(do.call(rbind,lapply(cfile,function(x){strsplit(x,"\t")[[1]]})),stringsAsFactors = F)
+
+  p = df1[1:3,]
+  p = t(p)
+  colnames(p) = p[1,]
+  p = p[-1,]
+  p = data.frame(p,stringsAsFactors = F)
+  p$QC = as.logical(p$QC)
+
+
+  f=data.frame(df1[4:nrow(df1),1])
+  colnames(f) = 'compound label'
+
+  e = df1[4:nrow(df1),2:ncol(df1)]
+  e = as.matrix(e)
+
+
+  e_batch_norm = matrix(,nrow=nrow(e),ncol=ncol(e))
+  for(i in 1:nrow(f)){
+    means = by(as.numeric(e[i,p$QC]),p$batch[p$QC], mean, na.rm=T)
+    mean_means = mean(means)
+    e_batch_norm[i,] = as.numeric(e[i,])-(rep(means,times=table(p$batch))-mean_means)
+  }
+  rownames(e_batch_norm) = rownames(e)
+  colnames(e_batch_norm) = colnames(e)
+
+  colnames(e_batch_norm) = p$label
+  e_batch_norm = cbind(data.table(compounds=f$`compound label`),e_batch_norm)
+
+  fwrite(data.table(e_batch_norm),"batch_normalization.csv")
+  fwrite(data.table(e_batch_norm),"batch_normalization.txt")
+}</code></pre>
+                    </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+		<div class="row"> <!-- Citations -->
+          <div class="col-lg-12">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title"><a data-toggle="collapse" data-target="#citations" href="#">Citations</a></h3>
+            </div>
+              <div id="citations" class="panel-body collapse in">
+                <p>Wanichthanarak K, Fan S, Grapov D, Barupal DK, Fiehn O (2017) Metabox: A Toolbox for Metabolomic Data Analysis, Interpretation and Integrative Exploration. PLOS ONE 12(1): e0171046. doi: 10.1371/journal.pone.0171046</p>
+			  </div>
+            </div>
+          </div>
+        </div>
+
+
+      <!-- notify box -->
+        <div id="spinner" class="modal fade" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+          <div class="modal-dialog"><div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4>Computing ...</h4>
+              <span id="notifyTxt"></span>
+            </div>
+            <div class="modal-body"><div style="height:200px">
+              <span id="loading_spinner" style="position: absolute;display: block;top: 50%;left: 50%;"></span>
+            </div></div>
+          </div></div>
+        </div>
+        <!-- /.notify box -->
+
+
+
+      </div>
+      <!-- /.container-fluid -->
+    </div>
+    <!-- /#page-wrapper -->
+  </div>
+  <!-- /#wrapper -->
+
+
+</body>
+
+
+
+
+
+</html>

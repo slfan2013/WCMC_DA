@@ -27,6 +27,9 @@ foo = function(){
   getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Stat.PCA")))
   getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Stat.VolcanoPlot")))
   getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Stat.HeatMap")))
+  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Normalization.Batch")))
+  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Normalization.LOESS")))
+  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Normalization")))
   getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="barupal/metamapp")))
 
 
@@ -52,6 +55,9 @@ foo = function(){
   devtools::install_github("slfan2013/WCMC_DA/WCMC.Stat.PCA")
   devtools::install_github("slfan2013/WCMC_DA/WCMC.Stat.VolcanoPlot")
   devtools::install_github("slfan2013/WCMC_DA/WCMC.Stat.HeatMap")
+  devtools::install_github("slfan2013/WCMC_DA/WCMC.Normalization.Batch")
+  devtools::install_github("slfan2013/WCMC_DA/WCMC.Normalization.LOESS")
+  devtools::install_github("slfan2013/WCMC_DA/WCMC.Normalization")
   devtools::install_github("barupal/metamapp")
 
 

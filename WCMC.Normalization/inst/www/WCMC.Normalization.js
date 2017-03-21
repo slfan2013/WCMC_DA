@@ -2,8 +2,8 @@ var myApp = angular.module('myApp', ['ngRoute', 'ui.bootstrap']);
 
 myApp.controller('ctr',function($scope){
 
-   $scope.normalizationMethods = ["None","mTIC","SampleSpecific","Quantile","PQN","contrast"].sort();
-   $scope.normalizationMethodsSelection = ["None","mTIC","SampleSpecific","Quantile","PQN","contrast"].sort();
+   $scope.normalizationMethods = ["None","mTIC","SampleSpecific","Quantile","PQN","contrast","batch","loess"].sort();
+   $scope.normalizationMethodsSelection = ["None","mTIC","SampleSpecific","Quantile","PQN","contrast","batch","loess"].sort();
    $scope.sampleSpecificMethods = ['sum','median','mean','custom sample weight']
    $scope.sampleSpecificMethodsSelection = ['sum','median','mean']
    $scope.transformationMethods = ['None','log','power'].sort()
@@ -15,6 +15,8 @@ myApp.controller('ctr',function($scope){
    $scope.PCA = true
    $scope.Normality = true
    $scope.RSD = true
+   $scope.plotType = "RSD"
+   $scope.autoSpan = false
 
   $scope.togglenormalizationMethodsSelection = function(normalizationMethod) {
       var idx = $scope.normalizationMethodsSelection.sort().indexOf(normalizationMethod);
@@ -42,7 +44,6 @@ myApp.controller('ctr',function($scope){
       else {
         $scope.transformationMethodsSelection.sort().push(transformationMethod);
       }
-      console.log($scope.transformationMethodsSelection)
     };
   $scope.togglescaleMethodsSelection = function(scaleMethod) {
     var idx = $scope.scaleMethodsSelection.sort().indexOf(scaleMethod);
@@ -52,7 +53,6 @@ myApp.controller('ctr',function($scope){
     else {
       $scope.scaleMethodsSelection.sort().push(scaleMethod);
     }
-    console.log($scope.scaleMethodsSelection)
   };
 
 
@@ -61,8 +61,8 @@ myApp.controller('ctr',function($scope){
 
 
   $("#compute").click(function(){
-    $('#output').empty();
-    $("#output").html("<p>No output yet.</p>")
+    $('#outputText').empty();
+    $("#outputText").html("<p>No output yet.</p>")
     $("#outputpanelheader").addClass("collapsed")
 		$("#output").removeClass("in");
 		var notready = true;
@@ -80,21 +80,24 @@ myApp.controller('ctr',function($scope){
     scaleMethodsSelection:$scope.scaleMethodsSelection,
     PCA:$scope.PCA,
     Normality:$scope.Normality,
-    RSD:$scope.RSD
-
+    RSD:$scope.RSD,
+    autoSpan:$scope.autoSpan
     }, function(session) {//calls R function:
 			console.log(session);
-			view_address = session.loc + "files/SampleSpecific-normalization.txt"
-			download_address = session.loc + "files/SampleSpecific-normalization.csv"
+			$scope.$apply(function(){
+			  $scope.session = session.loc
+			  console.log($scope.session)
+			})
+			download_address = session.loc + "files/Normalization_Results.zip"
 		})
 		.done(function(){
         $("#outputpanelheader").removeClass("collapsed")
         $("#output").addClass( "in" );
-        $("#output").html( "<b style='color:#3C763D;'>Success!</b><br /><div class='well well-sm'><p>NA</p><a type='button' href='"+download_address+"' class='btn btn-primary' target='_blank'  download='-normalization.csv'>Download</a>" );
+        $("#outputText").html( "<b style='color:#3C763D;'>Success!</b><br /><div class='well well-sm'><p>You could download the result by clicking the download button.</p><a type='button' href='"+download_address+"' class='btn btn-primary' target='_blank'  download='Normalization_Results.zip'>Download</a>" );
 		})
 		.fail(function() {
-		  $('#output').empty();
-      $("#output").html("<p>No output yet.</p>")
+		  $('#outputText').empty();
+      $("#outputText").html("<p>No output yet.</p>")
       $("#outputpanelheader").addClass("collapsed")
 		  $("#output").removeClass("in");
 		  alert("Error: " + req.responseText)})
