@@ -5,7 +5,7 @@
 #   Test Package:              'Ctrl + Shift + T'
 mainApp = function(input,
                    normalizationMethodsSelection=c("None","mTIC","SampleSpecific","Quantile","PQN","contrast",'batch','loess'),
-                   autoSpan = T,
+                   autoSpan = F,
                    sampleSpecificMethodsSelection=c('sum','median','mean'),
                    sampleSpecificWeight,
                    transformationMethodsSelection=c("None","log","power"),

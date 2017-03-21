@@ -80,7 +80,7 @@
                         <span style="font-style: italic;" ng-show="normalizationMethodsSelection.indexOf('loess')>-1 && normalizationMethods.indexOf('loess')==$index">
                           <span class="form-group">
                               <label class="checkbox-inline">
-                                  Auto Span:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" ng-model="autoSpan" id="test">
+                                  Auto Span:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" ng-model="autoSpan">
                               </label>
                           </span>&nbsp;&nbsp;<span style="color:orange" ng-show="autoSpan && normalizationMethodsSelection.indexOf('loess')>-1">Time consuming.</span>
                         </span>
@@ -149,7 +149,7 @@
               </div>
               <div id="output" class="panel-body collapse">
                 <div id="outputText">No output yet.</div>
-                <div id="plots">
+                <!--<div id="plots">
                   <div class="form-group">
                     <label>Plots: </label>
                     <label class="radio-inline">
@@ -171,7 +171,7 @@
                   <div ng-show="plotType=='RSD'">
                     <img src="{{session}}files/RSD/QC performance plot2.png" style="height:800px;width:600px;" alt="Description"/>
                   </div>
-                </div>
+                </div>-->
               </div>
             </div>
           </div>
