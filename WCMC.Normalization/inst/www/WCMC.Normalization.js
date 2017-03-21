@@ -54,8 +54,7 @@ myApp.controller('ctr',function($scope){
     }
   };
 
-
-  $("#input").on('click',function(){
+  var checkTime = function(){
     setTimeout(function(){
       if(!document.getElementById("rawinput").value.length<1){
             var num_method = $scope.scaleMethodsSelection.length * $scope.transformationMethodsSelection.length * ($scope.normalizationMethodsSelection.length + $scope.sampleSpecificMethods.length-1)
@@ -68,8 +67,9 @@ myApp.controller('ctr',function($scope){
             $("#timeEstimate").empty()
           }
     },500)
+  }
 
-  })
+  $("#input").on('click',checkTime)
 
   $('#rawinput').on('blur',function(){
     setTimeout(function(){
@@ -101,7 +101,9 @@ myApp.controller('ctr',function($scope){
       })
     })
   		.done(function(){
+
   		  setTimeout(function(){
+  		    checkTime();
   		     console.log("!!")
   		       if($scope.colnames_f.indexOf('Known/Unknown')==-1){
   		    $scope.$apply(function(){$scope.mTIC_NA = true;
