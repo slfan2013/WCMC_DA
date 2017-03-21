@@ -88,7 +88,7 @@ mainApp = function(input,
         stripchart(value ~ group1*group2, vertical = TRUE, data = data,
                    method = "jitter", add = TRUE, pch = 20, col = 'black',at=at.x)
       }
-      title(main=f`compound label`[j], sub=paste0("compound #: ", j),
+      title(main=f$`compound label`[j], sub=paste0("compound #: ", j),
             xlab=xlab, ylab='intensity')
       axis(1,at = text.pos.x, labels = F)# x axis
       text(x = text.pos.x, par("usr")[3]-0.1, labels = factor_order2, srt = 0, pos = 1, xpd = TRUE)
@@ -122,7 +122,7 @@ mainApp = function(input,
     text.pos.x = 1:length(factor_order1)
 
     if(draw_single){
-      index=which(gsub(" ", "", f`compound label`, fixed = TRUE)%in%gsub(" ", "", compoundName, fixed = TRUE))[1]
+      index=which(gsub(" ", "", f$`compound label`, fixed = TRUE)%in%gsub(" ", "", compoundName, fixed = TRUE))[1]
       oo = index
     }else{
       index=1:nrow(f)
@@ -140,7 +140,7 @@ mainApp = function(input,
           stripchart(value ~ group1, vertical = TRUE, data = data,
                      method = "jitter", add = TRUE, pch = 20, col = 'black',at=at.x)
         }
-        title(main=f`compound label`[j], sub=paste0("compound #: ", j),
+        title(main=f$`compound label`[j], sub=paste0("compound #: ", j),
               xlab=xlab, ylab='intensity')
         axis(1,at = 1:length(factor_order1), labels = F)# x axis
         text(x = 1:length(factor_order1), par("usr")[3]-0.1, labels = factor_order1, srt = 0, pos = 1, xpd = TRUE)
@@ -155,6 +155,6 @@ mainApp = function(input,
 
 
   if(!draw_single){
-    zip("Boxplots.zip",files = paste0(1:nrow(f),"th_",f`compound label`,".png"))
+    zip("Boxplots.zip",files = paste0(1:nrow(f),"th_",f$`compound label`,".png"))
   }
 }
