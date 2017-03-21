@@ -24,7 +24,7 @@ mainApp = function(input,
 
   multicore = T
   if(multicore){
-    cl = makeCluster(min(detectCores(),20))
+    cl = makeCluster(min(detectCores(),8))
     twowayMixedANOVA = parSapply(cl,1:nrow(e),function(j,e,p,ezANOVA){
       test = ezANOVA(data = data.frame(value=e[j,],var1=p[[2]],var2=p[[3]],id=as.factor(p[[4]])),
                      dv = value, wid = id, between = .(var1),within=.(var2), type = 3)
