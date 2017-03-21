@@ -17,7 +17,7 @@ library(opencpu)
 install.packages("pacman")
 
 #Install WCMC_DA
-devtools::install_github("slfan2013/WCMC_DA/WCMC.MasterController")
+install.packages("https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.MasterController_0.1.0.tar.gz",repos=NULL)
 WCMC.MasterController::update_master()
 WCMC.Course2017.STAT::update_childs()
 ```
