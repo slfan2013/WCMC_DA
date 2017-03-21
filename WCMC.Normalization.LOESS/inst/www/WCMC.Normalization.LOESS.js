@@ -1,16 +1,8 @@
 var myApp = angular.module('myApp', ['ngRoute', 'ui.bootstrap']);
 
 myApp.controller('ctr',function($scope){
-  $scope.type = 'sum'
-})
-
-
-$(function(){
-$( "#codeToggle" ).click(function() {
-  $( "#code" ).toggle( "fast");
-});
-
-	$("#compute").click(function(){
+  $scope.autoSpan = true
+$("#compute").click(function(){
     $('#output').empty();
     $("#output").html("<p>No output yet.</p>")
     $("#outputpanelheader").addClass("collapsed")
@@ -19,7 +11,7 @@ $( "#codeToggle" ).click(function() {
 
     var loadSpinner = showSpinner(txt='Computing..');
     var txtinput = $("#rawinput").val().trim();
-    var req = ocpu.call("mainApp",{input:txtinput}, function(session) {//calls R function:
+    var req = ocpu.call("mainApp",{input:txtinput,autoSpan:$scope.autoSpan}, function(session) {//calls R function:
 			console.log(session);
 			view_address = session.loc + "files/loess_normalization.txt"
 			download_address = session.loc + "files/loess_normalization.csv"
@@ -37,5 +29,14 @@ $( "#codeToggle" ).click(function() {
 		  alert("Error: " + req.responseText)})
 		.always(function(){hideSpinner(loadSpinner);});//ocpu.call
 	})
+})
+
+
+$(function(){
+$( "#codeToggle" ).click(function() {
+  $( "#code" ).toggle( "fast");
+});
+
+
 
 })
