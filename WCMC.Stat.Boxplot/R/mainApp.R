@@ -69,7 +69,7 @@ mainApp = function(input,
     text.pos.x = text.pos.x + 0:(length(text.pos.x)-1)
 
     if(draw_single){
-      index=which(gsub(" ", "", f`compound label`, fixed = TRUE)%in%gsub(" ", "", compoundName, fixed = TRUE))[1]
+      index=which(gsub(" ", "", f$`compound label`, fixed = TRUE)%in%gsub(" ", "", compoundName, fixed = TRUE))[1]
       oo = index
     }else{
       index=1:nrow(f)
