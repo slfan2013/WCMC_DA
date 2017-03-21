@@ -22,6 +22,7 @@ mainApp = function(input,type){
 
   e = df1[4:nrow(df1),2:ncol(df1)]
   e = as.matrix(e)
+  e = apply(e,2,as.numeric)
 
   p$QC = as.logical(p$QC)
   e_batch_norm = matrix(,nrow=nrow(e),ncol=ncol(e))
