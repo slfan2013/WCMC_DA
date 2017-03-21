@@ -80,7 +80,7 @@
                         <span style="font-style: italic;" ng-show="normalizationMethodsSelection.indexOf('loess')>-1 && normalizationMethods.indexOf('loess')==$index">
                           <span class="form-group">
                               <label class="checkbox-inline">
-                                  Auto Span:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" ng-model='autoSpan'>
+                                  Auto Span:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" ng-model="autoSpan" id="test">
                               </label>
                           </span>&nbsp;&nbsp;<span style="color:orange" ng-show="autoSpan && normalizationMethodsSelection.indexOf('loess')>-1">Time consuming.</span>
                         </span>

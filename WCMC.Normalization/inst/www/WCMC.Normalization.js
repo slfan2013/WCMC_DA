@@ -147,13 +147,17 @@ myApp.controller('ctr',function($scope){
   		  }
   		  },500)
 
-
-
-  		});//ocpu.call
+  		});
   });
+
+
+  $("#test").on("change",function(){
+    console.log($scope.autoSpan)
+  })
 
   $("#compute").click(function(){
     console.log($scope.autoSpan)
+    console.log("!!!")
     $('#outputText').empty();
     $("#outputText").html("<p>No output yet.</p>")
     $("#outputpanelheader").addClass("collapsed")
@@ -203,7 +207,4 @@ $(function(){
 $( "#codeToggle" ).click(function() {
   $( "#code" ).toggle( "fast");
 });
-
-
-
 })
