@@ -6,6 +6,8 @@
 # }
 
 update_childs <- function() {
+  install.packages("https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Course2017.STAT_0.1.0.tar.gz",repos=NULL)
+  install.packages("https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Fansly_0.1.0.tar.gz",repos=NULL)
   install.packages("https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Normalization.mTIC_0.1.0.tar.gz",repos=NULL)
   install.packages("https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Normalization.SampleSpecific_0.1.0.tar.gz",repos=NULL)
   install.packages("https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Normalization.Quantile_0.1.0.tar.gz",repos=NULL)
