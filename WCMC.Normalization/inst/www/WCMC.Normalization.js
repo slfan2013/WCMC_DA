@@ -153,6 +153,7 @@ myApp.controller('ctr',function($scope){
   });
 
   $("#compute").click(function(){
+    console.log($scope.autoSpan)
     $('#outputText').empty();
     $("#outputText").html("<p>No output yet.</p>")
     $("#outputpanelheader").addClass("collapsed")
