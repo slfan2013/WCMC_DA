@@ -15,7 +15,6 @@ mainApp = function(input,type){
   colnames(p) = p[1,]
   p = p[-1,]
   p = data.frame(p,stringsAsFactors = F)
-  p$QC = as.logical(p$QC)
 
 
   f=data.frame(df1[4:nrow(df1),1])
@@ -24,16 +23,14 @@ mainApp = function(input,type){
   e = df1[4:nrow(df1),2:ncol(df1)]
   e = as.matrix(e)
 
-
+  p$QC = as.logical(p$QC)
   e_batch_norm = matrix(,nrow=nrow(e),ncol=ncol(e))
   for(i in 1:nrow(f)){
     means = by(as.numeric(e[i,p$QC]),p$batch[p$QC], mean, na.rm=T)
     mean_means = mean(means)
     e_batch_norm[i,] = as.numeric(e[i,])-(rep(means,times=table(p$batch))-mean_means)
   }
-  rownames(e_batch_norm) = rownames(e)
-  colnames(e_batch_norm) = colnames(e)
-  e_batch_norm = WCMC.Fansly::toSameScale(e,e_batch_norm)
+  e1 = WCMC.Fansly::toSameScale(e,e_batch_norm)
   colnames(e_batch_norm) = p$label
   e_batch_norm = cbind(data.table(compounds=f$`compound label`),e_batch_norm)
 
