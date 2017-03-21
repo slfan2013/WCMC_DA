@@ -26,7 +26,7 @@ secondApp = function(input, twoway){
   return(list(
     factor_order1 = paste0(unique(p[[1]]),collapse = ','),
     factor_order2 = paste0(unique(p[[2]]),collapse = ','),
-    compoundNames= f`compound label`
+    compoundNames= f$`compound label`
   ))
 
 
