@@ -33,7 +33,7 @@ mainApp = function(input,type){
   }
   rownames(e_batch_norm) = rownames(e)
   colnames(e_batch_norm) = colnames(e)
-  e_batch_norm = WCMC::Fansly(toSameScale(e,e_batch_norm))
+  e_batch_norm = WCMC.Fansly::toSameScale(e,e_batch_norm)
   colnames(e_batch_norm) = p$label
   e_batch_norm = cbind(data.table(compounds=f$`compound label`),e_batch_norm)
 
