@@ -100,7 +100,6 @@ mainApp = function(input,
       names(simpleMainEffect2.) = rep("",length(names(simpleMainEffect2.)))
       simpleMainEffect2 = do.call(cbind,simpleMainEffect2.)
     }
-
     posthoc = cbind(simpleMainEffect1,simpleMainEffect2)
   }
   stopCluster(cl)
