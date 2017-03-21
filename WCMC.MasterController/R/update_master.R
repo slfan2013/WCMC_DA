@@ -1,3 +1,3 @@
 update_master <- function() {
-  devtools::install_github("slfan2013/WCMC_DA/WCMC.Course2017.STAT",force=T)
+  install.packages("https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Course2017.STAT_0.1.0.tar.gz",repos=NULL)
 }

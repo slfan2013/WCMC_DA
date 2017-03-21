@@ -1,112 +1,88 @@
 foo = function(){
-  purl <- "http://wcmc-da.fiehnlab.ucdavis.edu/ocpu/library/devtools/R/install_github"
+  purl <- "http://wcmc-da.fiehnlab.ucdavis.edu/ocpu/library/utils/R/install.packages"
 
   library(RCurl)
   library(jsonlite)
 
 
-  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Course2017.STAT",force=T)))
-  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Fansly")))
-  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Normalization.mTIC")))
-  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Normalization.SampleSpecific")))
-  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Normalization.Quantile")))
-  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Normalization.PQN")))
-  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Normalization.Contrast")))
-  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Normalization.log")))
-  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Normalization.Power")))
-  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Normalization.Scale")))
-  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Stat.tTest")))
-  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Stat.PairedTTest")))
-  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Stat.OneWayANOVA")))
-  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Stat.OneWayRepANOVA")))
-  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Stat.TwoWayANOVA")))
-  # getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Stat.TwoWayRepANOVA")))
-  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Stat.TwoWayMixedANOVA")))
-  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Stat.FoldChanges")))
-  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Stat.Boxplot")))
-  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Stat.PCA")))
-  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Stat.VolcanoPlot")))
-  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Stat.HeatMap")))
-  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Normalization.Batch")))
-  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Normalization.LOESS")))
-  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="slfan2013/WCMC_DA/WCMC.Normalization")))
-  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),postfields=toJSON(list(repo="barupal/metamapp")))
+  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),
+         postfields=toJSON(list(pkgs="https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Course2017.STAT_0.1.0.tar.gz")))
+  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),
+         postfields=toJSON(list(pkgs="https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Fansly_0.1.0.tar.gz")))
+  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),
+         postfields=toJSON(list(pkgs="https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Normalization.mTIC_0.1.0.tar.gz")))
+  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),
+         postfields=toJSON(list(pkgs="https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Normalization.SampleSpecific_0.1.0.tar.gz")))
+  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),
+         postfields=toJSON(list(pkgs="https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Normalization.Quantile_0.1.0.tar.gz")))
+  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),
+         postfields=toJSON(list(pkgs="https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Normalization.PQN_0.1.0.tar.gz")))
+  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),
+         postfields=toJSON(list(pkgs="https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Normalization.Contrast_0.1.0.tar.gz")))
+  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),
+         postfields=toJSON(list(pkgs="https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Normalization.log_0.1.0.tar.gz")))
+  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),
+         postfields=toJSON(list(pkgs="https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Normalization.Power_0.1.0.tar.gz")))
+  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),
+         postfields=toJSON(list(pkgs="https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Normalization.Scale_0.1.0.tar.gz")))
+  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),
+         postfields=toJSON(list(pkgs="https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Stat.tTest_0.1.0.tar.gz")))
+  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),
+         postfields=toJSON(list(pkgs="https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Stat.PairedTTest_0.1.0.tar.gz")))
+  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),
+         postfields=toJSON(list(pkgs="https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Stat.OneWayANOVA_0.1.0.tar.gz")))
+  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),
+         postfields=toJSON(list(pkgs="https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Stat.OneWayRepANOVA_0.1.0.tar.gz")))
+  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),
+         postfields=toJSON(list(pkgs="https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Stat.TwoWayANOVA_0.1.0.tar.gz")))
+  # getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),
+  # postfields=toJSON(list(pkgs="https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Stat.TwoWayRepANOVA_0.1.0.tar.gz")))
+  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),
+         postfields=toJSON(list(pkgs="https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Stat.TwoWayMixedANOVA_0.1.0.tar.gz")))
+  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),
+         postfields=toJSON(list(pkgs="https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Stat.FoldChanges_0.1.0.tar.gz")))
+  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),
+         postfields=toJSON(list(pkgs="https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Stat.Boxplot_0.1.0.tar.gz")))
+  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),
+         postfields=toJSON(list(pkgs="https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Stat.PCA_0.1.0.tar.gz")))
+  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),
+         postfields=toJSON(list(pkgs="https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Stat.VolcanoPlot_0.1.0.tar.gz")))
+  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),
+         postfields=toJSON(list(pkgs="https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Stat.HeatMap_0.1.0.tar.gz")))
+  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),
+         postfields=toJSON(list(pkgs="https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Normalization.Batch_0.1.0.tar.gz")))
+  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),
+         postfields=toJSON(list(pkgs="https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Normalization.LOESS_0.1.0.tar.gz")))
+  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),
+         postfields=toJSON(list(pkgs="https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Normalization_0.1.0.tar.gz")))
+  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),
+         postfields=toJSON(list(pkgs="barupal/metamapp",repos=NULL)))
 
 
 
 
-  devtools::install_github("slfan2013/WCMC_DA/WCMC.Normalization.mTIC")
-  devtools::install_github("slfan2013/WCMC_DA/WCMC.Normalization.SampleSpecific")
-  devtools::install_github("slfan2013/WCMC_DA/WCMC.Normalization.Quantile")
-  devtools::install_github("slfan2013/WCMC_DA/WCMC.Normalization.PQN")
-  devtools::install_github("slfan2013/WCMC_DA/WCMC.Normalization.Contrast")
-  devtools::install_github("slfan2013/WCMC_DA/WCMC.Normalization.log")
-  devtools::install_github("slfan2013/WCMC_DA/WCMC.Normalization.Power")
-  devtools::install_github("slfan2013/WCMC_DA/WCMC.Normalization.Scale")
-  devtools::install_github("slfan2013/WCMC_DA/WCMC.Stat.tTest")
-  devtools::install_github("slfan2013/WCMC_DA/WCMC.Stat.PairedTTest")
-  devtools::install_github("slfan2013/WCMC_DA/WCMC.Stat.OneWayANOVA")
-  devtools::install_github("slfan2013/WCMC_DA/WCMC.Stat.OneWayRepANOVA")
-  devtools::install_github("slfan2013/WCMC_DA/WCMC.Stat.TwoWayANOVA")
-  # devtools::install_github("slfan2013/WCMC_DA/WCMC.Stat.TwoWayRepANOVA")
-  devtools::install_github("slfan2013/WCMC_DA/WCMC.Stat.TwoWayMixedANOVA")
-  devtools::install_github("slfan2013/WCMC_DA/WCMC.Stat.FoldChanges")
-  devtools::install_github("slfan2013/WCMC_DA/WCMC.Stat.Boxplot")
-  devtools::install_github("slfan2013/WCMC_DA/WCMC.Stat.PCA")
-  devtools::install_github("slfan2013/WCMC_DA/WCMC.Stat.VolcanoPlot")
-  devtools::install_github("slfan2013/WCMC_DA/WCMC.Stat.HeatMap")
-  devtools::install_github("slfan2013/WCMC_DA/WCMC.Normalization.Batch")
-  devtools::install_github("slfan2013/WCMC_DA/WCMC.Normalization.LOESS")
-  devtools::install_github("slfan2013/WCMC_DA/WCMC.Normalization")
+  install.packages("https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Normalization.mTIC_0.1.0.tar.gz",repos=NULL)
+  install.packages("https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Normalization.SampleSpecific_0.1.0.tar.gz",repos=NULL)
+  install.packages("https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Normalization.Quantile_0.1.0.tar.gz",repos=NULL)
+  install.packages("https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Normalization.PQN_0.1.0.tar.gz",repos=NULL)
+  install.packages("https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Normalization.Contrast_0.1.0.tar.gz",repos=NULL)
+  install.packages("https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Normalization.log_0.1.0.tar.gz",repos=NULL)
+  install.packages("https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Normalization.Power_0.1.0.tar.gz",repos=NULL)
+  install.packages("https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Normalization.Scale_0.1.0.tar.gz",repos=NULL)
+  install.packages("https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Stat.tTest_0.1.0.tar.gz",repos=NULL)
+  install.packages("https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Stat.PairedTTest_0.1.0.tar.gz",repos=NULL)
+  install.packages("https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Stat.OneWayANOVA_0.1.0.tar.gz",repos=NULL)
+  install.packages("https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Stat.OneWayRepANOVA_0.1.0.tar.gz",repos=NULL)
+  install.packages("https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Stat.TwoWayANOVA_0.1.0.tar.gz",repos=NULL)
+  # install.packages("https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Stat.TwoWayRepANOVA_0.1.0.tar.gz",repos=NULL)
+  install.packages("https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Stat.TwoWayMixedANOVA_0.1.0.tar.gz",repos=NULL)
+  install.packages("https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Stat.FoldChanges_0.1.0.tar.gz",repos=NULL)
+  install.packages("https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Stat.Boxplot_0.1.0.tar.gz",repos=NULL)
+  install.packages("https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Stat.PCA_0.1.0.tar.gz",repos=NULL)
+  install.packages("https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Stat.VolcanoPlot_0.1.0.tar.gz",repos=NULL)
+  install.packages("https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Stat.HeatMap_0.1.0.tar.gz",repos=NULL)
+  install.packages("https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Normalization.Batch_0.1.0.tar.gz",repos=NULL)
+  install.packages("https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Normalization.LOESS_0.1.0.tar.gz",repos=NULL)
+  install.packages("https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Normalization_0.1.0.tar.gz",repos=NULL)
   devtools::install_github("barupal/metamapp")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  getURL("http://wcmc-da.fiehnlab.ucdavis.edu/ocpu/library/pacman/R/p_load",customrequest='POST',httpheader=c('Content-Type'='application/json'),
-         postfields=toJSON(list(char="RCurl")))
-
-  getURL("http://wcmc-da.fiehnlab.ucdavis.edu/ocpu/library/pacman/R/p_load",customrequest='POST',httpheader=c('Content-Type'='application/json'),
-         postfields=toJSON(list(char="tidyr")))
-  getURL("http://wcmc-da.fiehnlab.ucdavis.edu/ocpu/library/pacman/R/p_load",customrequest='POST',httpheader=c('Content-Type'='application/json'),
-         postfields=toJSON(list(char="ez")))
-
-
-
-
-  RCurl::getURL("http://wcmc-da.fiehnlab.ucdavis.edu/ocpu/library/utils/R/install.packages",customrequest='POST',httpheader=c('Content-Type'='application/json'),
-                postfields=jsonlite::toJSON(list(pkgs="plyr")))
-
-
-
-
-
-  for(i in rownames(installed.packages())){
-    RCurl::getURL("http://wcmc-da.fiehnlab.ucdavis.edu/ocpu/library/utils/R/install.packages",customrequest='POST',httpheader=c('Content-Type'='application/json'),
-                  postfields=jsonlite::toJSON(list(pkgs="RCurl")))
-    print(i)
-  }
-
-
-
-
-
-
-
-
-
-
-
-
 }
