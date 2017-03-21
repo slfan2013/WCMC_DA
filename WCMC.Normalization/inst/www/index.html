@@ -54,11 +54,11 @@
               </div>
               <div id="input" class="panel-body collapse in">
                 <form role="form">
-                  <div class="form-group">
-                    <textarea class="form-control" id="rawinput" name="txtinput" rows="5" placeholder = "paste your input here."></textarea>
-                    <span for="rawinput"><a href="sample.txt" target="_blank"> Example Data File </a></span><a href="instruction.png" target="_blank" data-toggle="tooltip" data-placement="bottom" data-html="true" title="format explaination"><i class="fa fa-question-circle"></i></a>&nbsp;<a href="template.xlsx" target="_blank" data-toggle="tooltip" data-placement="bottom" data-html="true" title="download format"><i class="fa fa-download"></i></a>
-                    <p></p>
-              </div>
+                <div class="form-group">
+                  <textarea class="form-control" id="rawinput" name="txtinput" rows="5" placeholder = "paste your input here."></textarea>
+                  <span for="rawinput"><a href="sample.txt" target="_blank"> Example Data File </a></span><a href="instruction.png" target="_blank" data-toggle="tooltip" data-placement="bottom" data-html="true" title="format explaination"><i class="fa fa-question-circle"></i></a>&nbsp;<a href="template.xlsx" target="_blank" data-toggle="tooltip" data-placement="bottom" data-html="true" title="download format"><i class="fa fa-download"></i></a>
+                  <p></p>
+            </div>
                 <div class="form-group">
                     <label>Normalization Methods:</label>
                     <div class="checkbox" ng-repeat="normalizationMethod in normalizationMethods">
@@ -84,6 +84,9 @@
                               </label>
                           </span>&nbsp;&nbsp;<span style="color:orange" ng-show="autoSpan && normalizationMethodsSelection.indexOf('loess')>-1">Time consuming.</span>
                         </span>
+                        <span style="font-style: italic;" ng-show="mTIC_NA && normalizationMethodsSelection.indexOf('mTIC')>-1 && normalizationMethods.indexOf('mTIC')==$index">&nbsp;<b><em style="color:red">Column "Known/Unknown" not found!</em></b></span>
+                        <span style="font-style: italic;" ng-show="batch_NA && normalizationMethodsSelection.indexOf('batch')>-1 && normalizationMethods.indexOf('batch')==$index">&nbsp;<b><em style="color:red">Row "batch" not found!</em></b></span>
+                        <span style="font-style: italic;" ng-show="loess_NA && normalizationMethodsSelection.indexOf('loess')>-1 && normalizationMethods.indexOf('loess')==$index">&nbsp;<b><em style="color:red">Row "batch" or "injectionOrder" or "QC" not found!</em></b></span>
                     </div>
                 </div>
                 <div class="form-group">
@@ -117,21 +120,21 @@
                     <div class="checkbox">
                         <label>
                             <input type="checkbox" ng-model="PCA">PCA
-                        </label>&nbsp;&nbsp;<em style="color:red" ng-show="scaleMethodsSelection.indexOf('centering')==-1 && scaleMethodsSelection.indexOf('auto')==-1 && scaleMethodsSelection.indexOf('parato')==-1 && scaleMethodsSelection.indexOf('vast')==-1 && scaleMethodsSelection.indexOf('level')==-1 && scaleMethodsSelection.indexOf('range')==-1 && PCA">It is recommanded that at least one scale method is selected for PCA.</em>&nbsp;&nbsp;<em style="color:orange" ng-show="PCA">Time consuming.</em>
+                        </label>&nbsp;<em style="color:orange" ng-show="PCA">Time consuming.</em>&nbsp;<em style="color:red" ng-show="scaleMethodsSelection.indexOf('centering')==-1 && scaleMethodsSelection.indexOf('auto')==-1 && scaleMethodsSelection.indexOf('parato')==-1 && scaleMethodsSelection.indexOf('vast')==-1 && scaleMethodsSelection.indexOf('level')==-1 && scaleMethodsSelection.indexOf('range')==-1 && PCA">It is recommanded that at least one scale method is selected for PCA.</em>&nbsp;<em style="color:red" ng-show="PCA_NA && PCA"><b>Row "PCA_color" not found!</b></em>
                     </div>
                     <div class="checkbox">
                         <label>
                             <input type="checkbox" ng-model="Normality">Normality
-                        </label>
+                        </label>&nbsp;<em style="color:red" ng-show="Normality_NA && Normality"><b>Row "Normality_factor" not found!</b></em>
                     </div>
                     <div class="checkbox">
                         <label>
                             <input type="checkbox" ng-model="RSD">Relative Standard Deviation
-                        </label>&nbsp;&nbsp;<em style="color:red" ng-show="(scaleMethodsSelection.indexOf('None')==-1 || transformationMethodsSelection.indexOf('None')==-1) && RSD">Must select None transformation and None scale.</em>&nbsp;&nbsp;<em style="color:red" ng-show="(scaleMethodsSelection.indexOf('centering')>-1 || scaleMethodsSelection.indexOf('auto')>-1 || scaleMethodsSelection.indexOf('parato')>-1 || scaleMethodsSelection.indexOf('vast')>-1 || scaleMethodsSelection.indexOf('level')>-1 || scaleMethodsSelection.indexOf('range')>-1 || transformationMethodsSelection.indexOf('log')>-1 || transformationMethodsSelection.indexOf('power')>-1) && RSD">Only None transformation and None scale will be used since RSD on a different scale is meaningless.</em>
+                        </label>&nbsp;&nbsp;<em style="color:red" ng-show="(scaleMethodsSelection.indexOf('None')==-1 || transformationMethodsSelection.indexOf('None')==-1) && RSD">Must select None transformation and None scale.</em>&nbsp;&nbsp;<em style="color:red" ng-show="(scaleMethodsSelection.indexOf('centering')>-1 || scaleMethodsSelection.indexOf('auto')>-1 || scaleMethodsSelection.indexOf('parato')>-1 || scaleMethodsSelection.indexOf('vast')>-1 || scaleMethodsSelection.indexOf('level')>-1 || scaleMethodsSelection.indexOf('range')>-1 || transformationMethodsSelection.indexOf('log')>-1 || transformationMethodsSelection.indexOf('power')>-1) && RSD">Only None transformation and None scale will be used since RSD on a different scale is meaningless.</em>&nbsp;<em style="color:red" ng-show="RSD_NA && RSD"><b>Row "RSD" not found!</b></em>
                     </div>
                 </div>
                 </form>
-                <button id="compute" type="button" class="btn btn-primary">Run</button>
+                <button id="compute" type="button" class="btn btn-primary">Run</button>&nbsp;<span style="color:#5e95ed;" id="timeEstimate"></span>
               </div>
             </div>
           </div>
@@ -509,9 +512,6 @@
                 <h3 class="panel-title"><a data-toggle="collapse" data-target="#citations" href="#">Citations</a></h3>
             </div>
               <div id="citations" class="panel-body collapse in">
-                <p>Cairns DA, Thompson D, Perkins DN, Stanley AJ, Selby PJ, Banks RE. Proteomic profiling using mass spectrometry–does normalising by total ion current potentially mask some biological differences?. Proteomics. 2008 Jan 1;8(1):21-7. <a href="https://www.ncbi.nlm.nih.gov/pubmed/18095358" target="_blank">18095358</a></p>
-                <p>Wang W, Zhou H, Lin H, Roy S, Shaler TA, Hill LR, Norton S, Kumar P, Anderle M, Becker CH. Quantification of proteins and metabolites by mass spectrometry without isotopic labeling or spiked standards. Analytical chemistry. 2003 Sep 15;75(18):4818-26.<a href="https://www.ncbi.nlm.nih.gov/pubmed/14674459" target="_blank">14674459</a></p>
-                <p>Warrack BM, Hnatyshyn S, Ott KH, Reily MD, Sanders M, Zhang H, Drexler DM. Normalization strategies for metabonomic analysis of urine samples. Journal of Chromatography B. 2009 Feb 15;877(5):547-52. <a href="http://www.sciencedirect.com/science/article/pii/S157002320900021X" target="_blank">S157002320900021X</a></p>
                 <p>Wanichthanarak K, Fan S, Grapov D, Barupal DK, Fiehn O (2017) Metabox: A Toolbox for Metabolomic Data Analysis, Interpretation and Integrative Exploration. PLOS ONE 12(1): e0171046. doi: 10.1371/journal.pone.0171046</p>
 			  </div>
             </div>

@@ -16,8 +16,7 @@ mainApp = function(input,
                    Normality=TRUE,
                    RSD=TRUE){
   library(pacman)
-  pacman::p_load(data.table,affy,WCMC.Fansly, dendextend,
-                 colorspace,gplots,stringr,RColorBrewer,mvtnorm,factoextra,FactoMineR,xlsx)
+  pacman::p_load(data.table,affy,WCMC.Fansly, dendextend,colorspace,gplots,stringr,RColorBrewer,mvtnorm,factoextra,FactoMineR,xlsx)
   input <- gsub("\r","",input)
 
   data = WCMC.Fansly::FiehnLabFormat(input)
@@ -126,15 +125,18 @@ mainApp = function(input,
         t(t(x) - apply(x, 2, quantile, 0.1,na.rm=T))
       }
       if(!is.na(maffy.e)){
-        e1 <- subtract(maffy.e)
-        e1 = toSameScale(e,e1)
-        rownames(e1) = rownames(e)
-        colnames(e1) = colnames(e)
-        normalizationList[[normalization]] = e1
+        e1 <- tryCatch(subtract(maffy.e),error=function(er){NA})
+        if(!is.na(e1)){
+          e1 = toSameScale(e,e1)
+          rownames(e1) = rownames(e)
+          colnames(e1) = colnames(e)
+          normalizationList[[normalization]] = e1
+        }
       }
+
     }
     if(normalization == 'batch'){
-
+      p$QC = as.logical(p$QC)
       e_batch_norm = matrix(,nrow=nrow(e),ncol=ncol(e))
       for(i in 1:nrow(f)){
         means = by(as.numeric(e[i,p$QC]),p$batch[p$QC], mean, na.rm=T)
@@ -147,6 +149,7 @@ mainApp = function(input,
       normalizationList[[normalization]] = e1
     }
     if(normalization == "loess"){
+      p$QC = as.logical(p$QC)
       get_loess_para = function(x,y,loess.span.limit = 0.5){ # use leave-one-out to select the best span parameter.
         j = 0
         error = rep(0, length(c(seq(loess.span.limit,1.5,0.1),1.75,2,2.25,2.5)))
@@ -179,6 +182,7 @@ mainApp = function(input,
         loess.span.limit = 0.5
       }else{
         span.para = 0.75
+        loess.span.limit = 0.5
       }
 
       if(.Platform$OS.type == "windows"){
@@ -451,6 +455,8 @@ mainApp = function(input,
   files = files[!files%in%c("e.csv","f.csv","p.csv")]
   zip("Normalization_Results.zip",files = files)
   end = Sys.time()
+
+
 
 }
 
