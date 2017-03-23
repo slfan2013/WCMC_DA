@@ -32,6 +32,7 @@ mainApp = function(input,method="median"){
       names(FC)[i] = paste0("FC: ",names(means)[indexes[1,i]],"/",names(means)[indexes[2,i]])
     }
     result = do.call(cbind,FC)
+    result = cbind(data.table(f),result)
   # }
 
 
