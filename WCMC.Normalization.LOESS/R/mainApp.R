@@ -59,6 +59,7 @@ mainApp = function(input,autoSpan=T){
     loess.span.limit = 0.5
   }else{
     span.para = 0.75
+    loess.span.limit = 0.5
   }
 
   if(.Platform$OS.type == "windows"){
