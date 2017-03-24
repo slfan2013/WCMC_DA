@@ -6,7 +6,6 @@
 mainApp = function(input, posthocNeeded = T){
   library(pacman)
   pacman::p_load(data.table,parallel,userfriendlyscience,ez,plyr)
-  library(ez)
   # read.data
   data. = WCMC.Fansly::MetaboAnalystFormat(input,row_start = 3)
   e = data.$e
