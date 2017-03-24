@@ -5,7 +5,8 @@
 #   Test Package:              'Ctrl + Shift + T'
 mainApp = function(input, posthocNeeded = T){
   library(pacman)
-  pacman::p_load(data.table,parallel,userfriendlyscience,ez,plyr)
+  pacman::p_load(data.table,parallel,userfriendlyscience,plyr)
+  library(ez, lib.loc=gsub("ez","",find.package("ez")))
   # read.data
   data. = WCMC.Fansly::MetaboAnalystFormat(input,row_start = 3)
   e = data.$e
