@@ -19,7 +19,7 @@ mainApp = function(input, posthocNeeded = T){
 
   multicore = T
   if(multicore){
-    cl = makeCluster(min(detectCores(),20))
+    cl = makeCluster(min(detectCores(),8))
     ANOVA = parSapply(cl,1:nrow(e),function(j,e,p,group,ezANOVA,ID,posthocNeeded){
       data = data.frame(value=e[j,],var2=p[[group]],id=as.factor(p[[ID]]))
 
