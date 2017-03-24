@@ -6,8 +6,9 @@
 mainApp = function(input, posthocNeeded = T){
   library(pacman)
   pacman::p_load(data.table,parallel,userfriendlyscience,plyr)
-  return(gsub("ez","",find.package("ez")))
-  # library(ez, lib.loc=gsub("ez","",find.package("ez")))
+  print(gsub("ez","",find.package("ez")))
+  a = tryCatch(library(ez, lib.loc=gsub("ez","",find.package("ez"))),error=function(er){return(er)})
+  return(a)
   # # read.data
   # data. = WCMC.Fansly::MetaboAnalystFormat(input,row_start = 3)
   # e = data.$e
