@@ -5,10 +5,11 @@
 #   Test Package:              'Ctrl + Shift + T'
 mainApp = function(input, posthocNeeded = T){
   library(pacman)
-  pacman::p_load(data.table,parallel,userfriendlyscience,plyr)
+  pacman::p_load(data.table,parallel,userfriendlyscience,plyr,ez)
   print(gsub("ez","",find.package("ez")))
   a = tryCatch(library(ez, lib.loc=gsub("ez","",find.package("ez"))),error=function(er){return(er)})
-  return(a)
+  print(a)
+  return(ez::ezANOVA)
   # # read.data
   # data. = WCMC.Fansly::MetaboAnalystFormat(input,row_start = 3)
   # e = data.$e
