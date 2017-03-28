@@ -30,8 +30,8 @@ opencpu$browse("library/WCMC.Course2017.STAT/www");
 ## To Use it:
 <ol>
   <li>Copy + Paste data in to the <em>input</em> box.</li>
-  <li>If not sure about the input format, click the <i class="fa fa-question" aria-hidden="true"></i></li>
-  <li>Milk</li>
+  <li>If not sure about the input format, click the <b>?</b> or the button next to it to see or download the example format.</li>
+  <li>Click Run and download the result when the calculation is ready.</li>
 </ol>
 
 
