@@ -27,12 +27,8 @@ WCMC.Course2017.STAT::update_childs()
 library(opencpu);
 opencpu$browse("library/WCMC.Course2017.STAT/www");
 ```
-## To Use it:
-<ol>
-  <li>Copy + Paste data into the <em>input</em> box.</li>
-  <li>If not sure about the input format, click the <b>?</b> or the button next to it to see or download the example format.</li>
-  <li>Click Run and download the result when the calculation is ready.</li>
-</ol>
+## Tutorial:
+https://github.com/slfan2013/WCMC_DA/wiki
 
 
 ## To update to the newest version: 
