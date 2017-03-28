@@ -28,7 +28,11 @@ library(opencpu);
 opencpu$browse("library/WCMC.Course2017.STAT/www");
 ```
 ## To Use it:
-<b>aaa</b>
+<ol>
+  <li>Copy + Paste data in to the <em>input</em> box.</li>
+  <li>If not sure about the input format, click the <i class="fa fa-question" aria-hidden="true"></i></li>
+  <li>Milk</li>
+</ol>
 
 
 ## To update to the newest version: 
