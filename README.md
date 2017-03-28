@@ -5,7 +5,7 @@ This package is for West Coast Metabolomics Center 2017 Summer Course Statistics
 cite:
 Wanichthanarak K, Fan S, Grapov D, Barupal DK, Fiehn O. Metabox: A Toolbox for Metabolomic Data Analysis, Interpretation and Integrative Exploration. PloS one. 2017 Jan 31;12(1):e0171046.
 
-Software requirement: [R](https://www.r-project.org/about.html) (and [RTools](https://github.com/stan-dev/rstan/wiki/Install-Rtools-for-Windows) for Windows Users).
+Software requirement: [R 3.3.3](https://cran.r-project.org/bin/windows/base/R-3.3.3-win.exe) (and [RTools](https://cran.r-project.org/bin/windows/Rtools/Rtools34.exe) for Windows Users). [R Studio](https://download1.rstudio.org/RStudio-1.0.136.exe) is highly recommanded. 
 ## To Install:
 ```
 shell("zip") # Some packages ask for zip. If error returns, visit https://cran.r-project.org/web/packages/openxlsx/vignettes/Introduction.pdf.
