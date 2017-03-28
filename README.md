@@ -27,6 +27,9 @@ WCMC.Course2017.STAT::update_childs()
 library(opencpu);
 opencpu$browse("library/WCMC.Course2017.STAT/www");
 ```
+## To Use it:
+<b>aaa</b>
+
 
 ## To update to the newest version: 
 ```
