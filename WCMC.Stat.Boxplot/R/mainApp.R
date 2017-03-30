@@ -31,10 +31,10 @@ mainApp = function(input,
 
   e = as.matrix(e)
 
-  # e = t(apply(e,1,function(x){
-  #   x[is.na(x)] = 0.5*min(x,na.rm = T)
-  #   return(x)
-  # }))
+  e = t(apply(e,1,function(x){
+    x[is.na(x)] = 0.5*min(x,na.rm = T)
+    return(x)
+  }))
 
   if(twoway){
     xlab = paste0(colnames(p)[1], " * " ,colnames(p)[2])
