@@ -150,7 +150,6 @@ mainApp = function(input,
           dev.off()
         }
     }
-
   }
 
 
