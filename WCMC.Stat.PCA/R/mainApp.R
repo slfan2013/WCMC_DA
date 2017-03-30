@@ -29,10 +29,10 @@ mainApp = function(input,
   # rownames(e) = f[[length(f)]]
 
 
-  # e = t(apply(e,1,function(x){
-  #   x[is.na(x)] = 0.5*min(x,na.rm = T)
-  #   return(x)
-  # }))
+  e = t(apply(e,1,function(x){
+    x[is.na(x)] = 0.5*min(x,na.rm = T)
+    return(x)
+  }))
 
   #pca
   res.pca <- prcomp(t(e),center = center, scale = scale)
