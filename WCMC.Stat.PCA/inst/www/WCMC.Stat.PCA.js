@@ -22,6 +22,7 @@ myApp.controller('ctr',function($scope){
 $('#rawinput').on('blur',function() {
   var txtinput = $("#rawinput").val().trim();
   var req = ocpu.call("secondApp",{input:txtinput}, function(session) {//This function is designed for the column names of p and f.
+  console.log(session)
     session.getObject(function(obj){
       $scope.$apply(function(){
         $scope.colnames_p = obj.colnames_p
