@@ -406,7 +406,7 @@ mainApp = function(input,
     ggplot(stackHist,aes(x = Normalizatio.methods))+
       geom_bar(aes(fill=test.level),color="black")+
       theme_minimal()+ theme(axis.text.x = element_text(angle = 90, hjust = 1))
-    ggsave("Normality/NormalityTest.png",height=8,width = length(Normalitys)/2)
+    ggsave("Normality/NormalityTest.png",height=8,width = max(length(Normalitys)/2,5))
 
     fwrite(data.table(do.call("cbind",Normalitys)),"Normality/Normality.csv")
   }
