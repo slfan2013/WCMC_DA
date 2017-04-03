@@ -5,8 +5,11 @@
 #   Test Package:              'Ctrl + Shift + T'
 mainApp = function(input, posthocNeeded = T){
   library(pacman)
-  pacman::p_load(data.table,parallel,userfriendlyscience,ez,plyr)
-  library(ez)
+  pacman::p_load(data.table,parallel,userfriendlyscience,plyr,ez)
+  # print(gsub("ez","",find.package("ez")))
+  # a = tryCatch(library(ez, lib.loc=gsub("ez","",find.package("ez"))),error=function(er){return(er)})
+  # print(a)
+  # return(ez::ezANOVA)
   # read.data
   data. = WCMC.Fansly::MetaboAnalystFormat(input,row_start = 3)
   e = data.$e
@@ -20,7 +23,7 @@ mainApp = function(input, posthocNeeded = T){
 
   multicore = T
   if(multicore){
-    cl = makeCluster(min(detectCores(),20))
+    cl = makeCluster(min(detectCores(),8))
     ANOVA = parSapply(cl,1:nrow(e),function(j,e,p,group,ezANOVA,ID,posthocNeeded){
       data = data.frame(value=e[j,],var2=p[[group]],id=as.factor(p[[ID]]))
 

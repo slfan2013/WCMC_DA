@@ -56,6 +56,8 @@ foo = function(){
   getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),
          postfields=toJSON(list(pkgs="https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Normalization_0.1.0.tar.gz")))
   getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),
+         postfields=toJSON(list(pkgs="https://github.com/slfan2013/WCMC_DA/raw/master/ez-master.zip")))
+  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),
          postfields=toJSON(list(pkgs="barupal/metamapp",repos=NULL)))
 
 

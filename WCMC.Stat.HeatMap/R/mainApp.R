@@ -7,7 +7,7 @@ mainApp = function(input,
 
                    distance_method = "euclidean",
                    minkowski_p = NULL, # only used when minkowski is used.
-                   cluster_method = "complete",
+                   cluster_method = "average",
 
                    scale_feature = T,
                    scale_sample = T,
@@ -16,7 +16,13 @@ mainApp = function(input,
                    row_branchColorNumber = 1,
 
                    col_col = "none",
-                   col_branchColorNumber = 1
+                   col_branchColorNumber = 1,
+
+                   high_color = "orange",
+                   medium_color = "white",
+                   low_color = "blue",
+
+                   sampleCompounds = FALSE
                    ){
   library(pacman)
   pacman::p_load(data.table,parallel, dendextend,
@@ -27,9 +33,9 @@ mainApp = function(input,
   f = data.$f
   p = data.$p
 
-  # e = fread("C:\\Users\\fansi\\Desktop\\mx 300486_Ganeshan\\GC\\e.csv")[,-1]
-  # f = fread("C:\\Users\\fansi\\Desktop\\mx 300486_Ganeshan\\GC\\f.csv")[,-1]
-  # p = fread("C:\\Users\\fansi\\Desktop\\mx 300486_Ganeshan\\GC\\p.csv")[,-1]
+  # e = fread("C:\\Users\\Sili Fan\\Desktop\\WORK\\WCMC\\projects\\mx 300486_Ganeshan\\LC Neg\\e.csv")[,-1]
+  # f = fread("C:\\Users\\Sili Fan\\Desktop\\WORK\\WCMC\\projects\\mx 300486_Ganeshan\\LC Neg\\f.csv")[,-1]
+  # p = fread("C:\\Users\\Sili Fan\\Desktop\\WORK\\WCMC\\projects\\mx 300486_Ganeshan\\LC Neg\\p.csv")[,-1]
 
   e = as.matrix(e)
 
@@ -166,7 +172,8 @@ mainApp = function(input,
   # HEATMAP
   # some_col_func <- function(n) rev(colorspace::heat_hcl(n, c = c(80, 30), l = c(30, 90),
   #                                                       power = c(1/5, 1.5)))
-  some_col_func <- colorRampPalette(c('green','black','red'))
+
+  some_col_func <- colorRampPalette(c(low_color,medium_color,high_color))
 
 
   order.dendrogram(dend_row)= 1:nrow(p)
@@ -174,27 +181,53 @@ mainApp = function(input,
 
   png(filename = "HeatMap.png",
       width = 3000, height = 800, res = 72)
-  gplots::heatmap.2(data_row,
-                    main = "A global View of Heatmap",
-                    srtCol = 45,
-                    dendrogram = "both",
-                    Rowv = dend_row,
-                    Colv = dend_col, # this to make sure the columns are not ordered
-                    trace="none",
-                    margins =c(10,10),
-                    key.xlab = "sd",
-                    denscol = "grey",
-                    density.info = "density",
-                    RowSideColors = labels_colors(dend_row), # to add nice colored strips
-                    ColSideColors = labels_colors(dend_col), # to add nice colored strips
-                    col = some_col_func,
-                    colRow = labels_colors(dend_row),
-                    labRow = labels(dend_row),
-                    colCol = labels_colors(dend_col),
-                    labCol = labels(dend_col),
-                    cexCol = 1,
-                    keysize =1
-  )
+
+  if(sampleCompounds){ # this means samples at row while compounds at column.
+    gplots::heatmap.2(data_row,
+                      main = "A global View of Heatmap",
+                      srtCol = 45,
+                      dendrogram = "both",
+                      Rowv = dend_row,
+                      Colv = dend_col, # this to make sure the columns are not ordered
+                      trace="none",
+                      margins =c(10,10),
+                      key.xlab = "sd",
+                      denscol = "grey",
+                      density.info = "density",
+                      RowSideColors = labels_colors(dend_row), # to add nice colored strips
+                      ColSideColors = labels_colors(dend_col), # to add nice colored strips
+                      col = some_col_func,
+                      colRow = labels_colors(dend_row),
+                      labRow = labels(dend_row),
+                      colCol = labels_colors(dend_col),
+                      labCol = labels(dend_col),
+                      cexCol = 1,
+                      keysize =1
+    )
+  }else{
+    gplots::heatmap.2(t(data_row),
+                      main = "A global View of Heatmap",
+                      srtCol = 45,
+                      dendrogram = "both",
+                      Rowv = dend_col,
+                      Colv = dend_row, # this to make sure the columns are not ordered
+                      trace="none",
+                      margins =c(10,10),
+                      key.xlab = "sd",
+                      denscol = "grey",
+                      density.info = "density",
+                      RowSideColors = labels_colors(dend_col), # to add nice colored strips
+                      ColSideColors = labels_colors(dend_row), # to add nice colored strips
+                      col = some_col_func,
+                      colRow = labels_colors(dend_col),
+                      labRow = labels(dend_col),
+                      colCol = labels_colors(dend_row),
+                      labCol = labels(dend_row),
+                      cexCol = 1,
+                      keysize =1
+    )
+  }
+
   dev.off()
 
   cut_row = data.frame(cutree(hc_iris_row,k=row_branchColorNumber))

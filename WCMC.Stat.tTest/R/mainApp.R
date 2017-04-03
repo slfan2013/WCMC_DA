@@ -12,6 +12,12 @@ mainApp = function(input){
   f = data.$f
   p = data.$p
 
+  e = t(apply(e,1,function(x){
+    x[is.na(x)] = 0.5*min(x,na.rm = T)
+    return(x)
+  }))
+
+
   multicore = T
   if(multicore){
     cl = makeCluster(min(detectCores(),20))
