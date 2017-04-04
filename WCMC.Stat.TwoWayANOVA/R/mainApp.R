@@ -16,10 +16,10 @@ mainApp = function(input,
   }
 
   e = as.matrix(e)
-  # e = t(apply(e,1,function(x){
-  #   x[is.na(x)] = 0.5*min(x,na.rm = T)+rnorm(sum(is.na(x)),mean=0,sd = 0.1)
-  #   return(x)
-  # }))
+  e = t(apply(e,1,function(x){
+    x[is.na(x)] = 0.5*min(x,na.rm = T)+rnorm(sum(is.na(x)),mean=0,sd = 0.1)
+    return(x)
+  }))
 
 
   multicore = T

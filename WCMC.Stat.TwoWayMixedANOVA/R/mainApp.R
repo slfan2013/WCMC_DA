@@ -16,11 +16,14 @@ mainApp = function(input,
   }
 
   e = as.matrix(e)
-  # e = t(apply(e,1,function(x){
-  #   x[is.na(x)] = 0.5*min(x,na.rm = T)+rnorm(sum(is.na(x)),mean=0,sd = 0.1)
-  #   return(x)
-  # }))
+  e = t(apply(e,1,function(x){
+    x[is.na(x)] = 0.5*min(x,na.rm = T)+rnorm(sum(is.na(x)),mean=0,sd = 0.1)
+    return(x)
+  }))
 
+  if(length(unique(table(p$ID)))>1){
+    stop(paste0("Subjects should be measured same times, but some subjects are measured ",unique(table(p$ID))[1]," times while some are measured ",unique(table(p$ID))[2]," times. Please check your ID row in your data."))
+  }
 
   multicore = T
   if(multicore){
