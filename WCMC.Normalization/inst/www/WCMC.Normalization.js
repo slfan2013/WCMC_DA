@@ -149,7 +149,7 @@ myApp.controller('ctr',function($scope){
 
 
 
-  		});*/ocpu.call
+  		});*/
   });
 
   $("#compute").click(function(){
