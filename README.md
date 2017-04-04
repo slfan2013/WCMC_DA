@@ -47,6 +47,6 @@ WCMC.Course2017.STAT::update_childs()
 Please go to https://github.com/slfan2013/WCMC_DA/issues OR contact the maintainer through email, slfan at ucdavis dot edu, and thanks for your contribution.
 
 
-#### please note that, if you runs the metabox locally, the first time running will be slow depending on the internet because it needs to download all the dependency packages. 
+#### please note that, if you use the metabox locally, the first time running will be slow depending on the internet because it needs to download all the dependency packages. 
 
 
