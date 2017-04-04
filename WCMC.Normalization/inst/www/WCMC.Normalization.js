@@ -4,7 +4,7 @@ myApp.controller('ctr',function($scope){
     $scope.normalizationMethods = ["None","mTIC","SampleSpecific","Quantile","PQN","contrast","batch","loess"].sort();
    $scope.normalizationMethodsSelection = ["None"].sort();
    $scope.sampleSpecificMethods = ['sum','median','mean','custom sample weight']
-   $scope.sampleSpecificMethodsSelection = ['sum','median','mean']
+   $scope.sampleSpecificMethodsSelection = ['mean']
    $scope.transformationMethods = ['None','log','power'].sort()
    $scope.transformationMethodsSelection = ['None'].sort()
    $scope.logbase = 'exp(1)'
@@ -77,7 +77,7 @@ myApp.controller('ctr',function($scope){
    $scope.normalizationMethods = ["None","mTIC","SampleSpecific","Quantile","PQN","contrast","batch","loess"].sort();
    $scope.normalizationMethodsSelection = ["None"].sort();
    $scope.sampleSpecificMethods = ['sum','median','mean','custom sample weight']
-   $scope.sampleSpecificMethodsSelection = ['sum','median','mean']
+   $scope.sampleSpecificMethodsSelection = ['mean']
    $scope.transformationMethods = ['None','log','power'].sort()
    $scope.transformationMethodsSelection = ['None'].sort()
    $scope.logbase = 'exp(1)'
