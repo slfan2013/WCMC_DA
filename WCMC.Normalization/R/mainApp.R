@@ -33,6 +33,11 @@ mainApp = function(input,
 
   e = as.matrix(e)
 
+  e = t(apply(e,1,function(x){
+    x[is.na(x)] = 0.5*min(x,na.rm = T)
+    return(x)
+  }))
+
   normalizationList = list()
   for(normalization in normalizationMethodsSelection){
     if(normalization=='None'){
@@ -185,11 +190,11 @@ mainApp = function(input,
         loess.span.limit = 0.5
       }
 
-      if(.Platform$OS.type == "windows"){
-        cl = makeCluster(min(20,detectCores()))
-      }else{
-        cl = makeCluster(1)
-      }
+      # if(.Platform$OS.type == "windows"){
+        cl = makeCluster(min(8,detectCores()))
+      # }else{
+        # cl = makeCluster(1)
+      # }
 
       norms = parSapply(cl, X = 1:nrow(e), function(i,e,f,p,QC.index,batch,time,remove_outlier,span.para,get_loess_para,
                                                     loess.span.limit){
@@ -330,18 +335,18 @@ mainApp = function(input,
   }
 
   dir.create("data")
-  if(.Platform$OS.type == "windows"){
-    cl = makeCluster(min(20,detectCores()))
+  # if(.Platform$OS.type == "windows"){
+    cl = makeCluster(min(8,detectCores()))
     parSapply(cl,1:length(scaleList),FUN=function(i,scaleList,fwrite,data.table){
       fwrite(data.table(scaleList[[i]]),file=paste0("data/",names(scaleList)[i],".csv"))
       return(NULL)
     },scaleList,fwrite,data.table)
     stopCluster(cl)
-  }else{
-    for(i in 1:length(scaleList)){
-      fwrite(data.table(scaleList[[i]]),file=paste0("data/",names(scaleList)[i],".csv"))
-    }
-  }
+  # }else{
+  #   for(i in 1:length(scaleList)){
+  #     fwrite(data.table(scaleList[[i]]),file=paste0("data/",names(scaleList)[i],".csv"))
+  #   }
+  # }
 
   if(PCA){
     dir.create("PCA")
