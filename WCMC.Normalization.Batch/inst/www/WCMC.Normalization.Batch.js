@@ -21,8 +21,8 @@ $( "#codeToggle" ).click(function() {
     var txtinput = $("#rawinput").val().trim();
     var req = ocpu.call("mainApp",{input:txtinput}, function(session) {//calls R function:
 			console.log(session);
-			view_address = session.loc + "files/Batch_normalization.txt"
-			download_address = session.loc + "files/Batch_normalization.csv"
+			view_address = session.loc + "files/batch_normalization.txt"
+			download_address = session.loc + "files/batch_normalization.csv"
 		})
 		.done(function(){
         $("#outputpanelheader").removeClass("collapsed")

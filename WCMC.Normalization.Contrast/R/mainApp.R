@@ -13,9 +13,15 @@ mainApp = function(input){
   df1 = df1[-1,]
   data = sapply(df1[,-1], as.numeric)
 
-  if(sum(is.na(data))>0){
-    stop(paste0(sum(is.na(data))," missing value detected. Contrast normalization does not tolerate with missing values."))
-  }
+  # if(sum(is.na(data))>0){
+  #   stop(paste0(sum(is.na(data))," missing value detected. Contrast normalization does not tolerate with missing values."))
+  # }
+
+
+  data = t(apply(data,1,function(x){
+    x[is.na(x)] = 0.5*min(x,na.rm = T)
+    return(x)
+  }))
 
 
   #---First adaption: Make the data matrix non-negative
