@@ -101,7 +101,7 @@ myApp.controller('ctr',function($scope){
         })
       })
     })
-  		.done(function(){
+  		/*.done(function(){
 
   		  setTimeout(function(){
   		  if($scope.colnames_f.indexOf('Known/Unknown')==-1){
@@ -149,7 +149,7 @@ myApp.controller('ctr',function($scope){
 
 
 
-  		});//ocpu.call
+  		});*/ocpu.call
   });
 
   $("#compute").click(function(){
