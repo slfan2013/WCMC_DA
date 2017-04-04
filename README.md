@@ -11,7 +11,7 @@ http://wcmc-da.fiehnlab.ucdavis.edu
 
 ## To Install Locally:
 
-Software requirement: [R 3.3.3](https://cran.r-project.org/bin/windows/base/R-3.3.3-win.exe) (and [RTools](https://cran.r-project.org/bin/windows/Rtools/Rtools34.exe) for Windows Users). [R Studio](https://download1.rstudio.org/RStudio-1.0.136.exe) is highly recommanded. Run following code in R (or R Studio).
+Software requirement: [R 3.3.3](https://cran.r-project.org/bin/windows/base/R-3.3.3-win.exe) (and [RTools](https://cran.r-project.org/bin/windows/Rtools/Rtools34.exe) for Windows Users). [R Studio](https://download1.rstudio.org/RStudio-1.0.136.exe) is highly recommended. Run following code in R (or R Studio).
 
 ```
 shell("zip") # Some packages ask for zip. If error returns, visit https://cran.r-project.org/web/packages/openxlsx/vignettes/Introduction.pdf.
