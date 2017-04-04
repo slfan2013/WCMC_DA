@@ -73,7 +73,7 @@ myApp.controller('ctr',function($scope){
   })
 
   $('#rawinput').on('blur',function(){
-    setTimeout(function(){
+    /*setTimeout(function(){
    $scope.normalizationMethods = ["None","mTIC","SampleSpecific","Quantile","PQN","contrast","batch","loess"].sort();
    $scope.normalizationMethodsSelection = ["None"].sort();
    $scope.sampleSpecificMethods = ['sum','median','mean','custom sample weight']
@@ -89,7 +89,7 @@ myApp.controller('ctr',function($scope){
    $scope.RSD = true
    $scope.plotType = "RSD"
    $scope.autoSpan = false
-    },499)
+    },499)*/
 
     var txtinput = $("#rawinput").val().trim();
     var req = ocpu.call("secondApp",{input:txtinput}, function(session) {//This function is designed for the column names of p and f.
