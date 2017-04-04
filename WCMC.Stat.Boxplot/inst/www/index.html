@@ -80,22 +80,9 @@
                       <input class="form-control" ng-model="factor_order2">
                       <p class="help-block">Please split by ",". For exampe, "0h,1h,2h".</p>
                   </div>
+
                   <div class="form-group">
-                      <label>legend_position</label>
-                      <select class="form-control" ng-model="legend_position">
-                          <option value="topleft">topleft</option>
-                          <option value="bottomright">bottomright</option>
-                          <option value="bottom">bottom</option>
-                          <option value="bottomleft">bottomleft</option>
-                          <option value="left">left</option>
-                          <option value="top">top</option>
-                          <option value="topright">topright</option>
-                          <option value="right">right</option>
-                          <option value="center">center</option>
-                      </select>
-                  </div>
-                  <div class="form-group">
-                      <label>Displaied single compound:</label>
+                      <label>Displayed single compound:</label>
                       <select class="form-control" ng-model="compoundName">
                           <option ng-repeat='compoundName_ in compoundNames' value="{{compoundName_}}">{{compoundName_}}</option>
                       </select>
@@ -103,8 +90,8 @@
                   <div class="form-group">
                       <label>Jitters: </label>
                       <label class="checkbox-inline">
-                          <input type="checkbox" ng-model="jitter">&nbsp;&nbsp;&nbsp;
-                      </label>
+                          <input type="checkbox" ng-model="jitter">&nbsp;
+                      </label><a href="jitters.png" target="_blank" data-toggle="tooltip" data-placement="bottom" data-html="true" title="what is jitters?"><i class="fa fa-question-circle"></i></a>
                   </div>
                 </form>
 
@@ -122,11 +109,41 @@
               <div class="panel-heading" >
                 <h3 class="panel-title"><a data-toggle="collapse" data-target="#output" href="#" class="collapsed" id="outputpanelheader">Output</a></h3>
               </div>
-              <div id="individual_boxplot"  style="width:800px;height:600px"></div>
               <div id="output" class="panel-body collapse">
+
+              <img id="individual_boxplot" ng-show="success" src="{{session}}files/singlePlot.png" style="width:800px;height:600px">
+
+              <div class="form-group" ng-show="success">
+                      <label>legend_position</label>
+                      <select class="form-control" ng-model="legend_position">
+                          <option value="topleft">topleft</option>
+                          <option value="bottomright">bottomright</option>
+                          <option value="bottom">bottom</option>
+                          <option value="bottomleft">bottomleft</option>
+                          <option value="left">left</option>
+                          <option value="top">top</option>
+                          <option value="topright">topright</option>
+                          <option value="right">right</option>
+                          <option value="center">center</option>
+                      </select>
+               </div>
+
+                <div class="form-group" ng-show="success">
+                    <label>factor 1 colors:</label>
+                    <input ng-show="success" type="color" class="boxplotColors" onchange="clickColor(0, -1, -1, 5)" ng-repeat="color in colors" value="{{color}}" style="width:3%;">
+                <a href="http://www.color-hex.com/color-palettes/" target="_blank" data-toggle="tooltip" data-placement="bottom" data-html="true" title="color palettes"><i class="fa fa-info-circle"></i></a>
+                </div>
+              <div id="outputtext">
                 No output yet.
               </div>
-              <button type='button' class='btn btn-primary' id='download_all'>Download_all_boxplots</button>
+              <button type='button' ng-show="success" class='btn btn-primary' id='download_all'>Download_all_boxplots</button>
+
+              </div>
+
+
+
+
+
             </div>
           </div>
         </div>

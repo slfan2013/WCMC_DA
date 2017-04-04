@@ -25,7 +25,7 @@ $( "#codeToggle" ).click(function() {
 		.done(function(){
         $("#outputpanelheader").removeClass("collapsed")
         $("#output").addClass( "in" );
-        $("#output").html( "<b style='color:#3C763D;'>Success!</b><br /><div class='well well-sm'><p>NA</p></div><p style='color:grey';'>You can either view your normalized result <a href='"+view_address+"' target='_blank'>here</a>, or download your result by clicking the Download button.</p><a type='button' href='"+download_address+"' class='btn btn-primary' target='_blank'  download='OneWayANOVA.csv'>Download</a>" );
+        $("#output").html( "<b style='color:#3C763D;'>Success!</b><br /><div class='well well-sm'><p>NA</p></div><div class='well well-sm'><p><b>OneWayANOVApvalue:</b> the raw p value of one way Welch ANOVA.</p><p><b>A-B:</b> The Games-Howell post hoc analysis p value comparing A and B.</p></div><p style='color:grey';'>You can either view your normalized result <a href='"+view_address+"' target='_blank'>here</a>, or download your result by clicking the Download button.</p><a type='button' href='"+download_address+"' class='btn btn-primary' target='_blank'  download='OneWayANOVA.csv'>Download</a>" );
 		})
 		.fail(function() {
 		  $('#output').empty();

@@ -1,19 +1,20 @@
 var myApp = angular.module('myApp', ['ngRoute', 'ui.bootstrap']);
 
 myApp.controller('ctr',function($scope){
-   $scope.normalizationMethods = ["None","mTIC","SampleSpecific","Quantile","PQN","contrast","batch","loess"].sort();
-   $scope.normalizationMethodsSelection = ["None","mTIC","SampleSpecific","Quantile","PQN","contrast","batch","loess"].sort();
+    $scope.normalizationMethods = ["None","mTIC","SampleSpecific","Quantile","PQN","contrast","batch","loess"].sort();
+   $scope.normalizationMethodsSelection = ["None"].sort();
    $scope.sampleSpecificMethods = ['sum','median','mean','custom sample weight']
    $scope.sampleSpecificMethodsSelection = ['sum','median','mean']
    $scope.transformationMethods = ['None','log','power'].sort()
-   $scope.transformationMethodsSelection = ['None','log','power'].sort()
+   $scope.transformationMethodsSelection = ['None'].sort()
    $scope.logbase = 'exp(1)'
    $scope.power = '1/3'
    $scope.scaleMethods = ["None","centering","auto",'parato','vast','level','range']
-   $scope.scaleMethodsSelection = ["None","centering","auto",'parato','vast','level','range']
+   $scope.scaleMethodsSelection = ["auto"]
    $scope.PCA = true
    $scope.Normality = true
    $scope.RSD = true
+   $scope.plotType = "RSD"
    $scope.autoSpan = false
 
 
@@ -54,7 +55,8 @@ myApp.controller('ctr',function($scope){
     }
   };
 
-  var checkTime = function(){
+
+  $("#input").on('click',function(){
     setTimeout(function(){
       if(!document.getElementById("rawinput").value.length<1){
             var num_method = $scope.scaleMethodsSelection.length * $scope.transformationMethodsSelection.length * ($scope.normalizationMethodsSelection.length + $scope.sampleSpecificMethods.length-1)
@@ -67,28 +69,27 @@ myApp.controller('ctr',function($scope){
             $("#timeEstimate").empty()
           }
     },500)
-  }
 
-  $("#input").on('click',checkTime)
+  })
 
   $('#rawinput').on('blur',function(){
     setTimeout(function(){
-      console.log("！")
-     $scope.normalizationMethods = ["None","mTIC","SampleSpecific","Quantile","PQN","contrast","batch","loess"].sort();
-     $scope.normalizationMethodsSelection = ["None","mTIC","SampleSpecific","Quantile","PQN","contrast","batch","loess"].sort();
-     $scope.sampleSpecificMethods = ['sum','median','mean','custom sample weight']
-     $scope.sampleSpecificMethodsSelection = ['sum','median','mean']
-     $scope.transformationMethods = ['None','log','power'].sort()
-     $scope.transformationMethodsSelection = ['None','log','power'].sort()
-     $scope.logbase = 'exp(1)'
-     $scope.power = '1/3'
-     $scope.scaleMethods = ["None","centering","auto",'parato','vast','level','range']
-     $scope.scaleMethodsSelection = ["None","centering","auto",'parato','vast','level','range']
-     $scope.PCA = true
-     $scope.Normality = true
-     $scope.RSD = true
-     $scope.autoSpan = false
-    },10)
+   $scope.normalizationMethods = ["None","mTIC","SampleSpecific","Quantile","PQN","contrast","batch","loess"].sort();
+   $scope.normalizationMethodsSelection = ["None"].sort();
+   $scope.sampleSpecificMethods = ['sum','median','mean','custom sample weight']
+   $scope.sampleSpecificMethodsSelection = ['sum','median','mean']
+   $scope.transformationMethods = ['None','log','power'].sort()
+   $scope.transformationMethodsSelection = ['None'].sort()
+   $scope.logbase = 'exp(1)'
+   $scope.power = '1/3'
+   $scope.scaleMethods = ["None","centering","auto",'parato','vast','level','range']
+   $scope.scaleMethodsSelection = ["auto"]
+   $scope.PCA = true
+   $scope.Normality = true
+   $scope.RSD = true
+   $scope.plotType = "RSD"
+   $scope.autoSpan = false
+    },499)
 
     var txtinput = $("#rawinput").val().trim();
     var req = ocpu.call("secondApp",{input:txtinput}, function(session) {//This function is designed for the column names of p and f.
@@ -103,9 +104,7 @@ myApp.controller('ctr',function($scope){
   		.done(function(){
 
   		  setTimeout(function(){
-  		    checkTime();
-  		     console.log("!!")
-  		       if($scope.colnames_f.indexOf('Known/Unknown')==-1){
+  		  if($scope.colnames_f.indexOf('Known/Unknown')==-1){
   		    $scope.$apply(function(){$scope.mTIC_NA = true;
   		    if($scope.normalizationMethodsSelection.indexOf('mTIC')>-1){
   		      $scope.normalizationMethodsSelection.splice($scope.normalizationMethodsSelection.indexOf('mTIC'), 1);
@@ -144,20 +143,16 @@ myApp.controller('ctr',function($scope){
   		      if($scope.normalizationMethodsSelection.indexOf('loess')>-1){
   		        $scope.normalizationMethodsSelection.splice($scope.normalizationMethodsSelection.indexOf('loess'), 1);
   		      }
-  		      if($scope.normalizationMethodsSelection.indexOf('batch')>-1){
-  		        $scope.normalizationMethodsSelection.splice($scope.normalizationMethodsSelection.indexOf('batch'), 1);
-  		      }
   		    })
   		  }
-
   		  },500)
-  		});
+
+
+
+  		});//ocpu.call
   });
 
-
   $("#compute").click(function(){
-    console.log($scope.autoSpan)
-    console.log($scope.PCA)
     $('#outputText').empty();
     $("#outputText").html("<p>No output yet.</p>")
     $("#outputpanelheader").addClass("collapsed")
@@ -207,4 +202,7 @@ $(function(){
 $( "#codeToggle" ).click(function() {
   $( "#code" ).toggle( "fast");
 });
+
+
+
 })

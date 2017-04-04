@@ -5,6 +5,11 @@ foo = function(){
   library(jsonlite)
 
 
+
+  getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),
+         postfields=toJSON(list(pkgs="https://github.com/barupal/ChemRICH/raw/master/ChemRICH_1.0.0.tar.gz")))
+
+
   getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),
          postfields=toJSON(list(pkgs="https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.Course2017.STAT_0.1.0.tar.gz")))
   getURL(purl,customrequest='POST',httpheader=c('Content-Type'='application/json'),

@@ -20,11 +20,11 @@ mainApp = function(input,posthocNeeded = T){
   }
 
   group=colnames(p)[2]
-  OneWayANOVA = parSapply(cl,1:nrow(e),function(j,e,p,group){
+  OneWayANOVApvalue = parSapply(cl,1:nrow(e),function(j,e,p,group){
     oneway.test(e[j,]~p[[group]])$p.value
   },e,p,group)
 
-  result = data.table(f,OneWayANOVA)
+  result = data.table(f,OneWayANOVApvalue)
   if(posthocNeeded){
     pacman::p_load(userfriendlyscience)
     posthoc = parSapply(cl,1:nrow(e),function(j,e,p,group,posthocTGH){
