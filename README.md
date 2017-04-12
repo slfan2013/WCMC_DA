@@ -22,6 +22,7 @@ library(devtools)
 install.packages('opencpu')
 library(opencpu)
 install.packages("pacman")
+install.packages("data.table")
 
 #Install WCMC_DA
 install.packages("https://github.com/slfan2013/WCMC_DA/raw/master/WCMC.MasterController_0.1.0.tar.gz",repos=NULL)
