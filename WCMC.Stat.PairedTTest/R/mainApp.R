@@ -28,7 +28,7 @@ mainApp = function(input){
 
   group=colnames(p)[2]
   PairedTtest = parSapply(cl,1:nrow(e),function(j,e,p,group){
-    t.test(e[j,]~p[[group]])$p.value
+    t.test(e[j,]~p[[group]],paired = T)$p.value
   },e,p,group)
   PairedTtest.FDR=p.adjust(PairedTtest,'fdr')
 
